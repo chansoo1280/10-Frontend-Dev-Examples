@@ -18,11 +18,12 @@ const App = () => {
 					if (!req) return;
 					const { data, type, reqId } = req;
 					console.log(reqId, type);
-					switch (req.type) {
+					switch (type) {
 						case RN_API.GET_VERSION: {
 							webview.current.postMessage(
 								JSON.stringify({
 									reqId: req.reqId,
+									type: type,
 									data: '1.0'
 								})
 							);
