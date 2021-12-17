@@ -1,4 +1,4 @@
-# react native webview post massage 기능 사용 및 개선
+# react native webview post message 기능 사용 및 개선
 
 ## 모듈 파일
  - 프론트 모듈 파일은 ./frontend/src/module 에 있습니다.

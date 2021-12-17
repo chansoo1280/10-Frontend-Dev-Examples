@@ -28,6 +28,7 @@
                     case RN_API.GET_VERSION : {
                         alert(data)
                     }
+                    //... 다른 타입들
                 }
             };
             /** android */
@@ -40,14 +41,14 @@
         getVersion();
 
         // Promise 사용
-        // const getVersion = async ()=>{
-        //     const version = await WebViewMessage(RN_API.GET_VERSION).catch(()=>null);
-        //     return version;
-        // }
-        // (async ()=>{
-        //     const version = await getVersion();
-        //     alert(version);
-        // })()
+        const getVersion = async ()=>{
+            const version = await WebViewMessage(RN_API.GET_VERSION).catch(()=>null);
+            return version;
+        }
+        (async ()=>{
+            const version = await getVersion();
+            alert(version);
+        })()
     </script>
 </body>
 </html>
