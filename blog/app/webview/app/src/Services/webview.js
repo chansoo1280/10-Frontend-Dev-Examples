@@ -50,6 +50,15 @@ export const WebViewWrapper = forwardRef((props, ref) => {
 			source={{
 				uri
 			}}
+			onMessage={async (message) => {
+				const { nativeEvent } = message;
+				if (nativeEvent.data === 'navigationStateChange') {
+					SetCanGoBack(nativeEvent.canGoBack);
+					return;
+				}
+				const req = nativeEvent.data && JSON.parse(nativeEvent.data);
+				await onMessage(req);
+			}}
 			injectedJavaScript={`
                 (function() {
 					function wrap(fn) {
@@ -68,15 +77,6 @@ export const WebViewWrapper = forwardRef((props, ref) => {
                 })();
                 true;
             `}
-			onMessage={async (message) => {
-				const { nativeEvent } = message;
-				if (nativeEvent.data === 'navigationStateChange') {
-					SetCanGoBack(nativeEvent.canGoBack);
-					return;
-				}
-				const req = nativeEvent.data && JSON.parse(nativeEvent.data);
-				await onMessage(req);
-			}}
 		/>
 	);
 });

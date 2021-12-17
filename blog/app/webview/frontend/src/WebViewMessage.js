@@ -5,7 +5,8 @@ const WebViewMessage = async (type, data) =>
 	new Promise((resolve, reject) => {
 		if (!window.ReactNativeWebView) {
 			// alert('ReactNativeWebView 객체가 없습니다.');
-			return reject('ReactNativeWebView 객체가 없습니다.');
+			reject('ReactNativeWebView 객체가 없습니다.');
+			return;
 		}
 		const reqId = Date.now(); // uuid로 구현해도 좋습니다.
 		const TIMEOUT = 3000; // 3 * 1000 = 3s
@@ -14,7 +15,7 @@ const WebViewMessage = async (type, data) =>
 			document.removeEventListener('message', listener);
 			/** ios */
 			window.removeEventListener('message', listener);
-			resolve(null);
+			reject('TIMEOUT');
 		}, TIMEOUT);
 		const listener = (event) => {
 			const { data: listenerData, reqId: listenerReqId } = JSON.parse(event.data);

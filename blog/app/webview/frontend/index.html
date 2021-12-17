@@ -9,14 +9,45 @@
 </head>
 <body>
     <script>
-        const getVersion = async ()=>{
-            const version = await WebViewMessage(RN_API.GET_VERSION).catch(()=>null);
-            return version;
+        // 기본적인 사용법
+        const getVersion = ()=>{
+            if (!window.ReactNativeWebView) {
+                alert('ReactNativeWebView 객체가 없습니다.');
+                return
+            }
+            window.ReactNativeWebView.postMessage(
+                JSON.stringify({
+                    type: RN_API.GET_VERSION
+                })
+            );
         }
-        (async ()=>{
-            const version = await getVersion();
-            alert(version);
-        })()
+        const init = ()=>{
+            const listener = (event) => {
+                const { data, type } = JSON.parse(event.data);
+                switch (type) {
+                    case RN_API.GET_VERSION : {
+                        alert(data)
+                    }
+                }
+            };
+            /** android */
+            document.addEventListener('message', listener);
+            /** ios */
+            window.addEventListener('message', listener);
+        }
+        // mount
+        init();
+        getVersion();
+
+        // Promise 사용
+        // const getVersion = async ()=>{
+        //     const version = await WebViewMessage(RN_API.GET_VERSION).catch(()=>null);
+        //     return version;
+        // }
+        // (async ()=>{
+        //     const version = await getVersion();
+        //     alert(version);
+        // })()
     </script>
 </body>
 </html>
