@@ -1,7 +1,7 @@
 export const RN_API = {
 	GET_VERSION: 'GET_VERSION'
 };
-export const WebViewMessage = async (type, data) =>
+export const WebViewMessage = (type, data) =>
 	new Promise((resolve, reject) => {
 		if (!window.ReactNativeWebView) {
 			// alert('ReactNativeWebView 객체가 없습니다.');

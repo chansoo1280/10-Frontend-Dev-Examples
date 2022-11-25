@@ -15,7 +15,7 @@ declare global {
     ReactNativeWebView: any;
   }
 }
-export const WebViewMessage = async <T extends RN_API>(
+export const WebViewMessage = <T extends RN_API>(
   type: RN_API,
   data: RN_API_REQ_TYPES[T]
 ): Promise<RN_API_RES_TYPES[T] | null> =>

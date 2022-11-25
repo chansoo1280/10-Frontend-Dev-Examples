@@ -13,20 +13,31 @@ const App = () => {
 		>
 			<WebViewWrapper
 				ref={webview}
-				uri="http://172.30.1.40:8080"
+				uri="http://172.30.1.94:8080"
 				onMessage={async (req) => {
 					if (!req) return;
 					const { data, type, reqId } = req;
 					console.log(reqId, type);
 					switch (type) {
 						case RN_API.GET_VERSION: {
-							webview.current.postMessage(
-								JSON.stringify({
-									reqId: req.reqId,
-									type: type,
-									data: '1.0'
-								})
-							);
+							// 1. 성공 응답
+							// webview.current.postMessage(
+							// 	JSON.stringify({
+							// 		reqId: req.reqId,
+							// 		type: type,
+							// 		data: '1.0'
+							// 	})
+							// );
+							// 2. 실패 응답(3초 Timeout)
+							setTimeout(() => {
+								webview.current.postMessage(
+									JSON.stringify({
+										reqId: req.reqId,
+										type: type,
+										data: '1.0'
+									})
+								);
+							}, 5000);
 							break;
 						}
 					}

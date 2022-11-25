@@ -9,45 +9,61 @@
 </head>
 <body>
     <script>
-        // 기본적인 사용법
-        const getVersion = ()=>{
-            if (!window.ReactNativeWebView) {
-                alert('ReactNativeWebView 객체가 없습니다.');
-                return
-            }
-            window.ReactNativeWebView.postMessage(
-                JSON.stringify({
-                    type: RN_API.GET_VERSION
-                })
-            );
-        }
-        const init = ()=>{
-            const listener = (event) => {
-                const { data, type } = JSON.parse(event.data);
-                switch (type) {
-                    case RN_API.GET_VERSION : {
-                        alert(data)
-                    }
-                    //... 다른 타입들
-                }
-            };
-            /** android */
-            document.addEventListener('message', listener);
-            /** ios */
-            window.addEventListener('message', listener);
-        }
-        // mount
-        init();
-        getVersion();
+        // 1. 기본적인 사용법
+        // const getVersion = ()=>{
+        //     if (!window.ReactNativeWebView) {
+        //         alert('ReactNativeWebView 객체가 없습니다.');
+        //         return
+        //     }
+        //     window.ReactNativeWebView.postMessage(
+        //         JSON.stringify({
+        //             type: RN_API.GET_VERSION
+        //         })
+        //     );
+        // }
+        // const init = ()=>{
+        //     const listener = (event) => {
+        //         const { data, type } = JSON.parse(event.data);
+        //         switch (type) {
+        //             case RN_API.GET_VERSION : {
+        //                 alert(data)
+        //             }
+        //             //... 다른 타입들
+        //         }
+        //     };
+        //     /** android */
+        //     document.addEventListener('message', listener);
+        //     /** ios */
+        //     window.addEventListener('message', listener);
+        // }
+        // // mount
+        // init();
+        // getVersion();
 
-        // Promise 사용
+        // 2. Promise 사용
         const getVersion = async ()=>{
-            const version = await WebViewMessage(RN_API.GET_VERSION).catch(()=>null);
+            const version = await WebViewMessage(RN_API.GET_VERSION).catch((err)=>{
+                switch(err){
+                    case "TIMEOUT": {
+                        alert("3초 이내 응답이 없습니다.");
+                        break;
+                    }
+                    default: {
+                        alert("기타 에러 처리");
+                        break;
+                    }
+                }
+                return null;
+            });
             return version;
         }
         (async ()=>{
             const version = await getVersion();
-            alert(version);
+            if (version !== null) {
+                alert("수신 성공! 버전: " + version);
+            } else {
+                alert("수신 실패...");
+            }
         })()
     </script>
 </body>

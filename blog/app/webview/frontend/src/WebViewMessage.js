@@ -1,7 +1,7 @@
 const RN_API = {
 	GET_VERSION: 'GET_VERSION'
 };
-const WebViewMessage = async (type, data) =>
+const WebViewMessage = (type, data) =>
 	new Promise((resolve, reject) => {
 		if (!window.ReactNativeWebView) {
 			// alert('ReactNativeWebView 객체가 없습니다.');
@@ -19,6 +19,7 @@ const WebViewMessage = async (type, data) =>
 		}, TIMEOUT);
 		const listener = (event) => {
 			const { data: listenerData, reqId: listenerReqId } = JSON.parse(event.data);
+			// 같은 id만 처리합니다.
 			if (listenerReqId === reqId) {
 				clearTimeout(timer);
 				/** android */
