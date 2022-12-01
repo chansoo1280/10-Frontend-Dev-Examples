@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="./styles/reset.css">
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+<body>
+    <div class="l_wrap">
+        <header class="header">
+            <h1 class="header__title">My Todo List</h1>
+            <span class="header__text-progress">1 of 5 tasks</span>
+            <div class="header__progress-bar">
+                <div class="header__progress-bar-inner"></div>
+            </div>
+        </header>
+        <main class="main">
+            <ul class="todo-list">
+                <li class="todo-list__item">
+                    <div class="todo-list__check-box">
+                        <div class="check-box ">
+                            <input type="checkbox" class="check-box__input">
+                        </div>
+                    </div>
+                    <div class="todo-list__main">
+                        <h2 class="todo-list__title">운동하기</h2>
+                        <time datetime="YYYY-MM-DDTHH:mm:ss.sssZ+09:00" class="todo-list__time">PM 8:42 - 2022/11/12</time>
+                    </div>
+                    <button class="todo-list__btn-delete">
+                        <img src="" alt="항목 삭제">
+                    </button>
+                </li>
+            </ul>
+            <div class="add-todo">
+                <div class="add-todo__input text-input">
+                    <input type="text" class="text-input__input">
+                    <label type="text" class="text-input__label ir" for="">입력</label>
+                </div>
+                <button type="button" class="add-todo__btn">
+                    <img src="" alt="항목 추가하기" class="add-todo__btn-img ">
+                </button>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
