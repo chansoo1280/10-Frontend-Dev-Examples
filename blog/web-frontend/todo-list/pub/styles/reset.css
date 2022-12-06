@@ -95,6 +95,10 @@ textarea {
    direction: ltr;
 }
 
+.img-cover{
+   width:100%;
+}
+
 /* ============================ default ============================ */
 :focus {
     outline: -webkit-focus-ring-color auto 2px;
@@ -132,6 +136,7 @@ textarea {
  
  /* active 요소 */
  button {
+    padding: 0;
     background: transparent;
  }
  
