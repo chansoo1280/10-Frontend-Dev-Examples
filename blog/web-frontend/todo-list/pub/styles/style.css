@@ -3,6 +3,8 @@ body{
     justify-content:center;
     align-items:center;
 }
+
+/* layout */
 .l_wrap{
     position:relative;
     display:flex;
@@ -12,6 +14,8 @@ body{
     background:#FFFEF6;
     box-shadow:2px 2px 5px rgb(137, 137, 137);
 }
+
+/* header */
 .header{
     padding:80px 0 0 80px;
     background:#FFFEF6;
@@ -41,16 +45,20 @@ body{
     height:100%;
     background:#B81C1C;
 }
+
+/* main */
 .main{
     padding:30px 0 270px;
     flex:1;
 }
+
+/* todo-item */
 .todo-item{
     cursor:pointer;
     display:flex;
     align-items:center;
     height:60px;
-    background: rgba(255, 255, 255, 0.54);
+    background: rgba(255, 255, 255, 0.541);
 }
 .todo-item__check-box{
     display:flex;
@@ -67,9 +75,6 @@ body{
     margin-bottom:4px;
     font-size:16px;
 }
-.todo-item--checked__title{
-    color:#B81C1C;
-}
 .todo-item__title-label{
     position:relative;
 }
@@ -84,9 +89,6 @@ body{
     height:1px;
     background:#B81C1C;
 }
-.todo-item--checked__title-label:after{
-    display:block;
-}
 .todo-item__time{
     font-size:12px;
     color:#A6A6A6;
@@ -99,12 +101,20 @@ body{
     height:24px;
     border:none;
 }
+.todo-item--checked__title{
+    color:#B81C1C;
+}
+.todo-item--checked__title-label:after{
+    display:block;
+}
 .todo-item--checked__btn-delete{
     display:block;
 }
 .todo-item--checked{
     background:#F9F9F9;
 }
+
+/* no-todo */
 .no-todo{
     padding:40px 0 0;
     display:flex;
@@ -118,21 +128,19 @@ body{
 .no-todo__text{
     font-size:24px;
 }
+
+/* add-todo */
 .add-todo{
     position:absolute;
     left:50%;
     bottom:100px;
     transform:translate(-50%, 50%);
     display:flex;
-
     height:60px;
     box-shadow:0 4px 4px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.24);
     border-radius:4px;
     box-sizing:content-box;
     background:#F5F5F5;
-}
-.add-todo--open{
-    padding:6px;
 }
 .add-todo__input{
     margin-right:6px;
@@ -148,10 +156,6 @@ body{
     box-sizing:border-box;
     border-radius:4px;
 }
-.add-todo--open__input{
-    display:block;
-}
-
 .add-todo__btn{
     cursor:pointer;
     padding:8px;
@@ -161,7 +165,14 @@ body{
     box-sizing:border-box;
     background:#B81C1C;
 }
+.add-todo--open{
+    padding:6px;
+}
+.add-todo--open__input{
+    display:block;
+}
 
+/* check-box */
 .check-box{
     cursor:pointer;
     padding:0 9px;

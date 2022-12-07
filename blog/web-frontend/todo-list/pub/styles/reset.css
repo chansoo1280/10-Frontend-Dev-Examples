@@ -127,7 +127,7 @@ textarea {
  /* 전체 폰트 설정 */
  body, input, select, textarea, button {
     font-size: 16px;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
  }
  
  br {
