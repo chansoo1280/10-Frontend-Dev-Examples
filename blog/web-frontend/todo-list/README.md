@@ -1,14 +1,8 @@
-
-#투두리스트 만들기
-##폰트
-https://gwfh.mranftl.com/fonts
-<div id="top"></div>
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <a href="https://github.com/chansoo1280/example/tree/master/blog/web-frontend/todo-list">
-    <img src="" alt="Logo" width="200" height="80">
+    <img src="https://user-images.githubusercontent.com/62010067/206159591-3f51a748-0661-4dbb-b17f-790358f79b7f.png" alt="Logo" width="200" height="80">
   </a>
 
   <h3 align="center">Todo List</h3>
