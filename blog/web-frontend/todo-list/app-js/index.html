@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="./styles/fonts.css">
+    <link rel="stylesheet" href="./styles/reset.css">
+    <link rel="stylesheet" href="./styles/style.css">
+    <script src="./js/date_format.js"></script>
+    <script defer src="./js/index.js"></script>
+</head>
+<body>
+    <div id="app" class="l_app">
+        <div id="wrap" class="l_wrap">
+            <header id="header" class="header">
+                <h1 class="header__title">My Todo List</h1>
+                <span id="textProgress" class="header__text-progress">1 of 5 tasks</span>
+                <div class="header__progress-bar">
+                    <div id="progressBar" class="header__progress-bar-inner"></div>
+                </div>
+            </header>
+            <main id="main" class="main">
+                <ul id="todoList">
+                </ul>
+                <div id="noTodo" class="no-todo">
+                    <img class="no-todo__img" src="./images/icon_list.svg" alt="">
+                    <span class="no-todo__text">NO TODO</span>
+                </div>
+            </main>
+        </div>
+        <div id="addTodo" class="add-todo">
+            <div class="add-todo__input">
+                <input type="text" id="addTodoInput" class="add-todo__text-input">
+                <label type="text" class="add-todo__label ir" for="">입력</label>
+            </div>
+            <button type="button" class="add-todo__btn" onclick="app.onClickBtnAddTodo()">
+                <img class="img-cover" class="img-cover" src="./images/icon_plus.svg" alt="항목 추가하기" class="add-todo__btn-img ">
+            </button>
+        </div>
+    </div>
+</body>
+</html>
