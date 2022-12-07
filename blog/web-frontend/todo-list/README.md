@@ -4,7 +4,7 @@
   <a href="https://github.com/chansoo1280/example/tree/master/blog/web-frontend/todo-list">
     <img src="https://user-images.githubusercontent.com/62010067/206159591-3f51a748-0661-4dbb-b17f-790358f79b7f.png" alt="Logo" width="200">
   </a>
-
+  ***
   <h3 align="center">Todo List</h3>
 
   <p align="center">
@@ -65,7 +65,7 @@ MIT License
 <!-- CONTACT -->
 ## Contact
 
-email : chansoo1280@naver.com
-blog : [Chansoo's Web](https://chansoo1280.tistory.com)
+* email : chansoo1280@naver.com
+* blog : [Chansoo's Web](https://chansoo1280.tistory.com)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
