@@ -25,8 +25,14 @@
 
 기본적인 투두리스트 앱입니다.
 
-[디자인](https://www.figma.com/file/0qsQQPdqyKBbcIakw78I32/Todo-App?node-id=0%3A1&t=xgRcVvrWKijwrNLz-1)
+[디자인](https://www.figma.com/file/0qsQQPdqyKBbcIakw78I32/Todo-App?node-id=0%3A1&t=xgRcVvrWKijwrNLz-1)<br />
 [완성예시(js)](https://chansoo1280.github.io/example/blog/web-frontend/todo-list/app-js/)
+### 블로그 
+[2022.12.08 - [프론트엔드 개발] - [프론트엔드 개발]1. 간단한 Todo 앱 - 기획&디자인](https://chansoo1280.tistory.com/59)
+
+[2022.12.08 - [프론트엔드 개발] - [프론트엔드 개발]2. 간단한 Todo 앱 - 퍼블리싱](https://chansoo1280.tistory.com/60)
+
+[2022.12.09 - [프론트엔드 개발] - [프론트엔드 개발]3. 간단한 Todo 앱 - JS](https://chansoo1280.tistory.com/61)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -45,7 +51,7 @@
 
 - [x] Todo List 프로젝트 디자인
 - [x] Todo List 프로젝트 퍼블리싱
-- [ ] Todo List 프로젝트 JS
+- [x] Todo List 프로젝트 JS
 - [ ] Todo List 프로젝트 React.js
 
 [open issues](https://github.com/chansoo1280/example/issues)에서 다양한 사이트를 추천해주세요!
