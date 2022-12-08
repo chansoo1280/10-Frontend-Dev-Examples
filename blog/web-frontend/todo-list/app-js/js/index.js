@@ -125,7 +125,7 @@ const useTodoList = (elApp) => {
 			)
 			.join('');
 	};
-	return { addTodo, deleteTodo, toggleTodo, initTodoList };
+	return { initTodoList, addTodo, deleteTodo, toggleTodo };
 };
 const useAddTodo = (elApp, addTodo) => {
 	const elAddTodo = elApp.querySelector('#addTodo');
@@ -160,8 +160,8 @@ const useAddTodo = (elApp, addTodo) => {
 			openAddTodo();
 		}
 	};
-	const handleKeyDownAddTodoInput = (e) => {
-		if (e.keyCode === 13) {
+	const handleKeyDownAddTodoInput = () => {
+		if (window.event.keyCode === 13) {
 			handleClickBtnAddTodo();
 		}
 	};
@@ -185,7 +185,7 @@ const useHeader = (elApp) => {
 };
 const app = (() => {
 	const elApp = document.getElementById('app');
-	const { addTodo, deleteTodo, toggleTodo, initTodoList } = useTodoList(elApp);
+	const { initTodoList, addTodo, deleteTodo, toggleTodo } = useTodoList(elApp);
 	const { initAddTodo, handleClickBtnAddTodo, handleKeyDownAddTodoInput } = useAddTodo(elApp, addTodo);
 	const { initHeader } = useHeader(elApp);
 
