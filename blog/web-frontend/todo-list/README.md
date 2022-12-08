@@ -51,7 +51,7 @@
 
 - [x] Todo List 프로젝트 디자인
 - [x] Todo List 프로젝트 퍼블리싱
-- [ ] Todo List 프로젝트 JS
+- [x] Todo List 프로젝트 JS
 - [ ] Todo List 프로젝트 React.js
 
 [open issues](https://github.com/chansoo1280/example/issues)에서 다양한 사이트를 추천해주세요!
