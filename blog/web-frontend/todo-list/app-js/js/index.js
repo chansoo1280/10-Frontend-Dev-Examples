@@ -4,7 +4,17 @@ const useTodoList = (elApp) => {
 	const elProgressBar = elApp.querySelector('#progressBar');
 	const elNoTodo = elApp.querySelector('#noTodo');
 
-	let todoList = [];
+	const getLocalSTodoList = () => {
+		const parsedList = JSON.parse(localStorage.getItem('todoList') || '[]');
+		if (typeof parsedList.length !== 'number') return [];
+		return parsedList.map((todoItem) => ({
+			...todoItem,
+			created: new Date(todoItem.created)
+		}));
+	};
+	const setLocalSTodoList = (list) => localStorage.setItem('todoList', JSON.stringify(list));
+
+	let todoList = getLocalSTodoList();
 	const setTodoList = (newTodoList) => {
 		todoList = newTodoList;
 		renderTodoList();
@@ -51,6 +61,7 @@ const useTodoList = (elApp) => {
 	const renderTodoList = () => {
 		const lenTodoList = todoList.length;
 		if (elTodoList === null) return;
+		setLocalSTodoList(todoList);
 		if (lenTodoList === 0) {
 			setProgressBar(0);
 			setTextProgress('no tasks');
@@ -109,7 +120,6 @@ const useTodoList = (elApp) => {
 	};
 	return [ addTodo, deleteTodo, toggleTodo, renderTodoList ];
 };
-
 const app = (() => {
 	const elApp = document.getElementById('app');
 	const elWrap = elApp.querySelector('#wrap');
