@@ -1,10 +1,23 @@
+const useProgressBar = (elApp) => {
+	const elProgressBar = elApp.querySelector('#progressBar');
+	const elTextProgress = elApp.querySelector('#textProgress');
+
+	const setProgressBar = (curLen, totalLen) => {
+		elProgressBar.style.width = 100 * curLen / totalLen + '%';
+		elTextProgress.innerHTML = `${curLen} of ${totalLen} tasks`;
+	};
+	const setEmptyProgressBar = () => {
+		elProgressBar.style.width = 0 + '%';
+		elTextProgress.innerHTML = 'no tasks';
+	};
+	return { setProgressBar, setEmptyProgressBar };
+};
 const useTodoList = (elApp) => {
 	const elTodoList = elApp.querySelector('#todoList');
-	const elTextProgress = elApp.querySelector('#textProgress');
-	const elProgressBar = elApp.querySelector('#progressBar');
 	const elNoTodo = elApp.querySelector('#noTodo');
+	const { setProgressBar, setEmptyProgressBar } = useProgressBar(elApp);
 
-	const getLocalSTodoList = () => {
+	const getLocalStorageTodoList = () => {
 		const parsedList = JSON.parse(localStorage.getItem('todoList') || '[]');
 		if (typeof parsedList.length !== 'number') return [];
 		return parsedList.map((todoItem) => ({
@@ -12,9 +25,9 @@ const useTodoList = (elApp) => {
 			created: new Date(todoItem.created)
 		}));
 	};
-	const setLocalSTodoList = (list) => localStorage.setItem('todoList', JSON.stringify(list));
+	const setLocalStorageTodoList = (list) => localStorage.setItem('todoList', JSON.stringify(list));
 
-	let todoList = getLocalSTodoList();
+	let todoList = getLocalStorageTodoList();
 	const setTodoList = (newTodoList) => {
 		todoList = newTodoList;
 		renderTodoList();
@@ -42,12 +55,7 @@ const useTodoList = (elApp) => {
 		if (idx > -1) todoList.splice(idx, 1);
 		setTodoList(todoList);
 	};
-	const setProgressBar = (progress) => {
-		elProgressBar.style.width = progress + '%';
-	};
-	const setTextProgress = (text) => {
-		elTextProgress.innerHTML = text;
-	};
+
 	const showNoTodo = () => elNoTodo.classList.add('no-todo--show');
 	const hideNoTodo = () => elNoTodo.classList.remove('no-todo--show');
 
@@ -58,34 +66,33 @@ const useTodoList = (elApp) => {
 		}
 		return classList.join(' ');
 	};
+	const initTodoList = () => renderTodoList();
 	const renderTodoList = () => {
 		const lenTodoList = todoList.length;
+		const lenCheckedTodoList = todoList.filter((todoItem) => todoItem.checked === true).length;
 		if (elTodoList === null) return;
-		setLocalSTodoList(todoList);
+		setLocalStorageTodoList(todoList);
 		if (lenTodoList === 0) {
-			setProgressBar(0);
-			setTextProgress('no tasks');
+			setEmptyProgressBar();
 			showNoTodo();
 		} else {
-			const lenCheckedTodoList = todoList.filter((todoItem) => todoItem.checked === true).length;
-			setProgressBar(100 * lenCheckedTodoList / lenTodoList);
-			setTextProgress(`${lenCheckedTodoList} of ${lenTodoList} tasks`);
+			setProgressBar(lenCheckedTodoList, lenTodoList);
 			hideNoTodo();
 		}
 		elTodoList.innerHTML = todoList
 			.map(
-				(todoItem) =>
+				({ id, title, checked, created }) =>
 					`<li 
 						class="${getClassNames({
 							'todo-item': true,
-							'todo-item--checked': todoItem.checked
-						})}" tabindex="0" role="checkbox" aria-checked="${todoItem.checked}" aria-labelledby="todo${todoItem.id}" onclick="app.toggleTodo(${todoItem.id})">
+							'todo-item--checked': checked
+						})}" tabindex="0" role="checkbox" aria-checked="${checked}" aria-labelledby="todo${id}" onclick="app.toggleTodo(${id})">
 						<div class="todo-item__check-box">
 							<div class="check-box">
-								<input type="checkbox" value="${todoItem.checked}" 
+								<input type="checkbox" value="${checked}" 
 									class="${getClassNames({
 										'check-box__input': true,
-										'check-box__input--checked': todoItem.checked
+										'check-box__input--checked': checked
 									})}" tabindex="-1">
 							</div>
 						</div>
@@ -93,57 +100,41 @@ const useTodoList = (elApp) => {
 							<h2 
 								class="${getClassNames({
 									'todo-item__title': true,
-									'todo-item--checked__title': todoItem.checked
+									'todo-item--checked__title': checked
 								})}">
-								<label for="todo${todoItem.id}" 
+								<label for="todo${id}" 
 									class="${getClassNames({
 										'todo-item__title-label': true,
-										'todo-item--checked__title-label': todoItem.checked
+										'todo-item--checked__title-label': checked
 									})}">
-									${todoItem.title}
+									${title}
 								</label>
 							</h2>
-							<time datetime="${todoItem.created.toISOString() + '+09:00'}" class="todo-item__time">${todoItem.created.format(
+							<time datetime="${created.toISOString() + '+09:00'}" class="todo-item__time">${created.format(
 						'ENa/p mh:m - yyyy/MM/dd'
 					)}</time>
 						</div>
 						<button 
 							class="${getClassNames({
 								'todo-item__btn-delete': true,
-								'todo-item--checked__btn-delete': todoItem.checked
-							})}" onclick="app.deleteTodo(${todoItem.id})">
+								'todo-item--checked__btn-delete': checked
+							})}" onclick="app.deleteTodo(${id})">
 							<img src="./images/icon_delete.svg" alt="항목 삭제">
 						</button>
 					</li>`
 			)
 			.join('');
 	};
-	return [ addTodo, deleteTodo, toggleTodo, renderTodoList ];
+	return { addTodo, deleteTodo, toggleTodo, initTodoList };
 };
-const app = (() => {
-	const elApp = document.getElementById('app');
-	const elWrap = elApp.querySelector('#wrap');
-	const elHeader = elApp.querySelector('#header');
+const useAddTodo = (elApp, addTodo) => {
 	const elAddTodo = elApp.querySelector('#addTodo');
 	const elAddTodoInput = elAddTodo.querySelector('#addTodoInput');
-	const [ addTodo, deleteTodo, toggleTodo, renderTodoList ] = useTodoList(elApp);
 	let isOpenAddTodo = false;
 
 	const handleClickDoc = (e) => {
 		if (e.path.includes(elAddTodo) === false) {
 			closeAddTodo();
-		}
-	};
-	const handleScrollDoc = (e) => {
-		if (e.target.scrollTop !== 0) {
-			elHeader.classList.add('header--scroll');
-		} else {
-			elHeader.classList.remove('header--scroll');
-		}
-	};
-	const handleKeyDownAddTodoInput = (e) => {
-		if (e.keyCode === 13) {
-			onClickBtnAddTodo();
 		}
 	};
 	const openAddTodo = () => {
@@ -160,7 +151,7 @@ const app = (() => {
 		elAddTodoInput.value = '';
 		document.removeEventListener('click', handleClickDoc);
 	};
-	const onClickBtnAddTodo = () => {
+	const handleClickBtnAddTodo = () => {
 		if (isOpenAddTodo) {
 			if (elAddTodoInput.value === '') return;
 			addTodo(elAddTodoInput.value);
@@ -169,16 +160,45 @@ const app = (() => {
 			openAddTodo();
 		}
 	};
-	const render = () => {
-		renderTodoList();
-		openAddTodo();
+	const handleKeyDownAddTodoInput = (e) => {
+		if (e.keyCode === 13) {
+			handleClickBtnAddTodo();
+		}
+	};
+	const initAddTodo = () => openAddTodo();
+	return { initAddTodo, handleClickBtnAddTodo, handleKeyDownAddTodoInput };
+};
+const useHeader = (elApp) => {
+	const elWrap = elApp.querySelector('#wrap');
+	const elHeader = elApp.querySelector('#header');
+	const handleScrollDoc = (e) => {
+		if (e.target.scrollTop !== 0) {
+			elHeader.classList.add('header--scroll');
+		} else {
+			elHeader.classList.remove('header--scroll');
+		}
+	};
+	const initHeader = () => {
 		elWrap.addEventListener('scroll', handleScrollDoc);
+	};
+	return { initHeader };
+};
+const app = (() => {
+	const elApp = document.getElementById('app');
+	const { addTodo, deleteTodo, toggleTodo, initTodoList } = useTodoList(elApp);
+	const { initAddTodo, handleClickBtnAddTodo, handleKeyDownAddTodoInput } = useAddTodo(elApp, addTodo);
+	const { initHeader } = useHeader(elApp);
+
+	const render = () => {
+		initTodoList();
+		initAddTodo();
+		initHeader();
 	};
 	return {
 		render,
 		deleteTodo,
 		toggleTodo,
-		onClickBtnAddTodo,
+		handleClickBtnAddTodo,
 		handleKeyDownAddTodoInput
 	};
 })();
