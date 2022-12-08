@@ -175,6 +175,7 @@ body{
     border:none;
     box-sizing:border-box;
     border-radius:4px;
+    font-size:20px;
 }
 .add-todo__btn{
     position:relative;
