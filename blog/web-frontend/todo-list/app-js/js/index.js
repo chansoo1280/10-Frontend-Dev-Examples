@@ -131,15 +131,22 @@ const app = (() => {
 			elHeader.classList.remove('header--scroll');
 		}
 	};
+	const handleKeyDownAddTodoInput = (e) => {
+		if (e.keyCode === 13) {
+			onClickBtnAddTodo();
+		}
+	};
 	const openAddTodo = () => {
 		isOpenAddTodo = true;
 		elAddTodo.classList.add('add-todo--open');
+		elAddTodoInput.disabled = false;
 		elAddTodoInput.focus();
 		document.addEventListener('click', handleClickDoc);
 	};
 	const closeAddTodo = () => {
 		isOpenAddTodo = false;
 		elAddTodo.classList.remove('add-todo--open');
+		elAddTodoInput.disabled = true;
 		elAddTodoInput.value = '';
 		document.removeEventListener('click', handleClickDoc);
 	};
@@ -161,7 +168,8 @@ const app = (() => {
 		render,
 		deleteTodo,
 		toggleTodo,
-		onClickBtnAddTodo
+		onClickBtnAddTodo,
+		handleKeyDownAddTodoInput
 	};
 })();
 app.render();
