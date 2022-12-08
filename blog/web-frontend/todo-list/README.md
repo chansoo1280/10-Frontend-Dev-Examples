@@ -26,6 +26,7 @@
 기본적인 투두리스트 앱입니다.
 
 [디자인](https://www.figma.com/file/0qsQQPdqyKBbcIakw78I32/Todo-App?node-id=0%3A1&t=xgRcVvrWKijwrNLz-1)
+[완성예시(js)](https://chansoo1280.github.io/example/blog/web-frontend/todo-list/app-js/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
