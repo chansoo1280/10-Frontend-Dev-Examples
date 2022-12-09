@@ -92,13 +92,14 @@ body{
     position:relative;
 }
 .todo-item__title-label:after{
+    transition:width .3s ease;
     content:"";
     position:absolute;
     top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    display:none;
-    width:120%;
+    left:-10%;
+    transform:translate(0,-50%);
+    display:block;
+    width:0%;
     height:1px;
     background:#B81C1C;
 }
@@ -118,7 +119,7 @@ body{
     color:#B81C1C;
 }
 .todo-item--checked__title-label:after{
-    display:block;
+    width:120%;
 }
 .todo-item--checked__btn-delete{
     display:block;
@@ -130,7 +131,7 @@ body{
 /* no-todo */
 .no-todo{
     padding:40px 0 0;
-    display:none;
+    display:flex;
     flex-direction:column;
     align-items:center;
 }
@@ -140,9 +141,6 @@ body{
 }
 .no-todo__text{
     font-size:24px;
-}
-.no-todo--show{
-    display:flex;
 }
 
 /* add-todo */
