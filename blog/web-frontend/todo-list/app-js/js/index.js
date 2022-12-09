@@ -48,6 +48,7 @@ const useTodoList = (elApp) => {
 		const todoItem = todoList.find((todoItem) => todoItem.id === todoId);
 		todoItem.checked = !todoItem.checked;
 		setTodoList(todoList);
+		elApp.querySelector('#todo' + todoItem.id).focus();
 	};
 	const deleteTodoItem = (todoId) => {
 		window.event.stopPropagation();
@@ -86,14 +87,14 @@ const useTodoList = (elApp) => {
 						class="${getClassNames({
 							'todo-item': true,
 							'todo-item--checked': checked
-						})}" tabindex="0" role="checkbox" aria-checked="${checked}" aria-labelledby="todo${id}" onclick="app.toggleTodoItem(${id})">
+						})}" onclick="app.toggleTodoItem(${id})">
 						<div class="todo-item__check-box">
 							<div class="check-box">
-								<input type="checkbox" value="${checked}" 
+								<input type="checkbox" ${checked ? 'checked' : ''} id="todo${id}"
 									class="${getClassNames({
 										'check-box__input': true,
 										'check-box__input--checked': checked
-									})}" tabindex="-1">
+									})}">
 							</div>
 						</div>
 						<div class="todo-item__main">
@@ -119,7 +120,7 @@ const useTodoList = (elApp) => {
 								'todo-item__btn-delete': true,
 								'todo-item--checked__btn-delete': checked
 							})}" onclick="app.deleteTodoItem(${id})">
-							<img src="./images/icon_delete.svg" alt="항목 삭제">
+							<img src="./images/icon_delete.svg" alt="항목 삭제 - ${title}">
 						</button>
 					</li>`
 			)

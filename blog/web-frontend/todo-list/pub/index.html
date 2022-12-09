@@ -29,10 +29,10 @@
             </header> -->
             <main class="main">
                 <ul>
-                    <li class="todo-item" tabindex="0" role="checkbox" aria-checked="false" aria-labelledby="todo1">
+                    <li class="todo-item">
                         <div class="todo-item__check-box">
                             <div class="check-box">
-                                <input type="checkbox" class="check-box__input" tabindex="-1">
+                                <input id="todo1" type="checkbox" class="check-box__input">
                             </div>
                         </div>
                         <div class="todo-item__main">
@@ -44,13 +44,13 @@
                             <time datetime="YYYY-MM-DDTHH:mm:ss.sssZ+09:00" class="todo-item__time">PM 8:42 - 2022/11/12</time>
                         </div>
                         <button class="todo-item__btn-delete">
-                            <img src="./images/icon_delete.svg" alt="항목 삭제">
+                            <img src="./images/icon_delete.svg" alt="항목 삭제 - 운동하기">
                         </button>
                     </li>
-                    <li class="todo-item todo-item--checked" tabindex="0" role="checkbox" aria-checked="true" aria-labelledby="todo2">
+                    <li class="todo-item todo-item--checked">
                         <div class="todo-item__check-box">
                             <div class="check-box">
-                                <input type="checkbox" class="check-box__input check-box__input--checked" tabindex="-1">
+                                <input id="todo2" type="checkbox" class="check-box__input check-box__input--checked" checked>
                             </div>
                         </div>
                         <div class="todo-item__main">
@@ -62,7 +62,7 @@
                             <time datetime="YYYY-MM-DDTHH:mm:ss.sssZ+09:00" class="todo-item__time">PM 8:42 - 2022/11/12</time>
                         </div>
                         <button class="todo-item__btn-delete todo-item--checked__btn-delete">
-                            <img class="img-cover" src="./images/icon_delete.svg" alt="항목 삭제">
+                            <img class="img-cover" src="./images/icon_delete.svg" alt="항목 삭제 - 운동하기">
                         </button>
                     </li>
                 </ul>
@@ -74,7 +74,7 @@
             </main>
             <div class="add-todo">
                 <div class="add-todo__input">
-                    <input placeholder="Todo를 입력해주세요" type="text" id="addTodoInput" class="add-todo__text-input">
+                    <input placeholder="Todo를 입력해주세요" type="text" id="addTodoInput" class="add-todo__text-input" disabled>
                     <label class="add-todo__label ir" for="addTodoInput">Todo 입력</label>
                 </div>
                 <button type="button" class="add-todo__btn">
