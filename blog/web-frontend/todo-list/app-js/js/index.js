@@ -34,7 +34,7 @@ const useTodoList = (elApp) => {
 	};
 	let newIdTodo = todoList.length ? todoList[todoList.length - 1].id + 1 : 0;
 
-	const addTodo = (title) =>
+	const addTodoItem = (title) =>
 		setTodoList([
 			...todoList,
 			{
@@ -44,12 +44,12 @@ const useTodoList = (elApp) => {
 				created: new Date()
 			}
 		]);
-	const toggleTodo = (todoId) => {
+	const toggleTodoItem = (todoId) => {
 		const todoItem = todoList.find((todoItem) => todoItem.id === todoId);
 		todoItem.checked = !todoItem.checked;
 		setTodoList(todoList);
 	};
-	const deleteTodo = (todoId) => {
+	const deleteTodoItem = (todoId) => {
 		window.event.stopPropagation();
 		const idx = todoList.indexOf(todoList.find((todoItem) => todoItem.id === todoId));
 		if (idx > -1) todoList.splice(idx, 1);
@@ -86,7 +86,7 @@ const useTodoList = (elApp) => {
 						class="${getClassNames({
 							'todo-item': true,
 							'todo-item--checked': checked
-						})}" tabindex="0" role="checkbox" aria-checked="${checked}" aria-labelledby="todo${id}" onclick="app.toggleTodo(${id})">
+						})}" tabindex="0" role="checkbox" aria-checked="${checked}" aria-labelledby="todo${id}" onclick="app.toggleTodoItem(${id})">
 						<div class="todo-item__check-box">
 							<div class="check-box">
 								<input type="checkbox" value="${checked}" 
@@ -118,16 +118,16 @@ const useTodoList = (elApp) => {
 							class="${getClassNames({
 								'todo-item__btn-delete': true,
 								'todo-item--checked__btn-delete': checked
-							})}" onclick="app.deleteTodo(${id})">
+							})}" onclick="app.deleteTodoItem(${id})">
 							<img src="./images/icon_delete.svg" alt="항목 삭제">
 						</button>
 					</li>`
 			)
 			.join('');
 	};
-	return { initTodoList, addTodo, deleteTodo, toggleTodo };
+	return { initTodoList, addTodoItem, deleteTodoItem, toggleTodoItem };
 };
-const useAddTodo = (elApp, addTodo) => {
+const useAddTodo = (elApp, addTodoItem) => {
 	const elAddTodo = elApp.querySelector('#addTodo');
 	const elAddTodoInput = elAddTodo.querySelector('#addTodoInput');
 	let isOpenAddTodo = false;
@@ -154,7 +154,7 @@ const useAddTodo = (elApp, addTodo) => {
 	const handleClickBtnAddTodo = () => {
 		if (isOpenAddTodo) {
 			if (elAddTodoInput.value === '') return;
-			addTodo(elAddTodoInput.value);
+			addTodoItem(elAddTodoInput.value);
 			closeAddTodo();
 		} else {
 			openAddTodo();
@@ -185,8 +185,8 @@ const useHeader = (elApp) => {
 };
 const app = (() => {
 	const elApp = document.getElementById('app');
-	const { initTodoList, addTodo, deleteTodo, toggleTodo } = useTodoList(elApp);
-	const { initAddTodo, handleClickBtnAddTodo, handleKeyDownAddTodoInput } = useAddTodo(elApp, addTodo);
+	const { initTodoList, addTodoItem, deleteTodoItem, toggleTodoItem } = useTodoList(elApp);
+	const { initAddTodo, handleClickBtnAddTodo, handleKeyDownAddTodoInput } = useAddTodo(elApp, addTodoItem);
 	const { initHeader } = useHeader(elApp);
 
 	const render = () => {
@@ -196,8 +196,8 @@ const app = (() => {
 	};
 	return {
 		render,
-		deleteTodo,
-		toggleTodo,
+		deleteTodoItem,
+		toggleTodoItem,
 		handleClickBtnAddTodo,
 		handleKeyDownAddTodoInput
 	};
