@@ -11,7 +11,7 @@
     간단한 투두앱입니다.
     <br />
     <br />
-    <a href="https://github.com/chansoo1280/example">View Demo</a>
+    <a href="https://chansoo1280.github.io/example/blog/web-frontend/todo-list/app-js/">View Demo</a>
     ·
     <a href="https://github.com/chansoo1280/example/issues">Report Bug</a>
     ·
@@ -25,8 +25,10 @@
 
 기본적인 투두리스트 앱입니다.
 
-[디자인](https://www.figma.com/file/0qsQQPdqyKBbcIakw78I32/Todo-App?node-id=0%3A1&t=xgRcVvrWKijwrNLz-1)<br />
+[디자인](https://www.figma.com/file/0qsQQPdqyKBbcIakw78I32/Todo-App?node-id=0%3A1&t=xgRcVvrWKijwrNLz-1)
+
 [완성예시(js)](https://chansoo1280.github.io/example/blog/web-frontend/todo-list/app-js/)
+
 ### 블로그 
 [2022.12.08 - [프론트엔드 개발] - [프론트엔드 개발]1. 간단한 Todo 앱 - 기획&디자인](https://chansoo1280.tistory.com/59)
 
