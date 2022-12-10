@@ -3,6 +3,7 @@ import iconPlus from 'Assets/images/icon_plus.svg'
 import classnames from "classnames";
 import { TodoItem, TodoList } from "Components/TodoList";
 import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import style from './AddTodo.module.css';
 
 const AddTodo = ({todoList, setTodoList}:  {todoList: TodoList, setTodoList: React.Dispatch<React.SetStateAction<TodoList>>})=>{
     const [isOpenedAddTodo, setIsOpenedAddTodo] = useState(true)
@@ -58,15 +59,15 @@ const AddTodo = ({todoList, setTodoList}:  {todoList: TodoList, setTodoList: Rea
             document.removeEventListener('click', handleClickDoc);
         }
     }, [isOpenedAddTodo])
-    return <div className={classnames("add-todo", {
-        "add-todo--open": isOpenedAddTodo
+    return <div className={classnames(style["add-todo"], {
+        [style["add-todo--open"]]: isOpenedAddTodo
     })} ref={elAddTodo}>
-    <div className="add-todo__input">
-        <input placeholder="Todo를 입력해주세요" type="text" id="addTodoInput" value={textInput} className="add-todo__text-input" disabled={!isOpenedAddTodo} ref={elAddTodoInput} onChange={handleChangeAddTodoInput} onKeyDown={handleKeyDownAddTodoInput}/>
-        <label className="add-todo__label ir" htmlFor="addTodoInput">Todo 입력</label>
+    <div className={style["add-todo__input"]}>
+        <input placeholder="Todo를 입력해주세요" type="text" id="addTodoInput" value={textInput} className={style["add-todo__text-input"]} disabled={!isOpenedAddTodo} ref={elAddTodoInput} onChange={handleChangeAddTodoInput} onKeyDown={handleKeyDownAddTodoInput}/>
+        <label className={classnames(style["add-todo__label"], 'ir')} htmlFor="addTodoInput">Todo 입력</label>
     </div>
-    <button type="button" className="add-todo__btn" onClick={()=>{handleClickBtnAddTodo()}}>
-        <img src={iconPlus} alt="항목 추가하기" className="add-todo__btn-img img-cover" />
+    <button type="button" className={style["add-todo__btn"]} onClick={()=>{handleClickBtnAddTodo()}}>
+        <img src={iconPlus} alt="항목 추가하기" className={classnames(style["add-todo__btn-img"], 'img-cover')} />
     </button>
 </div>
 }

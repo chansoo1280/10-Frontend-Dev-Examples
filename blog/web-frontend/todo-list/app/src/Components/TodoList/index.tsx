@@ -1,7 +1,8 @@
-import iconList from 'Assets/images/icon_list.svg'
 import iconDelete from 'Assets/images/icon_delete.svg'
 import React, { useEffect } from 'react';
 import classnames from 'classnames'
+import style from './TodoList.module.css'
+import { NoTodo } from 'Components/NoTodo';
 
 export interface TodoItem {
     id: number,
@@ -47,46 +48,43 @@ const TodoList = (props: {
     return (
         <>
         {todoList.length === 0?
-        <div className="no-todo">
-            <img className="no-todo__img" src={iconList} alt="" />
-            <span className="no-todo__text">NO TODO</span>
-        </div>
+        <NoTodo/>
         :<ul>
             {todoList
                 .map(
                     ({ id, title, checked, created }) =>
                         <li
                             key={id}
-                            className={classnames('todo-item', {
-                                'todo-item--checked': checked
+                            className={classnames(style['todo-item'], {
+                                [style['todo-item--checked']]: checked
                             })} onClick={() => toggleTodoItem(id)}>
-                            <div className="todo-item__check-box">
-                                <div className="check-box">
+                            <div className={style["todo-item__check-box"]}>
+                                <div className={style["check-box"]}>
                                     <input type="checkbox" defaultChecked={checked} id={"todo"+id}
-                                        className={classnames('check-box__input', {
-                                            'check-box__input--checked': checked
+                                        className={classnames(style['check-box__input'], {
+                                            [style['check-box__input--checked']]: checked
                                         })} />
                                 </div>
                             </div>
-                            <div className="todo-item__main">
+                            <div className={style["todo-item__main"]}>
                                 <h2
-                                    className={classnames('todo-item__title', {
-                                        'todo-item--checked__title': checked
+                                    className={classnames(style['todo-item__title'], {
+                                        [style['todo-item--checked__title']]: checked
                                     })}>
                                     <label htmlFor={"todo"+id}
-                                        className={classnames('todo-item__title-label', {
-                                            'todo-item--checked__title-label': checked
+                                        className={classnames(style['todo-item__title-label'], {
+                                            [style['todo-item--checked__title-label']]: checked
                                         })}>
                                         {title}
                                     </label>
                                 </h2>
-                                <time dateTime={created.toISOString() + '+09:00'} className="todo-item__time">{created.format(
+                                <time dateTime={created.toISOString() + '+09:00'} className={style["todo-item__time"]}>{created.format(
                                     'ENa/p mh:m - yyyy/MM/dd'
                                 )}</time>
                             </div>
                             <button
-                                className={classnames('todo-item__btn-delete', {
-                                    'todo-item--checked__btn-delete': checked
+                                className={classnames(style['todo-item__btn-delete'], {
+                                    [style['todo-item--checked__btn-delete']]: checked
                                 })} onClick={() => deleteTodoItem(id)}>
                                 <img src={iconDelete} alt={"항목 삭제 - "+title} />
                             </button>
