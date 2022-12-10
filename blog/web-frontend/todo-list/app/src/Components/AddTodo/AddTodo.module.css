@@ -1,3 +1,13 @@
+.add-todo-layer{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%
+}
+.add-todo-layer--hide{
+    display:none;
+}
 .add-todo{
     transition:width .3s ease, padding .3s ease;
     overflow:hidden;
