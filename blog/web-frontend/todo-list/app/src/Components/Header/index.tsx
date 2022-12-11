@@ -5,7 +5,7 @@ import style from "./Header.module.css";
 
 const Header = ({ todoList, isScroll }: { todoList: TodoList; isScroll: boolean }) => {
     const lenTodoList = todoList.length;
-    const lenCheckedTodoList = todoList.filter((todoItem) => todoItem.checked === true).length;
+    const lenCheckedTodoList = todoList.filter((todoItem) => todoItem.isChecked === true).length;
     const textProgressBarContents =
         todoList.length === 0 ? "no tasks" : `${lenCheckedTodoList} of ${lenTodoList} tasks`;
     const progressBarWidth = todoList.length === 0 ? 0 + "%" : (100 * lenCheckedTodoList) / lenTodoList + "%";

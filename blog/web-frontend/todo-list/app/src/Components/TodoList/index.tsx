@@ -4,11 +4,12 @@ import classnames from "classnames";
 import style from "./TodoList.module.css";
 import { NoTodo } from "Components";
 import { dateFormat } from "Assets/ts/date_format";
+import CheckBox from "Components/CheckBox";
 
 export interface TodoItem {
     id: number;
     title: string;
-    checked: boolean;
+    isChecked: boolean;
     created: Date;
 }
 export type TodoList = TodoItem[];
@@ -25,13 +26,13 @@ const getLocalStorageTodoList = () => {
 const setLocalStorageTodoList = (list: TodoList) => localStorage.setItem("todoList", JSON.stringify(list));
 
 const TodoItem = ({ todoItem, stateTodoList }: { todoItem: TodoItem; stateTodoList: StateTodoList }) => {
-    const { id, title, checked, created } = todoItem;
+    const { id, title, isChecked, created } = todoItem;
     const { todoList, setTodoList } = stateTodoList;
     const toggleTodoItem = (todoId: TodoItem["id"]) =>
         setTodoList(
             todoList.map((todoItem) => ({
                 ...todoItem,
-                checked: todoItem.id === todoId ? !todoItem.checked : todoItem.checked,
+                isChecked: todoItem.id === todoId ? !todoItem.isChecked : todoItem.isChecked,
             })),
         );
     const deleteTodoItem = (todoId: TodoItem["id"]) => {
@@ -44,32 +45,23 @@ const TodoItem = ({ todoItem, stateTodoList }: { todoItem: TodoItem; stateTodoLi
     return (
         <li
             className={classnames(style["todo-item"], {
-                [style["todo-item--checked"]]: checked,
+                [style["todo-item--isChecked"]]: isChecked,
             })}
             onClick={() => toggleTodoItem(id)}
         >
             <div className={style["todo-item__check-box"]}>
-                <div className={style["check-box"]}>
-                    <input
-                        type="checkbox"
-                        defaultChecked={checked}
-                        id={`todo ${id}`}
-                        className={classnames(style["check-box__input"], {
-                            [style["check-box__input--checked"]]: checked,
-                        })}
-                    />
-                </div>
+                <CheckBox id={id} isChecked={isChecked} />
             </div>
             <div className={style["todo-item__main"]}>
                 <h2
                     className={classnames(style["todo-item__title"], {
-                        [style["todo-item--checked__title"]]: checked,
+                        [style["todo-item--checked__title"]]: isChecked,
                     })}
                 >
                     <label
                         htmlFor={`todo ${id}`}
                         className={classnames(style["todo-item__title-label"], {
-                            [style["todo-item--checked__title-label"]]: checked,
+                            [style["todo-item--checked__title-label"]]: isChecked,
                         })}
                     >
                         {title}
@@ -81,7 +73,7 @@ const TodoItem = ({ todoItem, stateTodoList }: { todoItem: TodoItem; stateTodoLi
             </div>
             <button
                 className={classnames(style["todo-item__btn-delete"], {
-                    [style["todo-item--checked__btn-delete"]]: checked,
+                    [style["todo-item--checked__btn-delete"]]: isChecked,
                 })}
                 onClick={() => deleteTodoItem(id)}
             >

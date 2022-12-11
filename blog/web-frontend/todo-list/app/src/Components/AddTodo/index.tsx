@@ -18,7 +18,7 @@ const AddTodo = ({ stateTodoList }: { stateTodoList: StateTodoList }) => {
             {
                 id: newIdTodo++,
                 title: title,
-                checked: false,
+                isChecked: false,
                 created: new Date(),
             },
         ]);
@@ -47,7 +47,7 @@ const AddTodo = ({ stateTodoList }: { stateTodoList: StateTodoList }) => {
         setTextInput(e.target.value);
     };
     const handleKeyDownAddTodoInput = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.keyCode === 13) {
+        if (e.key === "Enter") {
             handleClickBtnAddTodo();
         }
     };
