@@ -84,7 +84,7 @@ Here's why:
 <!-- ROADMAP -->
 ## Roadmap
 
-- [] 새로운 프로젝트 구상중...
+- [ ] 새로운 프로젝트 구상중...
 
 [open issues](https://github.com/chansoo1280/example/issues)에서 다양한 사이트를 추천해주세요!
 
