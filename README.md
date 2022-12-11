@@ -73,9 +73,9 @@ Here's why:
 예시 프로젝트의 디자인을 먼저 보면서 실제로 구현해보고 막힐 때 저의 코드를 참고해서 봐주시면됩니다.
 
 ### 블로그글
-* [[프론트엔드 개발]1. 간단한 Todo 앱 - 기획&디자인](https://chansoo1280.tistory.com/59)
-* [React Native Webview - postMassage 기능 사용 및 개선](https://chansoo1280.tistory.com/56)
-* [React Native - Expo File System(SAF) 사용하여 파일 관리하기](https://chansoo1280.tistory.com/58)
+* [[프론트엔드 개발]1. 간단한 Todo 앱 - 기획&디자인](https://chansoo1280.tistory.com/59) - https://github.com/chansoo1280/example/tree/master/blog/web-frontend/todo-list
+* [React Native Webview - postMassage 기능 사용 및 개선](https://chansoo1280.tistory.com/56) - https://github.com/chansoo1280/example/tree/master/blog/app/webview
+* [React Native - Expo File System(SAF) 사용하여 파일 관리하기](https://chansoo1280.tistory.com/58) - https://github.com/chansoo1280/example/tree/master/blog/app/saf
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
