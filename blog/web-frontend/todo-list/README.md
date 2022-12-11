@@ -30,13 +30,14 @@
 [완성예시(js)](https://chansoo1280.github.io/example/blog/web-frontend/todo-list/app-js/)
 
 ### 블로그 
-[2022.12.08 - [프론트엔드 개발] - [프론트엔드 개발]1. 간단한 Todo 앱 - 기획&디자인](https://chansoo1280.tistory.com/59)
 
-[2022.12.08 - [프론트엔드 개발] - [프론트엔드 개발]2. 간단한 Todo 앱 - 퍼블리싱](https://chansoo1280.tistory.com/60)
+[2022.12.08 - [웹사이트 따라만들기] - [간단한 Todo App]1. 기획&디자인](https://chansoo1280.tistory.com/59)
 
-[2022.12.09 - [프론트엔드 개발] - [프론트엔드 개발]3. 간단한 Todo 앱 - JS](https://chansoo1280.tistory.com/61)
+[2022.12.08 - [웹사이트 따라만들기] - [간단한 Todo App]2. 퍼블리싱](https://chansoo1280.tistory.com/60)
 
-[2022.12.11 - [프론트엔드 개발] - [프론트엔드 개발]4. 간단한 Todo 앱 - React.js(Typescript)](https://chansoo1280.tistory.com/62)
+[2022.12.09 - [웹사이트 따라만들기] - [간단한 Todo App]3. Javascript](https://chansoo1280.tistory.com/61)
+
+[2022.12.11 - [웹사이트 따라만들기] - [간단한 Todo App]4. React.js(Typescript)](https://chansoo1280.tistory.com/62)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
