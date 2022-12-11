@@ -4,94 +4,33 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List</title>
+    <title>Login</title>
     <link rel="stylesheet" href="./styles/fonts.css">
     <link rel="stylesheet" href="./styles/reset.css">
     <link rel="stylesheet" href="./styles/style.css">
 </head>
 <body>
-    <div class="l_app">
-        <div class="l_wrap">
-            <header class="header">
-                <h1 class="header__title">My Todo List</h1>
-                <span class="header__text-progress">1 of 5 tasks</span>
-                <div class="header__progress-bar">
-                    <div class="header__progress-bar-inner"></div>
+    <div class="l_wrap">
+        <main>
+            <form class="login" action="/api/login" accept-charset="UTF-8" method="post">
+                <h1 class="login__title">Sign in</h1>
+                <div class="login__input">
+                    <h2><label for="email" class="login__label">Username or email address</label></h2>
+                    <div class="input-box">
+                        <input autofocus type="email" name="email" id="email" class="input-box__input">
+                    </div>
                 </div>
-            </header>
-            <!-- 스크롤 시
-            <header class="header header--scroll">
-                <h1 class="header__title">My Todo List</h1>
-                <span class="header__text-progress">1 of 5 tasks</span>
-                <div class="header__progress-bar">
-                    <div class="header__progress-bar-inner"></div>
+                <div class="login__input">
+                    <h2><label for="password" class="login__label">Password</label></h2>
+                    <div class="input-box">
+                        <input type="password" name="password" id="password" class="input-box__input">
+                    </div>
+                    <a href="#a" class="login__link login__link--right">비밀번호를 잊어버리셨나요?</a>
                 </div>
-            </header> -->
-            <main class="main">
-                <ul>
-                    <li class="todo-item">
-                        <div class="todo-item__check-box">
-                            <div class="check-box">
-                                <input id="todo1" type="checkbox" class="check-box__input">
-                            </div>
-                        </div>
-                        <div class="todo-item__main">
-                            <h2 class="todo-item__title">
-                                <label for="todo1" class="todo-item__title-label">
-                                    운동하기
-                                </label>
-                            </h2>
-                            <time datetime="YYYY-MM-DDTHH:mm:ss.sssZ+09:00" class="todo-item__time">PM 8:42 - 2022/11/12</time>
-                        </div>
-                        <button class="todo-item__btn-delete">
-                            <img src="./images/icon_delete.svg" alt="항목 삭제 - 운동하기">
-                        </button>
-                    </li>
-                    <li class="todo-item todo-item--checked">
-                        <div class="todo-item__check-box">
-                            <div class="check-box">
-                                <input id="todo2" type="checkbox" class="check-box__input check-box__input--checked" checked>
-                            </div>
-                        </div>
-                        <div class="todo-item__main">
-                            <h2 class="todo-item__title todo-item--checked__title">
-                                <label for="todo2" class="todo-item__title-label todo-item--checked__title-label">
-                                    운동하기
-                                </label>
-                            </h2>
-                            <time datetime="YYYY-MM-DDTHH:mm:ss.sssZ+09:00" class="todo-item__time">PM 8:42 - 2022/11/12</time>
-                        </div>
-                        <button class="todo-item__btn-delete todo-item--checked__btn-delete">
-                            <img class="img-cover" src="./images/icon_delete.svg" alt="항목 삭제 - 운동하기">
-                        </button>
-                    </li>
-                </ul>
-                <!-- 리스트 없을 시
-                <div class="no-todo">
-                    <img class="no-todo__img" src="./images/icon_list.svg" alt="">
-                    <span class="no-todo__text">NO TODO</span>
-                </div> -->
-            </main>
-            <div class="add-todo">
-                <div class="add-todo__input">
-                    <input placeholder="Todo를 입력해주세요" type="text" id="addTodoInput" class="add-todo__text-input" disabled>
-                    <label class="add-todo__label ir" for="addTodoInput">Todo 입력</label>
-                </div>
-                <button type="button" class="add-todo__btn">
-                    <img src="./images/icon_plus.svg" alt="항목 추가하기" class="add-todo__btn-img img-cover">
-                </button>
+                <button type="submit" class="login__btn-login">Sign in</button>
+                <a href="#a" class="login__link">create an account</a>
             </div>
-            <!-- 입력창 오픈 시
-            <div class="add-todo add-todo--open">
-                <div class="add-todo__input">
-                    <input placeholder="Todo를 입력해주세요" type="text" id="addTodoInput" class="add-todo__text-input">
-                    <label class="add-todo__label ir" for="addTodoInput">Todo 입력</label>
-                </div>
-                <button type="button" class="add-todo__btn">
-                    <img src="./images/icon_plus.svg" alt="항목 추가하기" class="add-todo__btn-img img-cover">
-                </button>
-            </div> -->
-        </div>
+        </main>
     </div>
 </body>
 </html>
