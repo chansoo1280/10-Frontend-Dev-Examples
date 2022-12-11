@@ -16,7 +16,7 @@ export type StateTodoList = { todoList: TodoList; setTodoList: React.Dispatch<Re
 
 const getLocalStorageTodoList = () => {
     const parsedList = JSON.parse(localStorage.getItem("todoList") || "[]");
-    if (typeof parsedList.length !== "number") return [];
+    if (Array.isArray(parsedList) === false) return [];
     return parsedList.map((todoItem: TodoItem) => ({
         ...todoItem,
         created: new Date(todoItem.created),
@@ -27,14 +27,13 @@ const setLocalStorageTodoList = (list: TodoList) => localStorage.setItem("todoLi
 const TodoItem = ({ todoItem, stateTodoList }: { todoItem: TodoItem; stateTodoList: StateTodoList }) => {
     const { id, title, checked, created } = todoItem;
     const { todoList, setTodoList } = stateTodoList;
-    const toggleTodoItem = (todoId: TodoItem["id"]) => {
+    const toggleTodoItem = (todoId: TodoItem["id"]) =>
         setTodoList(
             todoList.map((todoItem) => ({
                 ...todoItem,
                 checked: todoItem.id === todoId ? !todoItem.checked : todoItem.checked,
             })),
         );
-    };
     const deleteTodoItem = (todoId: TodoItem["id"]) => {
         window.event?.stopPropagation();
         const todoItem = todoList.find((todoItem) => todoItem.id === todoId);
@@ -94,18 +93,14 @@ const TodoItem = ({ todoItem, stateTodoList }: { todoItem: TodoItem; stateTodoLi
 
 const TodoList = ({ stateTodoList }: { stateTodoList: StateTodoList }) => {
     const { todoList } = stateTodoList;
-    return (
-        <>
-            {todoList.length === 0 ? (
-                <NoTodo />
-            ) : (
-                <ul>
-                    {todoList.map((todoItem) => (
-                        <TodoItem key={todoItem.id} todoItem={todoItem} stateTodoList={stateTodoList} />
-                    ))}
-                </ul>
-            )}
-        </>
+    return todoList.length === 0 ? (
+        <NoTodo />
+    ) : (
+        <ul>
+            {todoList.map((todoItem) => (
+                <TodoItem key={todoItem.id} todoItem={todoItem} stateTodoList={stateTodoList} />
+            ))}
+        </ul>
     );
 };
 
