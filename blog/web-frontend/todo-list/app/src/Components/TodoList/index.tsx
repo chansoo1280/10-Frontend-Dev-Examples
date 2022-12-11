@@ -53,7 +53,7 @@ const TodoItem = ({ todoItem, stateTodoList }: { todoItem: TodoItem; stateTodoLi
                     <input
                         type="checkbox"
                         defaultChecked={checked}
-                        id={"todo" + id}
+                        id={`todo ${id}`}
                         className={classnames(style["check-box__input"], {
                             [style["check-box__input--checked"]]: checked,
                         })}
@@ -67,7 +67,7 @@ const TodoItem = ({ todoItem, stateTodoList }: { todoItem: TodoItem; stateTodoLi
                     })}
                 >
                     <label
-                        htmlFor={"todo" + id}
+                        htmlFor={`todo ${id}`}
                         className={classnames(style["todo-item__title-label"], {
                             [style["todo-item--checked__title-label"]]: checked,
                         })}
