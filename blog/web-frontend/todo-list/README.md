@@ -36,6 +36,8 @@
 
 [2022.12.09 - [프론트엔드 개발] - [프론트엔드 개발]3. 간단한 Todo 앱 - JS](https://chansoo1280.tistory.com/61)
 
+[2022.12.11 - [프론트엔드 개발] - [프론트엔드 개발]4. 간단한 Todo 앱 - React.js(Typescript)](https://chansoo1280.tistory.com/62)
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
@@ -43,7 +45,7 @@
 
 * 디자인 : [figma](https://www.figma.com)
 * 퍼블리싱 : HTML5, CSS3
-* 프론트엔드 개발 : JS, React.js
+* 프론트엔드 개발 : JS, React.js(Typescript)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -54,7 +56,7 @@
 - [x] Todo List 프로젝트 디자인
 - [x] Todo List 프로젝트 퍼블리싱
 - [x] Todo List 프로젝트 JS
-- [ ] Todo List 프로젝트 React.js
+- [x] Todo List 프로젝트 React.js(Typescript)
 
 [open issues](https://github.com/chansoo1280/example/issues)에서 다양한 사이트를 추천해주세요!
 
