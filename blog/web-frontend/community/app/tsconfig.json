@@ -35,9 +35,9 @@
         "@Utils": ["src/Utils"],
         "@Utils/*": ["src/Utils/*"],
         "@Static/*": ["public/static/*"],
-        "@Test/*": ["test/*"]
+        "@Test/*": ["src/Test/*"]
       }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.js", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
