@@ -1,0 +1,15 @@
+{
+    "workbench.startupEditor": "none",
+    "editor.formatOnSave": true,
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "editor.wordWrap": "on",
+    "[javascript]": {
+        "editor.defaultFormatter": "remimarsal.prettier-now"
+    },
+    "window.zoomLevel": 1,
+}
