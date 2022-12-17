@@ -35,9 +35,10 @@
         "@Utils": ["src/Utils"],
         "@Utils/*": ["src/Utils/*"],
         "@Static/*": ["public/static/*"],
+        "@Assets/*": ["src/Assets/*"],
         "@Test/*": ["src/Test/*"]
       }
   },
   "include": ["next-env.d.ts", "**/*.js", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", ".history"]
 }
