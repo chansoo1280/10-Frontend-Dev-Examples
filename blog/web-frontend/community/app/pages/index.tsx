@@ -3,23 +3,6 @@ import Head from "next/head"
 import { useState } from "react"
 
 export default function Home() {
-    const [loadings, setLoadings] = useState<boolean[]>([])
-
-    const enterLoading = (index: number) => {
-        setLoadings((prevLoadings: boolean[]) => {
-            const newLoadings = [...prevLoadings]
-            newLoadings[index] = true
-            return newLoadings
-        })
-
-        setTimeout(() => {
-            setLoadings((prevLoadings: boolean[]) => {
-                const newLoadings = [...prevLoadings]
-                newLoadings[index] = false
-                return newLoadings
-            })
-        }, 6000)
-    }
     return (
         <>
             <Head>
@@ -28,11 +11,7 @@ export default function Home() {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <div>
-                <Button loading={loadings[0]} onClick={() => enterLoading(0)}>
-                    클릭
-                </Button>
-            </div>
+            <div></div>
         </>
     )
 }

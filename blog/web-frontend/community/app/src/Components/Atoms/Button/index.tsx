@@ -1,25 +1,18 @@
 // #region Global Imports
-import React from "react"
+import React, { useEffect, useState } from "react"
 import Link from "next/link"
 import classNames from "classnames"
 import { UrlObject } from "url"
 // #endregion Global Imports
 
 // #region Local Imports
-import styles from "./Button.module.css"
-import { Icon } from "@Components"
+import styles from "./Button.module.scss"
+import { defaultProps, Icon } from "@Components"
 // #endregion Local Imports
 
 type ButtonType = "primary" | "secondary" | "dashed" | "link" | "text"
 type ButtonShape = "circle" | "round"
 type ButtonHTMLType = "submit" | "button" | "reset"
-interface defaultProps {
-    children?: React.ReactNode
-    id?: string
-    className?: string
-    disabled?: boolean
-    show?: boolean
-}
 
 interface BaseButtonProps extends defaultProps {
     icon?: React.ReactNode
@@ -48,23 +41,47 @@ type ButtonProps = Partial<AnchorButtonProps & NativeButtonProps>
 const useLoading = ({ loading = false }: Pick<ButtonProps, "loading">) => {
     const [innerLoading, setLoading] = React.useState(loading)
     React.useEffect(() => {
-        let delayTimer: number | null = null
         setLoading(loading)
-        return () => {
-            if (delayTimer) {
-                window.clearTimeout(delayTimer)
-                delayTimer = null
-            }
-        }
     }, [loading])
     return { innerLoading }
+}
+const useClickAnimation = () => {
+    const [isClick, setIsClick] = useState<boolean | "pending">(false)
+    const DELAY = 400
+    const execClickAnimation = () => {
+        if (isClick === true) {
+            setIsClick("pending")
+        } else {
+            setIsClick(true)
+        }
+    }
+    useEffect(() => {
+        let timer: NodeJS.Timeout | null = null
+        if (isClick === "pending") {
+            setIsClick(true)
+        } else if (isClick === true) {
+            setIsClick(true)
+            timer = setTimeout(() => {
+                setIsClick(false)
+            }, DELAY)
+        }
+        return () => {
+            if (timer) {
+                window.clearTimeout(timer)
+                timer = null
+            }
+        }
+    }, [isClick])
+    return { isClick, execClickAnimation }
 }
 const Button = (props: ButtonProps): JSX.Element => {
     const { href, icon, loading, show, htmlType = "button", size, type = "primary", shape, className, children, danger, desc, ...rest } = props
     const { innerLoading } = useLoading({ loading })
+    const { isClick, execClickAnimation } = useClickAnimation()
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement, MouseEvent>) => {
         const { onClick, disabled } = props
+        execClickAnimation()
         if (innerLoading || disabled) {
             e.preventDefault()
             return
@@ -90,7 +107,7 @@ const Button = (props: ButtonProps): JSX.Element => {
         },
         className,
     )
-    const iconNode = !innerLoading ? icon : <Icon iconName="loading" />
+    const iconNode = !innerLoading ? icon : <Icon iconName="xi-spinner-3" />
     return (
         <>
             {href !== undefined ? (
@@ -99,7 +116,7 @@ const Button = (props: ButtonProps): JSX.Element => {
                     {children}
                 </Link>
             ) : (
-                <button {...(rest as NativeButtonProps)} onClick={handleClick} type={htmlType} className={classes}>
+                <button {...(rest as NativeButtonProps)} onClick={handleClick} type={htmlType} className={classes} data-click-animating={isClick === true}>
                     {iconNode}
                     {children}
                 </button>

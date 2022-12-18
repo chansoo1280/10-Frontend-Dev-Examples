@@ -3,7 +3,175 @@
 exports[`Button renders button unchanged 1`] = `
 <div>
   <button
+    class="btn btn--primary btn--loading"
+    data-click-animating="false"
+    type="button"
+  >
+    <i
+      class="className xi-icon xi-spinner-3"
+    />
+    클릭
+  </button>
+  <button
+    class="btn btn--secondary"
+    data-click-animating="false"
+    type="button"
+  >
+    클릭
+  </button>
+  <button
+    class="btn btn--dashed"
+    data-click-animating="false"
+    type="button"
+  >
+    클릭
+  </button>
+  <button
+    class="btn btn--link"
+    data-click-animating="false"
+    type="button"
+  >
+    클릭
+  </button>
+  <button
+    class="btn btn--text"
+    data-click-animating="false"
+    type="button"
+  >
+    클릭
+  </button>
+  <button
     class="btn btn--primary"
+    data-click-animating="false"
+    disabled=""
+    type="button"
+  >
+    클릭
+  </button>
+  <button
+    class="btn btn--secondary"
+    data-click-animating="false"
+    disabled=""
+    type="button"
+  >
+    클릭
+  </button>
+  <button
+    class="btn btn--dashed"
+    data-click-animating="false"
+    disabled=""
+    type="button"
+  >
+    클릭
+  </button>
+  <button
+    class="btn btn--link"
+    data-click-animating="false"
+    disabled=""
+    type="button"
+  >
+    클릭
+  </button>
+  <button
+    class="btn btn--text"
+    data-click-animating="false"
+    disabled=""
+    type="button"
+  >
+    클릭
+  </button>
+  <button
+    class="btn btn--large btn--primary"
+    data-click-animating="false"
+    type="button"
+  >
+    클릭
+  </button>
+  <button
+    class="btn btn--medium btn--primary"
+    data-click-animating="false"
+    type="button"
+  >
+    클릭
+  </button>
+  <button
+    class="btn btn--small btn--primary"
+    data-click-animating="false"
+    type="button"
+  >
+    클릭
+  </button>
+  <button
+    class="btn btn--primary btn--danger"
+    data-click-animating="false"
+    type="button"
+  >
+    클릭
+  </button>
+  <button
+    class="btn btn--secondary btn--danger"
+    data-click-animating="false"
+    type="button"
+  >
+    클릭
+  </button>
+  <button
+    class="btn btn--dashed btn--danger"
+    data-click-animating="false"
+    type="button"
+  >
+    클릭
+  </button>
+  <button
+    class="btn btn--link btn--danger"
+    data-click-animating="false"
+    type="button"
+  >
+    클릭
+  </button>
+  <button
+    class="btn btn--text btn--danger"
+    data-click-animating="false"
+    type="button"
+  >
+    클릭
+  </button>
+  <button
+    class="btn btn--primary btn--danger"
+    data-click-animating="false"
+    disabled=""
+    type="button"
+  >
+    클릭
+  </button>
+  <button
+    class="btn btn--secondary btn--danger"
+    data-click-animating="false"
+    disabled=""
+    type="button"
+  >
+    클릭
+  </button>
+  <button
+    class="btn btn--dashed btn--danger"
+    data-click-animating="false"
+    disabled=""
+    type="button"
+  >
+    클릭
+  </button>
+  <button
+    class="btn btn--link btn--danger"
+    data-click-animating="false"
+    disabled=""
+    type="button"
+  >
+    클릭
+  </button>
+  <button
+    class="btn btn--text btn--danger"
+    data-click-animating="false"
+    disabled=""
     type="button"
   >
     클릭

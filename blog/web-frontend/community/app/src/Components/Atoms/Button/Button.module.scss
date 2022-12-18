@@ -1,0 +1,303 @@
+
+$btn:"btn";
+$primary-5:#40A9FF;
+$primary-6:#1890FF;
+$primary-7:#096dd9;
+$danger-5:#FF4D4F;
+$danger-4:#FF7875;
+$white:#FFFFFF;
+$black:#000000;
+$gray-2:#FAFAFA;
+$gray-3:#F5F5F5;
+$gray-5:#D9D9D9;
+
+@mixin set-color($color, $bg-color, $border-color) {
+    @if $color != "" {
+        color: $color;
+    }
+    @if $bg-color != "" {
+        background-color: $bg-color;
+    }
+    @if $border-color != "" {
+        border-color: $border-color;
+    }
+}
+@keyframes ani-btn-click {
+    0% {
+       border-width:0px;
+    }
+    100%{
+        border-width:4px;
+    }
+  }
+  @keyframes ani-btn-click-opacity {
+    10% {
+       opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+  }
+.#{$btn} {
+    position:relative;
+    cursor: pointer;
+    padding: 4px 15px;
+    border: 1px solid $primary-6;
+    border-radius: 2px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap:10px;
+    background: $primary-6;
+    font-size:14px;
+    line-height:22px;
+    color:$white;
+    box-shadow:0 2px 0 rgba($black, 0.043);
+    transition:background-color .2s ease, border-color .2s ease, color .2s ease;
+    &:after{
+        z-index:1;
+        pointer-events:none;
+        content:"";
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        width:100%;
+        height:100%;
+        border:0 solid;
+        border-radius:5px;
+        @include set-color("", "", rgba($primary-5, .1));
+    }
+    &[data-click-animating=true]:after{
+        animation:ani-btn-click .4s cubic-bezier(.08,.82,.17,1), ani-btn-click-opacity 2s cubic-bezier(.08,.82,.17,1);
+    }
+    &:focus {
+        outline: none;
+    }
+    &:hover {
+        @include set-color($white, $primary-5, $primary-5);
+    }
+    &:active {
+        @include set-color($white, $primary-7, $primary-7 );
+        
+    }
+    &[disabled] {
+        cursor: not-allowed;
+        @include set-color(rgba($black, 0.25), $gray-3, $gray-5 );
+    } 
+    &--secondary {
+        @include set-color(rgba($black, 0.85), $white, $gray-5);
+        &:hover {
+            @include set-color($primary-5, $white, $primary-5);
+        }
+        &[disabled] {
+            @include set-color(rgba($black, 0.25), $gray-3, $gray-5 );
+        }
+    }
+    &--dashed {
+        @include set-color(rgba($black, 0.85), $white, $gray-5);
+        border-style:dashed;
+        &:hover {
+            @include set-color($primary-6, $white, $primary-6);
+        }
+        &[disabled] {
+            @include set-color(rgba($black, 0.25), $gray-3, $gray-5 );
+        }
+    }
+    &--link {
+        @include set-color($primary-6, transparent, transparent);
+        box-shadow: none;
+        &:hover {
+            @include set-color($primary-6, transparent, transparent);
+        }
+        &[data-click-animating=true]:after{
+            animation:none;
+        }
+        &[disabled] {
+            @include set-color(rgba($black, 0.25), transparent, transparent );
+        }
+    }
+    &--text {
+        @include set-color(rgba($black, 0.85), transparent, transparent);
+        box-shadow: none;
+        &:hover {
+            @include set-color(rgba($black, 0.85), $gray-2, transparent);
+        }
+        &[data-click-animating=true]:after{
+            animation:none;
+        }
+        &[disabled] {
+            @include set-color(rgba($black, 0.25), transparent, transparent );
+        }
+    }
+
+
+    &--danger {
+        @include set-color($white, $danger-5, $danger-5 );
+        &:hover {
+            @include set-color($white, $danger-4, $danger-5);
+        }
+        &:after{
+            @include set-color("", "", rgba($danger-5, 0.1));
+        }
+        &[disabled] {
+            @include set-color(rgba($black, 0.25), $gray-3, $gray-5 );
+        }
+        &.#{$btn}--secondary {
+            @include set-color($danger-5, $white, $danger-5);
+            &:hover {
+                @include set-color($danger-4, $white, $danger-4);
+            }
+            &[disabled] {
+                @include set-color(rgba($black, 0.25), $gray-3, $gray-5 );
+            }
+        }
+        &.#{$btn}--dashed {
+            @include set-color($danger-5, $white, $danger-5);
+            &:hover {
+                @include set-color($danger-4, $white, $danger-4);
+            }
+            &[disabled] {
+                @include set-color(rgba($black, 0.25), $gray-3, $gray-5 );
+            }
+        }
+        &.#{$btn}--link {
+            @include set-color($danger-5, transparent, transparent);
+            &:hover {
+                @include set-color($danger-4, transparent, transparent);
+            }
+            &[disabled] {
+                @include set-color(rgba($black, 0.25), transparent, transparent );
+            }
+        }
+        &.#{$btn}--text {
+            @include set-color($danger-5, transparent, transparent);
+            &:hover {
+                @include set-color($danger-4, $gray-2, transparent);
+            }
+            &[disabled] {
+                @include set-color(rgba($black, 0.25), transparent, transparent );
+            }
+        }
+    }
+    
+    &--round{
+        border-radius: 2px;
+    }
+    &--circle {
+        border-radius: 50%;
+    }
+    &--large{
+        padding:6.4px 15px;
+    }
+    &--small{
+        padding:0px 7px;
+    }
+    &--hide {
+        display: none;
+    }
+}
+/* .btn {
+    padding: 0 10px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 180px;
+    min-height: 36px;
+    border: 1px solid $white;
+    border-radius: $border-radius-base;
+    background: $primary-6;
+    color: $primary-6;
+    box-shadow: $box-shadow-sm;
+    &:focus {
+        outline: none;
+    }
+    &--danger {
+        border-color: $error-color;
+        color: $error-color;
+    }
+    &[disabled] {
+        border-color: $normal-color;
+        color: $normal-color;
+    }
+    &--hide {
+        display: none;
+    }
+    &--icon-only {
+        padding: 0;
+        min-width: auto;
+        width: 36px;
+        height: 36px;
+        border: none;
+        background: transparent;
+        font-size: 24px;
+        &.#{#theme-name}-#{#btn-prefix-cls}--lg {
+            min-width: 48px;
+        }
+        &.#{#theme-name}-#{#btn-prefix-cls}--default {
+            background:#fbfbfb;;
+            border: 1px solid #d0d9e4;
+            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+        }
+    }
+    
+    &--flex {
+        min-width: unset;
+        flex: 1;
+    }
+    &--block {
+        margin: 0 auto 10px;
+        display: block;
+        width: 100%;
+        max-width: 420px;
+    }
+    &--fixed {
+        position: fixed;
+        bottom: 40px;
+        right: 20px;
+    }
+    &--primary {
+        background: $primary-6;
+        border-color: $primary-6;
+        color: $white;
+        &.#{#theme-name}-#{#btn-prefix-cls}--danger {
+            background: $error-color;
+            border-color: $error-color;
+            color: $white;
+        }
+        &[disabled] {
+            background: $normal-color;
+            border-color: $normal-color;
+            color: $white;
+        }
+    }
+    &--text {
+        background: transparent;
+        border: none;
+        min-width: unset;
+        padding: 0;
+        box-shadow: none;
+    }
+    &--link {
+        background: transparent;
+        text-decoration: underline;
+        border: none;
+        min-width: unset;
+        padding: 0;
+        box-shadow: none;
+    }
+    &--round{
+        border-radius: $border-radius-base;
+    }
+    &--circle {
+        border-radius: 50%;
+    }
+    &--lg {
+        min-height: 48px;
+        font-size: 30px;
+    }
+    &__desc{
+        word-break:keep-all;
+        font-size:14px;
+    }
+} */
