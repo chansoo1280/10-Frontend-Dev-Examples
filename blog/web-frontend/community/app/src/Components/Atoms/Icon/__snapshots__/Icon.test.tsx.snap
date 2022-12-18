@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Icon renders icon unchanged 1`] = `
+<div>
+  <i
+    class="className xi-icon xi-search"
+  />
+</div>
+`;

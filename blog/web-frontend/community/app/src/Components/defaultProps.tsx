@@ -4,4 +4,5 @@ export interface defaultProps {
     className?: string
     disabled?: boolean
     show?: boolean
+    "data-testid"?: string
 }
