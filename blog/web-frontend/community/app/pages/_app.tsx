@@ -4,7 +4,7 @@ import { Roboto } from "@next/font/google"
 // #endregion Global Imports
 
 // #region Local Imports
-import "/styles/reset.css"
+import "@Styles/reset.css"
 import "@Utils/DateFormat"
 // #endregion Local Imports
 

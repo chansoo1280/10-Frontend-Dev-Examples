@@ -1,0 +1,56 @@
+@import "@Styles/scss/default.scss";
+$input:"input";
+.input{
+    position:relative;
+    display:flex;
+    height:32px;
+    font-size:14px;
+    
+    @include click-animating();
+    &--large{
+        &__input{
+            padding:12px 8px;
+        }
+        height:40px;
+        font-size:16px;
+    }
+    &--small{
+        &__input{
+            padding:1px 8px;
+        }
+        height:24px;
+        font-size:14px;
+    }
+    &:hover{
+        .#{$input}__input{
+            @include set-color(rgba($black, .85), transparent,$primary-5);
+        }
+    }
+    &__input{
+        padding:5px 12px;
+        width:100%;
+        height:100%;
+        box-sizing:border-box;
+        border:1px solid;
+        border-radius:$border-radius;
+        outline:none;
+        font-size:inherit;
+        &::placeholder{
+            color:rgba($black, .25);
+        }
+        transition:background-color .2s ease, border-color .2s ease, color .2s ease;
+        @include set-color(rgba($black, .85), $white, $gray-5); 
+        &:hover, &:focus{
+            @include set-color(rgba($black, .85), transparent,$primary-5);
+        }
+        &:disabled{
+            @include disabled-color();
+        }
+        &:hover, &:focus{
+            &:disabled{
+                @include disabled-color();
+            }
+        }
+        
+    }
+}

@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Space renders space unchanged 1`] = `
+<div>
+  <div
+    class="space"
+  >
+    <div>
+      1
+    </div>
+    <div>
+      2
+    </div>
+    <div
+      class="space__box"
+    >
+      3
+    </div>
+  </div>
+</div>
+`;

@@ -18,6 +18,8 @@ const customJestConfig = {
   moduleNameMapper: {
     "^@Components/(.*)": "<rootDir>/src/Components/$1",
     "^@Components": "<rootDir>/src/Components",
+    "^@Hooks/(.*)": "<rootDir>/src/Hooks/$1",
+    "^@Hooks": "<rootDir>/src/Hooks",
   },
   setupFilesAfterEnv: [
     "<rootDir>/src/Test/jest-setup.ts"

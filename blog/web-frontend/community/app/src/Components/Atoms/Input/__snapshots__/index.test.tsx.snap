@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Input renders input unchanged 1`] = `
+<div>
+  <div
+    class="input"
+    data-click-animating="false"
+  >
+    <input
+      class="input__input"
+      value=""
+    />
+  </div>
+</div>
+`;

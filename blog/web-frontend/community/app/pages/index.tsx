@@ -1,6 +1,5 @@
-import { Button } from "@Components"
+import { Button, Icon, Input } from "@Components"
 import Head from "next/head"
-import { useState } from "react"
 
 export default function Home() {
     return (
@@ -11,7 +10,24 @@ export default function Home() {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <div></div>
+            <div>
+                <Input
+                    prefix={<Icon iconName="xi-adobe"></Icon>}
+                    value=""
+                    onChange={() => {
+                        console.log("hi")
+                    }}
+                ></Input>
+                <Input
+                    disabled
+                    value=""
+                    size="large"
+                    onChange={() => {
+                        console.log("hi")
+                    }}
+                ></Input>
+                <Button>sdf</Button>
+            </div>
         </>
     )
 }

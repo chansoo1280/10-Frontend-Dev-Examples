@@ -8,6 +8,7 @@ import { UrlObject } from "url"
 // #region Local Imports
 import styles from "./Button.module.scss"
 import { defaultProps, Icon } from "@Components"
+import { useClickAnimating } from "@Hooks"
 // #endregion Local Imports
 
 type ButtonType = "primary" | "secondary" | "dashed" | "link" | "text"
@@ -45,39 +46,10 @@ const useLoading = ({ loading = false }: Pick<ButtonProps, "loading">) => {
     }, [loading])
     return { innerLoading }
 }
-const useClickAnimation = () => {
-    const [isClick, setIsClick] = useState<boolean | "pending">(false)
-    const DELAY = 400
-    const execClickAnimation = () => {
-        if (isClick === true) {
-            setIsClick("pending")
-        } else {
-            setIsClick(true)
-        }
-    }
-    useEffect(() => {
-        let timer: NodeJS.Timeout | null = null
-        if (isClick === "pending") {
-            setIsClick(true)
-        } else if (isClick === true) {
-            setIsClick(true)
-            timer = setTimeout(() => {
-                setIsClick(false)
-            }, DELAY)
-        }
-        return () => {
-            if (timer) {
-                window.clearTimeout(timer)
-                timer = null
-            }
-        }
-    }, [isClick])
-    return { isClick, execClickAnimation }
-}
 const Button = (props: ButtonProps): JSX.Element => {
     const { href, icon, loading, show, htmlType = "button", size, type = "primary", shape, className, children, danger, desc, ...rest } = props
     const { innerLoading } = useLoading({ loading })
-    const { isClick, execClickAnimation } = useClickAnimation()
+    const { isClick, execClickAnimation } = useClickAnimating()
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement, MouseEvent>) => {
         const { onClick, disabled } = props
