@@ -14,6 +14,7 @@ export default function Home() {
             </Head>
             <div>
                 <Search
+                    size="large"
                     value={""}
                     onChange={(e) => {
                         console.log(e)
@@ -51,7 +52,7 @@ export default function Home() {
                         console.log("hi")
                     }}
                 ></Input>
-                <Button>sdf</Button>
+                <Button size="small" icon={<Icon iconName="xi-adobe"></Icon>}></Button>
             </div>
         </>
     )

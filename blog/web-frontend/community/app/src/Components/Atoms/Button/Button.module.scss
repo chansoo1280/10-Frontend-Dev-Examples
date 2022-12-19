@@ -7,6 +7,10 @@ $btn:"btn";
     &--icon-only{
         padding: 4px 8px;
     }
+    &>i{
+        font-size:inherit;
+    }
+    height:32px;
     border: 1px solid $primary-6;
     border-radius: $border-radius;
     display: inline-flex;
@@ -137,9 +141,18 @@ $btn:"btn";
     }
     &--large{
         padding:6.4px 15px;
+        height:40px;
+        font-size:16px;
+        &.#{$btn}--icon-only{
+            padding: 6.4px 11px;
+        }
     }
     &--small{
         padding:0px 7px;
+        height:24px;
+        &.#{$btn}--icon-only{
+            padding: 0px 4px;
+        }
     }
     &--hide {
         display: none;
