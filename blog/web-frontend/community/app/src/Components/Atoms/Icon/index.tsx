@@ -13,9 +13,14 @@ const myFont = localFont({ src: "./xeicon.woff2" })
 
 interface IconProps extends defaultProps {
     iconName: IconNames
+    irText?: string
 }
 const Icon = (props: IconProps): JSX.Element => {
-    const { iconName, ...rest } = props
-    return <i className={classNames(myFont.className, styles["xi-icon"], styles[`${iconName}`])} {...rest} />
+    const { iconName, irText, ...rest } = props
+    return (
+        <i className={classNames(myFont.className, styles["xi-icon"], styles[`${iconName}`])} {...rest}>
+            {irText && <span className="ir">{irText}</span>}
+        </i>
+    )
 }
 export default Icon

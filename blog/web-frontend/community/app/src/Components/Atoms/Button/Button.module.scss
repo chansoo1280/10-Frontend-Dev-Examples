@@ -4,6 +4,9 @@ $btn:"btn";
     position:relative;
     cursor: pointer;
     padding: 4px 15px;
+    &--icon-only{
+        padding: 4px 8px;
+    }
     border: 1px solid $primary-6;
     border-radius: $border-radius;
     display: inline-flex;

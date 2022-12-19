@@ -47,6 +47,9 @@
         border-radius:5px;
         @include set-color("", "", rgba($primary-5, $border-opacity));
     }
+    &>[data-click-animating=true]:after{
+        display: none;
+    }
     &[data-click-animating=true]:after{
         animation:ani-btn-click .4s cubic-bezier(.08,.82,.17,1), ani-btn-click-opacity 2s cubic-bezier(.08,.82,.17,1);
     }

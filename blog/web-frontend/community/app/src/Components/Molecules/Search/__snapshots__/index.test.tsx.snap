@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Search renders search unchanged 1`] = `
+<div>
+  <div
+    class="space search"
+    data-click-animating="false"
+    style="gap: 0; padding: 0px;"
+  >
+    <div
+      class="input search__input"
+      data-click-animating="false"
+    >
+      <input
+        class="input__input"
+        value=""
+      />
+    </div>
+    <button
+      class="btn btn--primary btn--icon-only search__btn"
+      data-click-animating="false"
+      type="button"
+    >
+      <i
+        class="className xi-icon xi-search"
+      >
+        <span
+          class="ir"
+        >
+          검색
+        </span>
+      </i>
+    </button>
+  </div>
+</div>
+`;

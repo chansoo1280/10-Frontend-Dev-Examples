@@ -1,4 +1,4 @@
-import { Button, Icon, Input, Checkbox } from "@Components"
+import { Search, Button, Icon, Input, Checkbox, MDEditor } from "@Components"
 import Head from "next/head"
 import { ChangeEvent, useState } from "react"
 
@@ -13,6 +13,21 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div>
+                <Search
+                    value={""}
+                    onChange={(e) => {
+                        console.log(e)
+                    }}
+                    onSearch={(value: string) => {
+                        console.log(value)
+                    }}
+                ></Search>
+                <MDEditor
+                    value={""}
+                    onChange={(e) => {
+                        console.log(e)
+                    }}
+                />
                 <Checkbox
                     checked={checked}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {

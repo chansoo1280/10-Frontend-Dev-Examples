@@ -1,5 +1,5 @@
 // #region Global Imports
-import React from "react"
+import React, { MouseEventHandler } from "react"
 import classNames from "classnames"
 // #endregion Global Imports
 
@@ -13,6 +13,7 @@ interface SpaceProps extends defaultProps {
     size?: "small" | "medium" | "large"
     gap?: number
     padding?: string | number
+    onClick?: MouseEventHandler
 }
 const Space = (props: SpaceProps): JSX.Element => {
     const { direction, size, show, className, gap, padding, ...rest } = props
