@@ -25,7 +25,14 @@
         opacity: 0;
     }
 }
-@mixin click-animating {
+@mixin click-animating($border-opacity) {
+    @if $border-opacity == "" {
+        $border-opacity: .1
+    }
+    &[disabled]:after,
+    &--disabled:after{
+        display:none;
+    }
     &:after{
         z-index:1;
         pointer-events:none;
@@ -38,7 +45,7 @@
         height:100%;
         border:0 solid;
         border-radius:5px;
-        @include set-color("", "", rgba($primary-5, .1));
+        @include set-color("", "", rgba($primary-5, $border-opacity));
     }
     &[data-click-animating=true]:after{
         animation:ani-btn-click .4s cubic-bezier(.08,.82,.17,1), ani-btn-click-opacity 2s cubic-bezier(.08,.82,.17,1);

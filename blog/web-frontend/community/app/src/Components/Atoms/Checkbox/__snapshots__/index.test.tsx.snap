@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Checkbox renders checkbox unchanged 1`] = `
+<div>
+  <div
+    class="checkbox"
+  >
+    <input
+      class="checkbox__checkbox"
+      data-click-animating="false"
+      type="checkbox"
+    />
+  </div>
+</div>
+`;

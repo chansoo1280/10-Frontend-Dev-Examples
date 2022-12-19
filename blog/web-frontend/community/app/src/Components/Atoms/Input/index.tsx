@@ -9,20 +9,21 @@ import { useClickAnimating } from "@Hooks"
 import styles from "./Input.module.scss"
 // #endregion Local Imports
 
-interface BaseInputProps extends defaultProps {
+interface InputProps extends defaultProps {
     type?: "text" | "email" | "password"
     size?: "small" | "medium" | "large"
     value: string
     onChange: ChangeEventHandler<HTMLInputElement>
     prefix?: ReactNode
     suffix?: ReactNode
+    placeholder?: string
 }
 
-type InputProps = BaseInputProps & Omit<React.InputHTMLAttributes<any>, "value" | "type" | "onChange" | "size" | "prefix" | "suffix">
 const Input = (props: InputProps): JSX.Element => {
     const { value, show, size, className, onChange, disabled, prefix, suffix, placeholder, ...rest } = props
     const inputRef = useRef<HTMLInputElement>(null)
     const [innerValue, setValue] = useState(value)
+    const [focused, setFocused] = useState(false)
     const { isClick, execClickAnimation } = useClickAnimating()
     const prefixCls = "input"
     const classes = classNames(
@@ -30,12 +31,19 @@ const Input = (props: InputProps): JSX.Element => {
         {
             [styles[`${prefixCls}--hide`]]: show === false,
             [styles[`${prefixCls}--${size}`]]: size,
+            [styles[`${prefixCls}--disabled`]]: disabled,
+            [styles[`${prefixCls}--focus`]]: focused,
+            [styles[`${prefixCls}--have-prefix`]]: prefix,
+            [styles[`${prefixCls}--have-suffix`]]: suffix,
         },
         className,
     )
-    const inputClasses = classNames(styles[`${prefixCls}__input`])
     const handleClick = () => {
         execClickAnimation()
+        setFocused(true)
+    }
+    const handleBlur = () => {
+        setFocused(false)
     }
     const handleClickBox = () => {
         execClickAnimation()
@@ -50,10 +58,26 @@ const Input = (props: InputProps): JSX.Element => {
         onChange(e)
         setValue(e.currentTarget.value)
     }
+    const boxProps = {
+        className: classes,
+        "data-click-animating": isClick === true,
+        onClick: handleClickBox,
+        onBlur: handleBlur,
+        ...rest,
+    }
+    const inputProps = {
+        ref: inputRef,
+        className: classNames(styles[`${prefixCls}__input`]),
+        onChange: handleChange,
+        disabled: disabled,
+        value: innerValue,
+        onClick: handleClick,
+        placeholder: placeholder,
+    }
     return (
-        <div className={classes} data-click-animating={isClick === true} {...rest} onClick={handleClickBox}>
+        <div {...boxProps}>
             {prefix}
-            <input ref={inputRef} className={inputClasses} onChange={handleChange} disabled={disabled} value={innerValue} onClick={handleClick} placeholder={placeholder} />
+            <input {...inputProps} />
             {suffix}
         </div>
     )

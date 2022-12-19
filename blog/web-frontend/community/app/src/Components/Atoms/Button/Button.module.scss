@@ -16,7 +16,7 @@ $btn:"btn";
     color:$white;
     box-shadow:0 2px 0 rgba($black, 0.043);
     transition:background-color .2s ease, border-color .2s ease, color .2s ease;
-    @include click-animating();
+    @include click-animating("");
     &:focus {
         outline: none;
     }

@@ -1,0 +1,48 @@
+@import "@Styles/scss/default.scss";
+@keyframes ani-check {
+    0% {
+        transform:scale(0.5) translateY(5px);
+        opacity:0;
+    }
+    80%{
+        transform:scale(1.1) translateY(0);
+        opacity:1;
+    }
+    100%{
+        transform:scale(1);
+    }
+}
+.checkbox{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    &__checkbox{
+        cursor: pointer;
+        position:relative;
+        margin:0;
+        padding:0;
+        width:16px;
+        height:16px;
+        border:1px solid;
+        outline:none;
+        border-radius:$border-radius;
+        transition:background-color .2s ease, border-color .2s ease, color .2s ease;
+        @include click-animating(0.5);
+        @include set-color("", $white, $gray-5);
+        &:checked{
+            @include set-color("", $primary-6, $primary-6);
+            &:before{
+                animation:ani-check .4s cubic-bezier(.08,.82,.17,1);
+            }
+        }
+        &:before{
+            content:"";
+            display: block;
+            width:100%;
+            height:100%;
+            transition:opacity .24s ease, transform .4s ease;
+            transform-origin:center bottom;
+            background:url(/Images/icon_check.svg) center no-repeat;
+        }
+    }
+}

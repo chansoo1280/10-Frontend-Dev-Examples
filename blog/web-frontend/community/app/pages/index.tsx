@@ -1,7 +1,9 @@
-import { Button, Icon, Input } from "@Components"
+import { Button, Icon, Input, Checkbox } from "@Components"
 import Head from "next/head"
+import { ChangeEvent, useState } from "react"
 
 export default function Home() {
+    const [checked, setChecked] = useState(false)
     return (
         <>
             <Head>
@@ -11,6 +13,14 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div>
+                <Checkbox
+                    checked={checked}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        setChecked(e.currentTarget.checked)
+                    }}
+                    label="체크"
+                    id="check"
+                />
                 <Input
                     prefix={<Icon iconName="xi-adobe"></Icon>}
                     value=""
