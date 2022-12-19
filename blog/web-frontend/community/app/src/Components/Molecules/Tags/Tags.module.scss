@@ -1,0 +1,38 @@
+@import "@Styles/scss/default.scss";
+.tags{
+    &__btn{
+        &--magenta{
+            @include set-color(#EB2F96, #FFF0F6, #FFADD2)
+        }
+        &--green{
+            @include set-color(#52C41A, #F6FFED, #B7EB8F)
+        }
+        &--red{
+            @include set-color(#F5222D, #FFF1F0, #FFA39E)
+        }
+        &--volcano{
+            @include set-color(#FA541C, #FFF2E8, #FFBB96)
+        }
+        &--orange{
+            @include set-color(#FA8C16, #FFF7E6,#FFD591)
+        }
+        &--gold{
+            @include set-color(#FAAD14, #FFFBE6, #FFE58F)
+        }
+        &--lime{
+            @include set-color(#A0D911, #FCFFE6, #EAFF8F)
+        }
+        &--cyan{
+            @include set-color(#13C2C2, #E6FFFB, #87E8DE)
+        }
+        &--blue{
+            @include set-color(#1890FF, #E6F7FF, #91D5FF)
+        }
+        &--geekblue{
+            @include set-color(#2F54EB, #F0F5FF, #ADC6FF)
+        }
+        &--purple{
+            @include set-color(#722ED1, #F9F0FF, #D3ADF7)
+        }
+    }
+}

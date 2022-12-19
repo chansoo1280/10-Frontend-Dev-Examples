@@ -16,9 +16,14 @@ interface IconProps extends defaultProps {
     irText?: string
 }
 const Icon = (props: IconProps): JSX.Element => {
-    const { iconName, irText, ...rest } = props
+    const { show, iconName, irText, ...rest } = props
     return (
-        <i className={classNames(myFont.className, styles["xi-icon"], styles[`${iconName}`])} {...rest}>
+        <i
+            className={classNames(myFont.className, styles["xi-icon"], styles[`${iconName}`], {
+                [styles[`xi-icon--hide`]]: show === false,
+            })}
+            {...rest}
+        >
             {irText && <span className="ir">{irText}</span>}
         </i>
     )

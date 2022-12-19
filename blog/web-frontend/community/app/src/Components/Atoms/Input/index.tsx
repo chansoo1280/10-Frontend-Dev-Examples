@@ -1,6 +1,8 @@
 // #region Global Imports
-import React, { ChangeEvent, ChangeEventHandler, ReactNode, useRef, useState } from "react"
+import React, { ChangeEvent, ChangeEventHandler, ReactNode, useRef, useState, FocusEvent, FocusEventHandler, RefObject, forwardRef, KeyboardEventHandler, KeyboardEvent } from "react"
 import classNames from "classnames"
+import composeRefs from "@seznam/compose-react-refs"
+
 // #endregion Global Imports
 
 // #region Local Imports
@@ -14,13 +16,15 @@ interface InputProps extends defaultProps {
     size?: "small" | "medium" | "large"
     value: string
     onChange: ChangeEventHandler<HTMLInputElement>
+    onBlur?: FocusEventHandler<HTMLInputElement>
+    onEnter?: KeyboardEventHandler<HTMLInputElement>
     prefix?: ReactNode
     suffix?: ReactNode
     placeholder?: string
 }
 
-const Input = (props: InputProps): JSX.Element => {
-    const { value, show, size, className, onChange, disabled, prefix, suffix, placeholder, ...rest } = props
+const Input = (props: InputProps, ref?: React.Ref<HTMLInputElement>) => {
+    const { value, show, size, className, onChange, onBlur, onEnter, disabled, prefix, suffix, placeholder, ...rest } = props
     const inputRef = useRef<HTMLInputElement>(null)
     const [innerValue, setValue] = useState(value)
     const [focused, setFocused] = useState(false)
@@ -45,6 +49,12 @@ const Input = (props: InputProps): JSX.Element => {
     const handleBlur = () => {
         setFocused(false)
     }
+    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+        console.log(e.key)
+        if (e.key === "Enter" && onEnter) {
+            onEnter(e)
+        }
+    }
     const handleClickBox = () => {
         execClickAnimation()
         inputRef?.current?.focus()
@@ -66,13 +76,15 @@ const Input = (props: InputProps): JSX.Element => {
         ...rest,
     }
     const inputProps = {
-        ref: inputRef,
+        ref: composeRefs(ref, inputRef),
         className: classNames(styles[`${prefixCls}__input`]),
         onChange: handleChange,
         disabled: disabled,
         value: innerValue,
         onClick: handleClick,
         placeholder: placeholder,
+        onBlur,
+        onKeyDown: handleKeyDown,
     }
     return (
         <div {...boxProps}>
@@ -82,4 +94,4 @@ const Input = (props: InputProps): JSX.Element => {
         </div>
     )
 }
-export default Input
+export default forwardRef(Input)

@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tags renders tags unchanged 1`] = `
+<div>
+  <div
+    class="space tags"
+  >
+    <button
+      class="btn btn--primary"
+      data-click-animating="false"
+      type="button"
+    >
+      Tag 1
+    </button>
+  </div>
+</div>
+`;

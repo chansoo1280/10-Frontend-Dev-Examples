@@ -1,9 +1,13 @@
-import { Search, Button, Icon, Input, Checkbox, MDEditor } from "@Components"
+import { Tags } from "@Components"
+import { Tag } from "@Components/Molecules/Tags"
 import Head from "next/head"
-import { ChangeEvent, useState } from "react"
+import { useState } from "react"
 
 export default function Home() {
-    const [checked, setChecked] = useState(false)
+    const [tagList, setTagList] = useState<Tag[]>([
+        { title: "Tag 1", checked: false, type: "checkable" },
+        { title: "Tag 2", type: "deletable" },
+    ])
     return (
         <>
             <Head>
@@ -13,46 +17,37 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div>
-                <Search
-                    size="large"
-                    value={""}
-                    onChange={(e) => {
-                        console.log(e)
+                <Tags
+                    onAdd={(title) => {
+                        if (tagList.find((tag) => tag.title === title)) {
+                            return
+                        }
+                        setTagList([
+                            ...tagList,
+                            {
+                                title,
+                                type: "deletable",
+                            },
+                        ])
                     }}
-                    onSearch={(value: string) => {
-                        console.log(value)
+                    onClick={(tag) => {
+                        if (tag.type === "checkable") {
+                            setTagList(
+                                tagList.map((item) =>
+                                    item.title === tag.title
+                                        ? {
+                                              ...item,
+                                              checked: !tag.checked,
+                                          }
+                                        : item,
+                                ),
+                            )
+                        } else if (tag.type === "deletable") {
+                            setTagList(tagList.filter((item) => item.title !== tag.title))
+                        }
                     }}
-                ></Search>
-                <MDEditor
-                    value={""}
-                    onChange={(e) => {
-                        console.log(e)
-                    }}
+                    tagList={tagList}
                 />
-                <Checkbox
-                    checked={checked}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                        setChecked(e.currentTarget.checked)
-                    }}
-                    label="체크"
-                    id="check"
-                />
-                <Input
-                    prefix={<Icon iconName="xi-adobe"></Icon>}
-                    value=""
-                    onChange={() => {
-                        console.log("hi")
-                    }}
-                ></Input>
-                <Input
-                    disabled
-                    value=""
-                    size="large"
-                    onChange={() => {
-                        console.log("hi")
-                    }}
-                ></Input>
-                <Button size="small" icon={<Icon iconName="xi-adobe"></Icon>}></Button>
             </div>
         </>
     )
