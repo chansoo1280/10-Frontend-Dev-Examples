@@ -4,7 +4,7 @@ import { Tab } from "@Components/Molecules/Tabs"
 import Head from "next/head"
 import { useState } from "react"
 
-export default function Home() {
+const Home = () => {
     const [tagList, setTagList] = useState<Tag[]>([
         { title: "Tag 1", checked: false, type: "checkable" },
         { title: "Tag 2", type: "deletable" },
@@ -57,3 +57,5 @@ export default function Home() {
         </>
     )
 }
+
+export default Home

@@ -1,0 +1,11 @@
+@import "@Styles/scss/default.scss";
+
+.site-header {
+    background-color: $black;
+    color: $white;
+
+    &__btn {
+        background-color: $black;
+        color: $white
+    }
+}
