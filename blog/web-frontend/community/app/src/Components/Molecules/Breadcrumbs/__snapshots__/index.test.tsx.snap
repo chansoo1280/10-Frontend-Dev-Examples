@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Breadcrumbs renders breadcrumbs unchanged 1`] = `
+<div>
+  <div
+    class="space breadcrumbs"
+  >
+    <button
+      class="btn btn--small btn--text breadcrumbs__breadcrumb"
+      data-click-animating="false"
+      disabled=""
+      type="button"
+    >
+      main
+    </button>
+    /
+    <a
+      class="btn btn--small btn--text breadcrumbs__breadcrumb breadcrumbs__breadcrumb--last breadcrumbs__breadcrumb--link"
+      href="#a"
+    >
+      detail
+    </a>
+  </div>
+</div>
+`;

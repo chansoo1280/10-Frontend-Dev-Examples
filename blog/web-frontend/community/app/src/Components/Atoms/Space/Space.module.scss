@@ -1,19 +1,24 @@
-.space{
-    display:flex;
-    padding:8px 12px; 
-    gap:8px;
-    &--small{
-        padding:0;
-        gap:0px;
+.space {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    gap: 8px;
+
+    &--small {
+        padding: 0;
+        gap: 0px;
     }
-    &--large{
-        padding:16px 24px;
-        gap:24px;
+
+    &--large {
+        padding: 16px 24px;
+        gap: 24px;
     }
-    &--vertical{
-        flex-direction:column;
+
+    &--vertical {
+        flex-direction: column;
     }
-    &__box{
-        flex:1;
+
+    &__box {
+        flex: 1;
     }
 }

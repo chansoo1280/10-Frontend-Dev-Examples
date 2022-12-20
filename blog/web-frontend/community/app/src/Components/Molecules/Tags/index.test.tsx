@@ -16,7 +16,16 @@ describe("Tags", () => {
     })
     it("should render a tags, checks for onClick attribute", () => {
         const handleClick = jest.fn()
-        render(<Tags data-testid="tags" onClick={handleClick} tagList={[{ title: "Tag 1", checked: false, type: "checkable" }]} />)
+        render(
+            <Tags
+                data-testid="tags"
+                onClick={handleClick}
+                tagList={[
+                    { title: "Tag 1", checked: false, type: "checkable" },
+                    { title: "Tag 2", type: "deletable" },
+                ]}
+            />,
+        )
 
         const button = screen.getByText("Tag 1")
         fireEvent.click(button)

@@ -12,10 +12,10 @@ interface BaseTag {
     title: string
     color?: "magenta" | "green" | "red" | "volcano" | "orange" | "gold" | "lime" | "cyan" | "blue" | "geekblue" | "purple"
 }
-export interface deletableTag extends BaseTag {
+interface deletableTag extends BaseTag {
     type: "deletable"
 }
-export interface checkableTag extends BaseTag {
+interface checkableTag extends BaseTag {
     type: "checkable"
     checked: boolean
 }
@@ -67,6 +67,9 @@ const Tags = (props: TagsProps): JSX.Element => {
             ))}
             {onAdd && openAddInput ? (
                 <Input
+                    style={{
+                        width: "95px",
+                    }}
                     ref={inputRef}
                     onBlur={() => {
                         setOpenAddInput(false)

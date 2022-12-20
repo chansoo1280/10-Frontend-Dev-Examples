@@ -1,5 +1,5 @@
 // #region Global Imports
-import React, { ChangeEvent, ChangeEventHandler, ReactNode, useRef, useState, FocusEvent, FocusEventHandler, RefObject, forwardRef, KeyboardEventHandler, KeyboardEvent } from "react"
+import React, { useRef, useState, forwardRef } from "react"
 import classNames from "classnames"
 import composeRefs from "@seznam/compose-react-refs"
 
@@ -15,11 +15,11 @@ interface InputProps extends defaultProps {
     type?: "text" | "email" | "password"
     size?: "small" | "medium" | "large"
     value: string
-    onChange: ChangeEventHandler<HTMLInputElement>
-    onBlur?: FocusEventHandler<HTMLInputElement>
-    onEnter?: KeyboardEventHandler<HTMLInputElement>
-    prefix?: ReactNode
-    suffix?: ReactNode
+    onChange: React.ChangeEventHandler<HTMLInputElement>
+    onBlur?: React.FocusEventHandler<HTMLInputElement>
+    onEnter?: React.KeyboardEventHandler<HTMLInputElement>
+    prefix?: React.ReactNode
+    suffix?: React.ReactNode
     placeholder?: string
 }
 
@@ -49,7 +49,7 @@ const Input = (props: InputProps, ref?: React.Ref<HTMLInputElement>) => {
     const handleBlur = () => {
         setFocused(false)
     }
-    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         console.log(e.key)
         if (e.key === "Enter" && onEnter) {
             onEnter(e)
@@ -59,7 +59,7 @@ const Input = (props: InputProps, ref?: React.Ref<HTMLInputElement>) => {
         execClickAnimation()
         inputRef?.current?.focus()
     }
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault()
         if (!onChange || disabled) {
             setValue("")

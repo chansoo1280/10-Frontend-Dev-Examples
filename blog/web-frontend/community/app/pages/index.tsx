@@ -1,5 +1,6 @@
-import { Tags } from "@Components"
+import { Tags, Tabs, Breadcrumbs } from "@Components"
 import { Tag } from "@Components/Molecules/Tags"
+import { Tab } from "@Components/Molecules/Tabs"
 import Head from "next/head"
 import { useState } from "react"
 
@@ -8,6 +9,38 @@ export default function Home() {
         { title: "Tag 1", checked: false, type: "checkable" },
         { title: "Tag 2", type: "deletable" },
     ])
+    const [activeIdx, setActiveIdx] = useState(0)
+    const [tabList, _] = useState([{ title: "Tab 1" }, { title: "Tab 2" }])
+    const onClickTab = (tab: Tab, idx: number) => {
+        setActiveIdx(idx)
+    }
+    const onAdd = (title: string) => {
+        if (tagList.find((tag) => tag.title === title)) {
+            return
+        }
+        setTagList(
+            tagList.concat({
+                title,
+                type: "deletable",
+            }),
+        )
+    }
+    const onClick = (tag: Tag) => {
+        if (tag.type === "checkable") {
+            setTagList(
+                tagList.map((item) =>
+                    item.title === tag.title
+                        ? {
+                              ...item,
+                              checked: !tag.checked,
+                          }
+                        : item,
+                ),
+            )
+        } else if (tag.type === "deletable") {
+            setTagList(tagList.filter((item) => item.title !== tag.title))
+        }
+    }
     return (
         <>
             <Head>
@@ -17,37 +50,9 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div>
-                <Tags
-                    onAdd={(title) => {
-                        if (tagList.find((tag) => tag.title === title)) {
-                            return
-                        }
-                        setTagList([
-                            ...tagList,
-                            {
-                                title,
-                                type: "deletable",
-                            },
-                        ])
-                    }}
-                    onClick={(tag) => {
-                        if (tag.type === "checkable") {
-                            setTagList(
-                                tagList.map((item) =>
-                                    item.title === tag.title
-                                        ? {
-                                              ...item,
-                                              checked: !tag.checked,
-                                          }
-                                        : item,
-                                ),
-                            )
-                        } else if (tag.type === "deletable") {
-                            setTagList(tagList.filter((item) => item.title !== tag.title))
-                        }
-                    }}
-                    tagList={tagList}
-                />
+                <Breadcrumbs breadcrumbList={[{ title: "main" }, { title: "main2", href: "#a" }]}></Breadcrumbs>
+                <Tabs activeIdx={activeIdx} onClick={onClickTab} tabList={tabList} />
+                <Tags onAdd={onAdd} onClick={onClick} tagList={tagList} />
             </div>
         </>
     )

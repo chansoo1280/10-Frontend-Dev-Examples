@@ -1,15 +1,18 @@
 @import "@Styles/scss/default.scss";
-.search{
-    display:inline-flex;
+
+.search {
+    display: inline-flex;
     position: relative;
     @include click-animating("");
-    &__input{
-        border-top-right-radius:0;
-        border-bottom-right-radius:0;
-        border-right:0;
+
+    &__input {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-right: 0;
     }
-    &__btn{
-        border-top-left-radius:0;
-        border-bottom-left-radius:0;
+
+    &__btn {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
     }
 }

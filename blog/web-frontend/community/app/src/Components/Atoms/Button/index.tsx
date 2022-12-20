@@ -1,5 +1,5 @@
 // #region Global Imports
-import React, { useEffect, useState } from "react"
+import React from "react"
 import Link from "next/link"
 import classNames from "classnames"
 import { UrlObject } from "url"
@@ -8,7 +8,7 @@ import { UrlObject } from "url"
 // #region Local Imports
 import styles from "./Button.module.scss"
 import { defaultProps, Icon } from "@Components"
-import { useClickAnimating } from "@Hooks"
+import { useClickAnimating, useLoading } from "@Hooks"
 // #endregion Local Imports
 
 type ButtonType = "primary" | "secondary" | "dashed" | "link" | "text"
@@ -39,13 +39,6 @@ type NativeButtonProps = {
 
 type ButtonProps = Partial<AnchorButtonProps & NativeButtonProps>
 
-const useLoading = ({ loading = false }: Pick<ButtonProps, "loading">) => {
-    const [innerLoading, setLoading] = React.useState(loading)
-    React.useEffect(() => {
-        setLoading(loading)
-    }, [loading])
-    return { innerLoading }
-}
 const Button = (props: ButtonProps): JSX.Element => {
     const { href, icon, loading, show, htmlType = "button", size, type = "primary", shape, className, children, danger, desc, ...rest } = props
     const { innerLoading } = useLoading({ loading })

@@ -1,0 +1,26 @@
+@import "@Styles/scss/default.scss";
+
+.breadcrumbs {
+
+    &__breadcrumb {
+
+        &,
+        &:disabled {
+            cursor: text;
+            color: rgba($black, 0.45);
+        }
+
+        &--last,
+        &--last:disabled,
+        &--last:focus,
+        &--last:hover {
+            color: rgba($black, 0.85);
+        }
+
+        &--link:focus,
+        &--link:hover {
+            cursor: pointer;
+            background-color: rgba($black, .06);
+        }
+    }
+}

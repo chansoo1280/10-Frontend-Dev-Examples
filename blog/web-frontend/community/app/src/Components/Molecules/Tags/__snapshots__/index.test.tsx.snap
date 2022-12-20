@@ -6,11 +6,24 @@ exports[`Tags renders tags unchanged 1`] = `
     class="space tags"
   >
     <button
-      class="btn btn--primary"
+      class="btn btn--small btn--secondary tags__btn"
       data-click-animating="false"
       type="button"
     >
       Tag 1
+      <i
+        class="className xi-icon xi-close xi-icon--hide"
+      />
+    </button>
+    <button
+      class="btn btn--small btn--secondary tags__btn-add"
+      data-click-animating="false"
+      type="button"
+    >
+      <i
+        class="className xi-icon xi-plus"
+      />
+      New Tag
     </button>
   </div>
 </div>

@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tabs renders tabs unchanged 1`] = `
+<div>
+  <div
+    class="space tabs"
+  >
+    <button
+      class="btn btn--large btn--text tabs__tab tabs__tab--active"
+      data-click-animating="false"
+      type="button"
+    >
+      Tab 1
+    </button>
+  </div>
+</div>
+`;
