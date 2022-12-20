@@ -6,7 +6,7 @@ describe("Breadcrumbs", () => {
         expect(container).toMatchSnapshot()
     })
     it("should render a breadcrumbs with the class", () => {
-        render(<Breadcrumbs breadcrumbList={[{ title: "main" }, { title: "detail", href: "#a" }]} />)
+        render(<Breadcrumbs data-testid="breadcrumbs" breadcrumbList={[{ title: "main" }, { title: "detail", href: "#a" }]} />)
 
         const breadcrumbs = screen.getByTestId("breadcrumbs")
         expect(breadcrumbs).toBeInTheDocument()
