@@ -29,7 +29,7 @@ const Tabs = (props: TabsProps): JSX.Element => {
         className,
     )
     return (
-        <Space className={classes} {...rest}>
+        <Space gap="32px" padding="0 16px" fillWidth className={classes} {...rest}>
             {tabList.map((tab, idx) => (
                 <Button
                     size="large"
