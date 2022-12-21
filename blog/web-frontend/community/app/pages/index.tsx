@@ -1,45 +1,13 @@
-import { Tags, Tabs, Breadcrumbs } from "@Components"
-import { Tag } from "@Components/Molecules/Tags"
+import { Tags, Tabs, Breadcrumbs, Space, Typography, Button, Search } from "@Components"
 import { Tab } from "@Components/Molecules/Tabs"
 import Head from "next/head"
-import { useState } from "react"
-
+import { ChangeEvent, useState } from "react"
+const { Text } = Typography
 const Home = () => {
-    const [tagList, setTagList] = useState<Tag[]>([
-        { title: "Tag 1", checked: false, type: "checkable" },
-        { title: "Tag 2", type: "deletable" },
-    ])
     const [activeIdx, setActiveIdx] = useState(0)
     const [tabList, _] = useState([{ title: "Tab 1" }, { title: "Tab 2" }])
     const onClickTab = (tab: Tab, idx: number) => {
         setActiveIdx(idx)
-    }
-    const onAdd = (title: string) => {
-        if (tagList.find((tag) => tag.title === title)) {
-            return
-        }
-        setTagList(
-            tagList.concat({
-                title,
-                type: "deletable",
-            }),
-        )
-    }
-    const onClick = (tag: Tag) => {
-        if (tag.type === "checkable") {
-            setTagList(
-                tagList.map((item) =>
-                    item.title === tag.title
-                        ? {
-                              ...item,
-                              checked: !tag.checked,
-                          }
-                        : item,
-                ),
-            )
-        } else if (tag.type === "deletable") {
-            setTagList(tagList.filter((item) => item.title !== tag.title))
-        }
     }
     return (
         <>
@@ -50,9 +18,24 @@ const Home = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div>
-                <Breadcrumbs breadcrumbList={[{ title: "main" }, { title: "main2", href: "#a" }]}></Breadcrumbs>
-                <Tabs activeIdx={activeIdx} onClick={onClickTab} tabList={tabList} />
-                <Tags onAdd={onAdd} onClick={onClick} tagList={tagList} />
+                <Space padding="13px 8px 0" bgType="white" direction="vertical">
+                    <Space fillWidth>
+                        <Space.Box>
+                            <Text>커뮤니티</Text>
+                        </Space.Box>
+                        <Button>글작성</Button>
+                    </Space>
+                    <Search
+                        value={""}
+                        onChange={function (event: ChangeEvent<HTMLInputElement>): void {
+                            throw new Error("Function not implemented.")
+                        }}
+                        onSearch={function (value: string): void {
+                            throw new Error("Function not implemented.")
+                        }}
+                    ></Search>
+                    <Tabs activeIdx={activeIdx} onClick={onClickTab} tabList={tabList} />
+                </Space>
             </div>
         </>
     )
