@@ -1,8 +1,18 @@
+@import "@Styles/scss/default.scss";
+
 .space {
     display: flex;
     align-items: center;
     padding: 8px 12px;
     gap: 8px;
+
+    &--white {
+        background-color: $white;
+    }
+
+    &--fill-width {
+        width: 100%;
+    }
 
     &--hide {
         display: none;

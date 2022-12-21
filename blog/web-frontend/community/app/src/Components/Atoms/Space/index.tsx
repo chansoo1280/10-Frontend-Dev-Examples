@@ -11,13 +11,15 @@ import styles from "./Space.module.scss"
 interface SpaceProps extends defaultProps {
     direction?: "vertical"
     size?: "small" | "medium" | "large"
-    gap?: number
+    gap?: string
     padding?: string | number
     onClick?: React.MouseEventHandler
     separator?: React.ReactNode
+    fillWidth?: boolean
+    bgType?: "white"
 }
 const Space = (props: SpaceProps): JSX.Element => {
-    const { separator, direction, size, show, className, gap, padding, children, ...rest } = props
+    const { separator, direction, size, show, className, gap, padding, children, fillWidth, bgType, ...rest } = props
     const prefixCls = "space"
     const classes = classNames(
         styles[`${prefixCls}`],
@@ -25,6 +27,8 @@ const Space = (props: SpaceProps): JSX.Element => {
             [styles[`${prefixCls}--hide`]]: show === false,
             [styles[`${prefixCls}--${size}`]]: size,
             [styles[`${prefixCls}--${direction}`]]: direction,
+            [styles[`${prefixCls}--fill-width`]]: fillWidth,
+            [styles[`${prefixCls}--${bgType}`]]: bgType,
         },
         className,
     )
