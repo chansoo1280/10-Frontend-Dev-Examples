@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SiteHeader renders siteHeader unchanged 1`] = `
+<div>
+  <div
+    class="space site-header"
+    style="padding: 4px 16px;"
+  >
+    <div
+      class="space__box"
+    >
+      <span>
+        Exeample Project
+      </span>
+    </div>
+    <button
+      class="btn btn--small btn--text btn--icon-only site-header__btn"
+      data-click-animating="false"
+      type="button"
+    >
+      <i
+        class="className xi-icon xi-search"
+      />
+    </button>
+    <button
+      class="btn btn--small btn--text btn--icon-only site-header__btn"
+      data-click-animating="false"
+      type="button"
+    >
+      <i
+        class="className xi-icon xi-help-o"
+      />
+    </button>
+    <button
+      class="btn btn--small btn--text btn--icon-only site-header__btn"
+      data-click-animating="false"
+      type="button"
+    >
+      <i
+        class="className xi-icon xi-bell-o"
+      />
+    </button>
+    <button
+      class="btn btn--small btn--text site-header__btn"
+      data-click-animating="false"
+      type="button"
+    >
+      <img
+        alt="Picture of the user"
+        data-nimg="1"
+        decoding="async"
+        height="24"
+        loading="lazy"
+        src="/public/Images/me.png?w=48&q=75"
+        srcset="/public/Images/me.png?w=32&q=75 1x, /public/Images/me.png?w=48&q=75 2x"
+        style="color: transparent;"
+        width="24"
+      />
+      username
+    </button>
+    <button
+      class="btn btn--small btn--text btn--icon-only site-header__btn"
+      data-click-animating="false"
+      type="button"
+    >
+      <i
+        class="className xi-icon xi-translate"
+      />
+    </button>
+    <div
+      class="space space--hide"
+    >
+      <a
+        class="btn btn--small btn--primary"
+        href="/login"
+      >
+        Log in
+      </a>
+      <button
+        class="btn btn--small btn--secondary site-header__btn"
+        data-click-animating="false"
+        type="button"
+      >
+        Register
+      </button>
+    </div>
+  </div>
+</div>
+`;
