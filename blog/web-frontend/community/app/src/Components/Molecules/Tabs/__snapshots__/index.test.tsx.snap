@@ -3,7 +3,8 @@
 exports[`Tabs renders tabs unchanged 1`] = `
 <div>
   <div
-    class="space tabs"
+    class="space space--fill-width tabs"
+    style="gap: 32px; padding: 0px 16px;"
   >
     <button
       class="btn btn--large btn--text tabs__tab tabs__tab--active"
