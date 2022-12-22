@@ -7,15 +7,12 @@ import classNames from "classnames"
 // #endregion Global Imports
 
 // #region Local Imports
-import { Tabs, Space, Typography, Button, Search, Tags, Icon } from "@Components"
+import { Tabs, Space, Typography, Button, Search, Tags, Icon, QuestionList, Card } from "@Components"
 import { Tab } from "@Components/Molecules/Tabs"
 import { Tag } from "@Components/Molecules/Tags"
 // #endregion Local Imports
 
 const { Text } = Typography
-const myLoader: ImageLoader = ({ src, width, quality }) => {
-    return `/public/Images/${src}?w=${width}&q=${quality || 75}`
-}
 const Home = () => {
     const [activeIdx, setActiveIdx] = useState(0)
     const [tabList, _] = useState([{ title: "Question" }, { title: "Articles", disabled: true }])
@@ -50,64 +47,69 @@ const Home = () => {
                     ></Search>
                     <Tabs activeIdx={activeIdx} onClick={onClickTab} tabList={tabList} />
                 </Space>
-                <Space direction="vertical" bgType="white">
-                    <Space>
-                        <Text>Category :</Text>
-                        <Space.Box>
-                            <Tags
-                                tagList={[
-                                    {
-                                        title: "Javascript",
-                                        type: "deletable",
-                                    },
-                                ]}
-                                onClick={function (tag: Tag): void {
-                                    throw new Error("Function not implemented.")
-                                }}
-                            />
-                        </Space.Box>
-                    </Space>
-                    <ul style={{ width: "100%" }}>
-                        <Link href="#a">
-                            <Space as="li" direction="vertical" align="flex-start">
-                                <Text>Alipay</Text>
+                <Card.wrap>
+                    <Card
+                        BoxProps={{
+                            gap: "0",
+                            padding: "0",
+                            direction: "vertical",
+                            bgType: "white",
+                            separator: <div style={{ width: "100%", height: "1px", background: "#0000000F" }}></div>,
+                        }}
+                    >
+                        <Space padding="24px">
+                            <Text>Category :</Text>
+                            <Space.Box>
                                 <Tags
-                                    boxProps={{
-                                        padding: 0,
-                                    }}
+                                    boxProps={{ padding: "4px" }}
                                     tagList={[
                                         {
                                             title: "Javascript",
-                                            type: "default",
+                                            type: "deletable",
                                         },
                                     ]}
                                     onClick={function (tag: Tag): void {
                                         throw new Error("Function not implemented.")
                                     }}
                                 />
-                                <Text>
-                                    <Button size="small" type="text">
-                                        <Image loader={myLoader} src="me.png" alt="Picture of the user" width={24} height={24} />
-                                        username
-                                    </Button>
-                                    published at <Text>https://ant.design</Text>
-                                    2021-02-05 13:51
-                                </Text>
-                                <Space padding={0} separator={<div style={{ width: "1px", height: "16px", background: "#0000000F" }}></div>}>
-                                    <Text>
-                                        <Icon iconName="xi-star" /> 12
-                                    </Text>
-                                    <Text>
-                                        <Icon iconName="xi-thumbs-up" /> 41
-                                    </Text>
-                                    <Text>
-                                        <Icon iconName="xi-message" /> 13
-                                    </Text>
-                                </Space>
-                            </Space>
-                        </Link>
-                    </ul>
-                </Space>
+                            </Space.Box>
+                        </Space>
+                        <QuestionList
+                            questionList={[
+                                {
+                                    questionId: "1",
+                                    title: "title",
+                                    href: "#a",
+                                    userId: "1",
+                                },
+                                {
+                                    questionId: "1",
+                                    title: "title",
+                                    href: "#a",
+                                    userId: "1",
+                                },
+                                {
+                                    questionId: "1",
+                                    title: "title",
+                                    href: "#a",
+                                    userId: "1",
+                                },
+                                {
+                                    questionId: "1",
+                                    title: "title",
+                                    href: "#a",
+                                    userId: "1",
+                                },
+                                {
+                                    questionId: "1",
+                                    title: "title",
+                                    href: "#a",
+                                    userId: "1",
+                                },
+                            ]}
+                        />
+                    </Card>
+                </Card.wrap>
             </div>
         </>
     )
