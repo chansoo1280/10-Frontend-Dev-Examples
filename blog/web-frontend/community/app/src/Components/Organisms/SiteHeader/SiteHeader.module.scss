@@ -1,6 +1,7 @@
 @import "@Styles/scss/default.scss";
 
 .site-header {
+    z-index: 10000;
     position: sticky;
     top: 0;
     background-color: $black;
