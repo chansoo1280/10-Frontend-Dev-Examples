@@ -4,14 +4,11 @@
     display: flex;
     align-items: center;
     padding: 8px 12px;
+    width: 100%;
     gap: 8px;
 
     &--white {
         background-color: $white;
-    }
-
-    &--fill-width {
-        width: 100%;
     }
 
     &--hide {
@@ -30,6 +27,14 @@
 
     &--vertical {
         flex-direction: column;
+    }
+
+    &--flex-start {
+        align-items: flex-start;
+    }
+
+    &--flex-end {
+        align-items: flex-end;
     }
 
     &__box {

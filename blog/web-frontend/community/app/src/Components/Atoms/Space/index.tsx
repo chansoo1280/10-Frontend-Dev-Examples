@@ -8,18 +8,19 @@ import { defaultProps } from "@Components"
 import styles from "./Space.module.scss"
 // #endregion Local Imports
 
-interface SpaceProps extends defaultProps {
-    direction?: "vertical"
+export interface SpaceProps extends defaultProps {
+    direction?: "horizontal" | "vertical"
+    align?: "center" | "flex-start" | "flex-end"
     size?: "small" | "medium" | "large"
     gap?: string
     padding?: string | number
     onClick?: React.MouseEventHandler
     separator?: React.ReactNode
-    fillWidth?: boolean
     bgType?: "white"
+    as?: "div" | "li"
 }
 const Space = (props: SpaceProps): JSX.Element => {
-    const { separator, direction, size, show, className, gap, padding, children, fillWidth, bgType, ...rest } = props
+    const { as = "div", separator, direction, align, size, show, className, gap, padding, children, bgType, ...rest } = props
     const prefixCls = "space"
     const classes = classNames(
         styles[`${prefixCls}`],
@@ -27,7 +28,7 @@ const Space = (props: SpaceProps): JSX.Element => {
             [styles[`${prefixCls}--hide`]]: show === false,
             [styles[`${prefixCls}--${size}`]]: size,
             [styles[`${prefixCls}--${direction}`]]: direction,
-            [styles[`${prefixCls}--fill-width`]]: fillWidth,
+            [styles[`${prefixCls}--${align}`]]: align,
             [styles[`${prefixCls}--${bgType}`]]: bgType,
         },
         className,
@@ -41,10 +42,11 @@ const Space = (props: SpaceProps): JSX.Element => {
             </>
         )
     })
+    const SpaceNode = `${as}` as keyof JSX.IntrinsicElements
     return (
-        <div {...rest} className={classes} style={{ gap, padding }}>
+        <SpaceNode {...rest} className={classes} style={{ gap, padding }}>
             {childrenNode}
-        </div>
+        </SpaceNode>
     )
 }
 const Box = (props: defaultProps) => {
