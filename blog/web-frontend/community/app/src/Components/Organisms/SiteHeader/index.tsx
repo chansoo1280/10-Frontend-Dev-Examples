@@ -27,7 +27,7 @@ const SiteHeader = (props: defaultProps): JSX.Element => {
     return (
         <Space className={classes} padding={user === null ? "4px 4px 4px 16px" : "4px 16px"} {...rest}>
             <Space.Box>
-                <Text>Exeample Project</Text>
+                <Text className={classNames(styles[`${prefixCls}__title`])}>Exeample Project</Text>
             </Space.Box>
             <Button className={classNames(styles[`${prefixCls}__btn`])} size="small" type="text" icon={<Icon iconName="xi-search" />} />
             <Button className={classNames(styles[`${prefixCls}__btn`])} size="small" type="text" icon={<Icon iconName="xi-help-o" />} />

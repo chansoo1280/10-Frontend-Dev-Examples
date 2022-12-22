@@ -1,8 +1,14 @@
 @import "@Styles/scss/default.scss";
 
 .site-header {
+    position: sticky;
+    top: 0;
     background-color: $black;
     color: $white;
+
+    &__title {
+        color: $white;
+    }
 
     &__btn {
         background-color: $black;
