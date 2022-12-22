@@ -5,6 +5,8 @@
         padding-left: 0;
         padding-right: 0;
         border-width: 0;
+        border-radius: 0;
+        transition: border-width .2s ease;
 
         &:focus,
         &:hover,

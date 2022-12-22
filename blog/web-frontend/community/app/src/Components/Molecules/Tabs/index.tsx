@@ -11,6 +11,7 @@ import styles from "./Tabs.module.scss"
 export interface Tab {
     title: string
     href?: string
+    disabled?: boolean
 }
 interface TabsProps extends defaultProps {
     activeIdx: number | null
@@ -29,9 +30,10 @@ const Tabs = (props: TabsProps): JSX.Element => {
         className,
     )
     return (
-        <Space gap="32px" padding="0 16px" fillWidth className={classes} {...rest}>
+        <Space gap="32px" padding="0 16px" className={classes} {...rest}>
             {tabList.map((tab, idx) => (
                 <Button
+                    disabled={tab.disabled}
                     size="large"
                     type="text"
                     onClick={() => {
