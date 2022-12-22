@@ -10,11 +10,27 @@ import styles from "./Text.module.scss"
 
 interface TextProps extends defaultProps {
     as?: "span" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
+    size?: "small" | "medium" | "large"
+    type?: "defalut" | "link"
 }
 
-const Text = ({ as = "span", ...rest }: TextProps) => {
+const Text = ({ as = "span", size = "medium", className, show, type, ...rest }: TextProps) => {
     const TextNode = `${as}` as keyof JSX.IntrinsicElements
-    return <TextNode className={classNames(styles[`text`])} {...rest} />
+    const prefixCls = `text`
+    return (
+        <TextNode
+            className={classNames(
+                styles[prefixCls],
+                {
+                    [styles[`${prefixCls}--hide`]]: show === false,
+                    [styles[`${prefixCls}--${size}`]]: size,
+                    [styles[`${prefixCls}--${type}`]]: type,
+                },
+                className,
+            )}
+            {...rest}
+        />
+    )
 }
 const Typography = {
     Text,
