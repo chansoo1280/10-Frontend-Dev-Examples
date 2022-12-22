@@ -1,5 +1,5 @@
 // #region Global Imports
-import React, { ChangeEvent, ChangeEventHandler, MouseEventHandler, useRef, useState } from "react"
+import React, { useState } from "react"
 import classNames from "classnames"
 // #endregion Global Imports
 
@@ -12,7 +12,7 @@ import useClickAnimating from "@Hooks/useClickAnimating"
 interface SearchProps extends defaultProps {
     size?: "small" | "medium" | "large"
     value: string
-    onChange: ChangeEventHandler<HTMLInputElement>
+    onChange: React.ChangeEventHandler<HTMLInputElement>
     onSearch: (value: string) => void
     placeholder?: string
     "data-click-animating"?: boolean
@@ -33,20 +33,16 @@ const Search = (props: SearchProps): JSX.Element => {
     const handleClick = () => {
         execClickAnimation()
     }
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         onChange(e)
         setValue(e.currentTarget.value)
     }
     return (
-        <Space onClick={handleClick} gap={0} padding={0} className={classes} {...rest} data-click-animating={isClick === true}>
+        <Space onClick={handleClick} gap="0" padding={0} className={classes} {...rest} data-click-animating={isClick === true}>
             <Input size={size} placeholder={placeholder} disabled={disabled} value={innerValue} onChange={handleChange} className={classNames(styles[`${prefixCls}__input`])} />
-            <Button
-                size={size}
-                disabled={disabled}
-                onClick={() => onSearch(innerValue)}
-                icon={<Icon iconName="xi-search" irText="검색" />}
-                className={classNames(styles[`${prefixCls}__btn`])}
-            ></Button>
+            <Button size={size} disabled={disabled} onClick={() => onSearch(innerValue)} className={classNames(styles[`${prefixCls}__btn`])}>
+                Search
+            </Button>
         </Space>
     )
 }
