@@ -1,15 +1,19 @@
 @import "@Styles/scss/default.scss";
 $btn:"btn";
+
 .#{$btn} {
-    position:relative;
+    position: relative;
     cursor: pointer;
     padding: 4px 15px;
-    &--icon-only{
+
+    &--icon-only {
         padding: 4px 8px;
     }
-    &>i{
-        font-size:inherit;
+
+    &>i {
+        font-size: inherit;
     }
+
     height:32px;
     border: 1px solid $primary-6;
     border-radius: $border-radius;
@@ -22,142 +26,166 @@ $btn:"btn";
     line-height:22px;
     color:$white;
     box-shadow:0 2px 0 rgba($black, 0.043);
-    transition:background-color .2s ease, border-color .2s ease, color .2s ease;
+    transition:background-color .2s ease,
+    border-color .2s ease,
+    color .2s ease;
     @include click-animating("");
+
     &:focus {
         outline: none;
     }
-    &:hover, &:focus {
+
+    &:hover,
+    &:focus {
         @include set-color($white, $primary-5, $primary-5);
     }
+
     &:active {
-        @include set-color($white, $primary-7, $primary-7 );
-        
+        @include set-color($white, $primary-7, $primary-7);
+
     }
-    &[disabled] {
-        @include disabled-color();
-    } 
+
     &--secondary {
         @include set-color(rgba($black, 0.85), $white, $gray-5);
-        &:hover, &:focus {
+
+        &:hover,
+        &:focus {
             @include set-color($primary-5, $white, $primary-5);
         }
-        &[disabled] {
-            @include disabled-color();
-        }
     }
+
     &--dashed {
         @include set-color(rgba($black, 0.85), $white, $gray-5);
-        border-style:dashed;
-        &:hover, &:focus {
+        border-style: dashed;
+
+        &:hover,
+        &:focus {
             @include set-color($primary-6, $white, $primary-6);
         }
-        &[disabled] {
-            @include disabled-color();
-        }
     }
+
     &--link {
         @include set-color($primary-6, transparent, transparent);
         box-shadow: none;
-        &:hover, &:focus {
+
+        &:hover,
+        &:focus {
             @include set-color($primary-6, transparent, transparent);
         }
-        &[data-click-animating=true]:after{
-            animation:none;
+
+        &[data-click-animating=true]:after {
+            animation: none;
         }
-        &[disabled] {
-            @include disabled-text-color();
-        }
+
     }
+
     &--text {
         @include set-color(rgba($black, 0.85), transparent, transparent);
         box-shadow: none;
-        &:hover, &:focus {
+
+        &:hover,
+        &:focus {
             @include set-color(rgba($black, 0.85), $gray-2, transparent);
         }
-        &[data-click-animating=true]:after{
-            animation:none;
-        }
-        &[disabled] {
-            @include disabled-text-color();
+
+        &[data-click-animating=true]:after {
+            animation: none;
         }
     }
 
 
     &--danger {
-        @include set-color($white, $danger-5, $danger-5 );
-        &:hover, &:focus {
+        @include set-color($white, $danger-5, $danger-5);
+
+        &:hover,
+        &:focus {
             @include set-color($white, $danger-4, $danger-5);
         }
-        &:after{
+
+        &:after {
             @include set-color("", "", rgba($danger-5, 0.1));
         }
-        &[disabled] {
-            @include disabled-color();
-        }
+
         &.#{$btn}--secondary {
             @include set-color($danger-5, $white, $danger-5);
-            &:hover, &:focus {
+
+            &:hover,
+            &:focus {
                 @include set-color($danger-4, $white, $danger-4);
             }
-            &[disabled] {
-                @include disabled-color();
-            }
         }
+
         &.#{$btn}--dashed {
             @include set-color($danger-5, $white, $danger-5);
-            &:hover, &:focus {
+
+            &:hover,
+            &:focus {
                 @include set-color($danger-4, $white, $danger-4);
             }
-            &[disabled] {
-                @include disabled-color();
-            }
         }
+
         &.#{$btn}--link {
             @include set-color($danger-5, transparent, transparent);
-            &:hover, &:focus {
+
+            &:hover,
+            &:focus {
                 @include set-color($danger-4, transparent, transparent);
             }
-            &[disabled] {
-                @include disabled-text-color();
-            }
         }
+
         &.#{$btn}--text {
             @include set-color($danger-5, transparent, transparent);
-            &:hover, &:focus {
+
+            &:hover,
+            &:focus {
                 @include set-color($danger-4, $gray-2, transparent);
-            }
-            &[disabled] {
-                @include disabled-text-color();
             }
         }
     }
-    
-    &--round{
+
+    &[disabled]:hover,
+    &[disabled] {
+        @include disabled-color();
+
+        &.#{$btn}--text,
+        &.#{$btn}--link {
+            @include disabled-text-color();
+        }
+
+    }
+
+    &--round {
         border-radius: $border-radius;
     }
+
     &--circle {
         border-radius: $border-radius-circle;
     }
-    &--large{
-        padding:6.4px 15px;
-        height:40px;
-        font-size:16px;
-        &.#{$btn}--icon-only{
+
+    &--large {
+        padding: 6.4px 15px;
+        height: 40px;
+        font-size: 16px;
+
+        &.#{$btn}--icon-only {
             padding: 6.4px 11px;
         }
     }
-    &--small{
-        padding:0px 7px;
-        height:24px;
-        &.#{$btn}--icon-only{
+
+    &--small {
+        padding: 0px 7px;
+        height: 24px;
+
+        &.#{$btn}--icon-only {
             padding: 0px 4px;
         }
     }
+
     &--hide {
         display: none;
     }
 }
+
 /* .btn {
     padding: 0 10px;
     display: inline-flex;
