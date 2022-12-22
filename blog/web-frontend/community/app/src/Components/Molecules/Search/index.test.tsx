@@ -24,7 +24,7 @@ describe("Search", () => {
         const input = screen.getByPlaceholderText("검색어를 입력해주세요")
         fireEvent.change(input, { target: { value: "asdfasdf" } })
         expect(input).toHaveValue("asdfasdf")
-        const button = screen.getByText("검색")
+        const button = screen.getByText("Search")
         fireEvent.click(button)
         expect(handleSearch).toBeCalledTimes(1)
     })

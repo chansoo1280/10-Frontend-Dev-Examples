@@ -33,6 +33,6 @@ describe("QuestionList", () => {
 
         const questionList = screen.getByTestId("questionList")
         expect(questionList).toBeInTheDocument()
-        expect(questionList).toHaveClass("questionList")
+        expect(questionList).toHaveClass("question-list")
     })
 })

@@ -17,19 +17,11 @@ exports[`Search renders search unchanged 1`] = `
       />
     </div>
     <button
-      class="btn btn--primary btn--icon-only search__btn"
+      class="btn btn--primary search__btn"
       data-click-animating="false"
       type="button"
     >
-      <i
-        class="className xi-icon xi-search"
-      >
-        <span
-          class="ir"
-        >
-          검색
-        </span>
-      </i>
+      Search
     </button>
   </div>
 </div>

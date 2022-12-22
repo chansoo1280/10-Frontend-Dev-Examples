@@ -9,7 +9,9 @@ exports[`SiteHeader renders siteHeader unchanged 1`] = `
     <div
       class="space__box"
     >
-      <span>
+      <span
+        class="text text--medium site-header__title"
+      >
         Exeample Project
       </span>
     </div>
