@@ -30,7 +30,7 @@ const Tabs = (props: TabsProps): JSX.Element => {
         className,
     )
     return (
-        <Space gap="32px" padding="0 16px" className={classes} {...rest}>
+        <Space widthType="wide" gap="32px" padding="0 16px" className={classes} {...rest}>
             {tabList.map((tab, idx) => (
                 <Button
                     disabled={tab.disabled}
