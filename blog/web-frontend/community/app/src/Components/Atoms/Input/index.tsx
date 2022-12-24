@@ -21,10 +21,11 @@ interface InputProps extends defaultProps {
     prefix?: React.ReactNode
     suffix?: React.ReactNode
     placeholder?: string
+    widthType?: "wide"
 }
 
 const Input = (props: InputProps, ref?: React.Ref<HTMLInputElement>) => {
-    const { value, show, size, className, onChange, onBlur, onEnter, disabled, prefix, suffix, placeholder, ...rest } = props
+    const { value, show, size, className, onChange, onBlur, onEnter, disabled, prefix, suffix, placeholder, widthType, ...rest } = props
     const inputRef = useRef<HTMLInputElement>(null)
     const [innerValue, setValue] = useState(value)
     const [focused, setFocused] = useState(false)
@@ -39,6 +40,7 @@ const Input = (props: InputProps, ref?: React.Ref<HTMLInputElement>) => {
             [styles[`${prefixCls}--focus`]]: focused,
             [styles[`${prefixCls}--have-prefix`]]: prefix,
             [styles[`${prefixCls}--have-suffix`]]: suffix,
+            [styles[`${prefixCls}--${widthType}`]]: widthType,
         },
         className,
     )

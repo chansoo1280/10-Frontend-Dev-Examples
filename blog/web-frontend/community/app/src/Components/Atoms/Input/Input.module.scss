@@ -14,6 +14,10 @@ $input:"input";
     @include set-color(rgba($black, .85), $white, $gray-5);
     @include click-animating("");
 
+    &--wide {
+        width: 100%;
+    }
+
     &--disabled {
         @include disabled-color();
     }
