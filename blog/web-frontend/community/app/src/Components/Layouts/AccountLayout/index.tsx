@@ -20,7 +20,6 @@ const AccountLayout = ({ children }: LayoutProps, ref: React.ForwardedRef<HTMLDi
             </Head>
             <div ref={ref} id="wrap" className={classNames(prefixCls, styles["account-layout"])}>
                 {children}
-                AccountLayout
             </div>
         </>
     )

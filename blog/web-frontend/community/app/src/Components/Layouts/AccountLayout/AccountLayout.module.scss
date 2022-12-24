@@ -1,1 +1,6 @@
-.account-layout {}
+@import "@Styles/scss/default.scss";
+
+.account-layout {
+    background-color: $bg-color;
+    height: 100%;
+}
