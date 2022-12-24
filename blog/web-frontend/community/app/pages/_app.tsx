@@ -5,7 +5,6 @@ import { Roboto } from "@next/font/google"
 
 // #region Local Imports
 import "@Styles/reset.css"
-import "@Utils/DateFormat"
 import { createRef } from "react"
 import TheLayout, { Layout } from "@Components/Layouts"
 // #endregion Local Imports
