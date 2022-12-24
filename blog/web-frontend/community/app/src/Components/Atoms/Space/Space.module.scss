@@ -1,11 +1,15 @@
 @import "@Styles/scss/default.scss";
+$space: "space";
 
-.space {
+.#{$space} {
     display: flex;
     align-items: center;
     padding: 8px 12px;
-    width: 100%;
     gap: 8px;
+
+    &--wide {
+        width: 100%;
+    }
 
     &--white {
         background-color: $white;

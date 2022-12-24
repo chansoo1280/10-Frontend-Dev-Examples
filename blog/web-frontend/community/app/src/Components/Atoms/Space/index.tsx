@@ -18,9 +18,10 @@ export interface SpaceProps extends defaultProps {
     separator?: React.ReactNode
     bgType?: "white"
     as?: "div" | "li"
+    widthType?: "wide"
 }
 const Space = (props: SpaceProps): JSX.Element => {
-    const { as = "div", separator, direction, align, size, show, className, gap, padding, children, bgType, ...rest } = props
+    const { as = "div", separator, direction, align, size, show, className, gap, padding, children, bgType, widthType, ...rest } = props
     const prefixCls = "space"
     const classes = classNames(
         styles[`${prefixCls}`],
@@ -30,6 +31,7 @@ const Space = (props: SpaceProps): JSX.Element => {
             [styles[`${prefixCls}--${direction}`]]: direction,
             [styles[`${prefixCls}--${align}`]]: align,
             [styles[`${prefixCls}--${bgType}`]]: bgType,
+            [styles[`${prefixCls}--${widthType}`]]: widthType,
         },
         className,
     )
