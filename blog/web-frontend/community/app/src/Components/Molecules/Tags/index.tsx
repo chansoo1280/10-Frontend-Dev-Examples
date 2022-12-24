@@ -14,7 +14,7 @@ interface BaseTag {
     color?: "magenta" | "green" | "red" | "volcano" | "orange" | "gold" | "lime" | "cyan" | "blue" | "geekblue" | "purple"
 }
 interface defaultTag extends BaseTag {
-    type: "default"
+    type?: "default"
 }
 interface deletableTag extends BaseTag {
     type: "deletable"
