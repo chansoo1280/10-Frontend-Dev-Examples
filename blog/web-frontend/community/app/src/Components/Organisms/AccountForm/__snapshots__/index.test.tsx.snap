@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AccountForm renders accountForm unchanged 1`] = `
+<div>
+  <div
+    class="space space--vertical space--flex-start space--wide account-form"
+    style="gap: 22px; padding: 16px 24px;"
+  >
+    <span
+      class="text text--medium account-form__title"
+    >
+      Example Project
+    </span>
+    <div
+      class="space space--wide"
+      style="padding: 0px;"
+    >
+      <span
+        class="text text--medium account-form__header"
+      />
+    </div>
+  </div>
+</div>
+`;

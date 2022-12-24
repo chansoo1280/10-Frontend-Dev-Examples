@@ -10,6 +10,6 @@ describe("AccountForm", () => {
 
         const accountForm = screen.getByTestId("accountForm")
         expect(accountForm).toBeInTheDocument()
-        expect(accountForm).toHaveClass("space", "site-header")
+        expect(accountForm).toHaveClass("space", "space--vertical", "space--flex-start", "space--wide", "account-form")
     })
 })
