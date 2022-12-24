@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IconList renders iconList unchanged 1`] = `
+<div>
+  <div
+    class="space icon-list"
+    style="gap: 16px; padding: 5px 0px;"
+  />
+</div>
+`;
