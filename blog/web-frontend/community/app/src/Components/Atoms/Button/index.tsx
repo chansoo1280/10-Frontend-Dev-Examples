@@ -23,6 +23,7 @@ interface BaseButtonProps extends defaultProps {
     danger?: boolean
     loading?: boolean
     desc?: string
+    widthType?: "wide"
 }
 type AnchorButtonProps = {
     href?: string | UrlObject
@@ -40,7 +41,7 @@ type NativeButtonProps = {
 type ButtonProps = Partial<AnchorButtonProps & NativeButtonProps>
 
 const Button = (props: ButtonProps): JSX.Element => {
-    const { href, icon, loading, show, htmlType = "button", size, type = "primary", shape, className, children, danger, desc, ...rest } = props
+    const { widthType, href, icon, loading, show, htmlType = "button", size, type = "primary", shape, className, children, danger, desc, ...rest } = props
     const { innerLoading } = useLoading({ loading })
     const { isClick, execClickAnimation } = useClickAnimating()
 
@@ -69,6 +70,7 @@ const Button = (props: ButtonProps): JSX.Element => {
             [styles[`${prefixCls}--icon-only`]]: !children && children !== 0 && !!iconType,
             [styles[`${prefixCls}--loading`]]: innerLoading,
             [styles[`${prefixCls}--danger`]]: danger,
+            [styles[`${prefixCls}--${widthType}`]]: widthType,
         },
         className,
     )

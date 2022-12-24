@@ -155,6 +155,10 @@ $btn:"btn";
 
     }
 
+    &--wide {
+        width: 100%;
+    }
+
     &--round {
         border-radius: $border-radius;
     }
