@@ -14,7 +14,7 @@ const myLoader: ImageLoader = ({ src, width, quality }) => {
 }
 const SiteHeader = (props: defaultProps): JSX.Element => {
     const { show, className, ...rest } = props
-    const user = {}
+    const user = null
     const prefixCls = "site-header"
     const classes = classNames(
         styles[`${prefixCls}`],
@@ -31,19 +31,23 @@ const SiteHeader = (props: defaultProps): JSX.Element => {
             </Space.Box>
             <Button className={classNames(styles[`${prefixCls}__btn`])} size="small" type="text" icon={<Icon iconName="xi-search" />} />
             <Button className={classNames(styles[`${prefixCls}__btn`])} size="small" type="text" icon={<Icon iconName="xi-help-o" />} />
-            <Button className={classNames(styles[`${prefixCls}__btn`])} size="small" type="text" icon={<Icon iconName="xi-bell-o" />} />
+            {user !== null && (
+                <>
+                    <Button className={classNames(styles[`${prefixCls}__btn`])} size="small" type="text" icon={<Icon iconName="xi-bell-o" />} />
 
-            <Button className={classNames(styles[`${prefixCls}__btn`])} size="small" type="text">
-                <Image loader={myLoader} src="me.png" alt="Picture of the user" width={24} height={24} />
-                username
-            </Button>
+                    <Button className={classNames(styles[`${prefixCls}__btn`])} size="small" type="text">
+                        <Image loader={myLoader} src="me.png" alt="Picture of the user" width={24} height={24} />
+                        username
+                    </Button>
+                </>
+            )}
 
             <Button className={classNames(styles[`${prefixCls}__btn`])} size="small" type="text" icon={<Icon iconName="xi-translate" />} />
             <Space show={user === null}>
-                <Button href={"/login"} size="small">
+                <Button href={"/account/login"} size="small">
                     Log in
                 </Button>
-                <Button className={classNames(styles[`${prefixCls}__btn`])} size="small" type="secondary">
+                <Button href={"/account/register"} className={classNames(styles[`${prefixCls}__btn`])} size="small" type="secondary">
                     Register
                 </Button>
             </Space>
