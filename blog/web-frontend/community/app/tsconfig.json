@@ -32,8 +32,6 @@
         "@Server/*": ["server/*"],
         "@Services": ["src/Services"],
         "@Services/*": ["src/Services/*"],
-        "@Utils": ["src/Utils"],
-        "@Utils/*": ["src/Utils/*"],
         "@Styles/*": ["src/Styles/*"],
         "@Assets/*": ["src/Assets/*"],
         "@Test/*": ["src/Test/*"],
