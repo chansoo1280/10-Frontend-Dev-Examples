@@ -24,6 +24,7 @@ $btn:"btn";
     background: $primary-6;
     font-size:14px;
     line-height:22px;
+    white-space: nowrap;
     color:$white;
     box-shadow:0 2px 0 rgba($black, 0.043);
     transition:background-color .2s ease,
