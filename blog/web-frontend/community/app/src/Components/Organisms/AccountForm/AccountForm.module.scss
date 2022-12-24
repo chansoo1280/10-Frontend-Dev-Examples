@@ -1,0 +1,18 @@
+@import "@Styles/scss/default.scss";
+
+.account-form {
+    margin: 0 auto;
+    width: 320px;
+    padding: 8px 0;
+
+    &__title {
+        padding: 81px 0 57px;
+        font-size: 24px;
+        line-height: 32px;
+        font-weight: 700;
+    }
+
+    &__header {
+        font-weight: 500;
+    }
+}
