@@ -1,5 +1,6 @@
 // #region Global Imports
 import React from "react"
+import { useRouter } from "next/router"
 // #endregion Global Imports
 
 // #region Local Imports
@@ -10,6 +11,7 @@ import { PageProps } from "../_app"
 
 const { Text } = Typography
 const Login = () => {
+    const router = useRouter()
     return (
         <>
             <AccountForm header="Register">
@@ -42,7 +44,7 @@ const Login = () => {
                         throw new Error("Function not implemented.")
                     }}
                 />
-                <Space padding="0" widthType="wide">
+                <AccountForm.Row>
                     <Input
                         size="large"
                         placeholder="Verification code"
@@ -54,15 +56,15 @@ const Login = () => {
                     <Button size="large" type="secondary">
                         인증번호 받기
                     </Button>
-                </Space>
-                <Space padding="0" widthType="wide">
+                </AccountForm.Row>
+                <AccountForm.Row>
                     <Space.Box>
                         <Button size="large">회원가입</Button>
                     </Space.Box>
-                    <Button href="/" type="link">
+                    <Button onClick={() => router.back()} type="link">
                         이전으로
                     </Button>
-                </Space>
+                </AccountForm.Row>
             </AccountForm>
         </>
     )

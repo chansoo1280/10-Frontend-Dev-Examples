@@ -14,13 +14,13 @@ const Login = () => {
     const router = useRouter()
     return (
         <>
-            <AccountForm header="Login">
+            <AccountForm header="Reset Password">
                 <Input
                     widthType="wide"
                     size="large"
                     prefix={<Icon iconName="xi-user-o" />}
-                    placeholder="Email"
-                    type="email"
+                    placeholder="Password(6 digits at least, case sensitive)"
+                    type="password"
                     value={""}
                     onChange={function (event: React.ChangeEvent<HTMLInputElement>): void {
                         throw new Error("Function not implemented.")
@@ -30,34 +30,16 @@ const Login = () => {
                     widthType="wide"
                     size="large"
                     prefix={<Icon iconName="xi-lock-o" />}
-                    placeholder="Password"
+                    placeholder="Comfirm password"
                     type="password"
                     value={""}
                     onChange={function (event: React.ChangeEvent<HTMLInputElement>): void {
                         throw new Error("Function not implemented.")
                     }}
                 />
-                <AccountForm.Row>
-                    <Space.Box>
-                        <Checkbox
-                            onChange={function (event: React.ChangeEvent<HTMLInputElement>): void {
-                                throw new Error("Function not implemented.")
-                            }}
-                            label="로그인 유지하기"
-                        />
-                    </Space.Box>
-                    <Button href={"/account/find-pw"} size="small" type="link">
-                        비밀번호를 잊으셨나요?
-                    </Button>
-                </AccountForm.Row>
-                <AccountForm.Row>
-                    <Space.Box>
-                        <Button size="large">로그인</Button>
-                    </Space.Box>
-                    <Button onClick={() => router.back()} type="link">
-                        이전으로
-                    </Button>
-                </AccountForm.Row>
+                <Button widthType="wide" size="large">
+                    저장
+                </Button>
             </AccountForm>
         </>
     )
