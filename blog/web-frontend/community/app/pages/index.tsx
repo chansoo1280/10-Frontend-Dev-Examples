@@ -1,13 +1,10 @@
 // #region Global Imports
 import Head from "next/head"
-import Link from "next/link"
 import { ChangeEvent, useState } from "react"
-import Image, { ImageLoader } from "next/image"
-import classNames from "classnames"
 // #endregion Global Imports
 
 // #region Local Imports
-import { Tabs, Space, Typography, Button, Search, Tags, Icon, QuestionList, Card } from "@Components"
+import { Tabs, Space, Typography, Button, Search, Tags, QuestionList, Card } from "@Components"
 import { Tab } from "@Components/Molecules/Tabs"
 import { Tag } from "@Components/Molecules/Tags"
 // #endregion Local Imports
@@ -29,7 +26,7 @@ const Home = () => {
             </Head>
             <div>
                 <Space padding="13px 8px 0" bgType="white" direction="vertical">
-                    <Space>
+                    <Space widthType="wide">
                         <Space.Box>
                             <Text>커뮤니티</Text>
                         </Space.Box>
@@ -57,7 +54,7 @@ const Home = () => {
                             separator: <div style={{ width: "100%", height: "1px", background: "#0000000F" }}></div>,
                         }}
                     >
-                        <Space padding="24px">
+                        <Space widthType="wide" padding="24px">
                             <Text>Category :</Text>
                             <Space.Box>
                                 <Tags
@@ -83,28 +80,28 @@ const Home = () => {
                                     userId: "1",
                                 },
                                 {
-                                    questionId: "1",
+                                    questionId: "2",
                                     title: "title",
                                     href: "#a",
-                                    userId: "1",
+                                    userId: "2",
                                 },
                                 {
-                                    questionId: "1",
+                                    questionId: "3",
                                     title: "title",
                                     href: "#a",
-                                    userId: "1",
+                                    userId: "3",
                                 },
                                 {
-                                    questionId: "1",
+                                    questionId: "4",
                                     title: "title",
                                     href: "#a",
-                                    userId: "1",
+                                    userId: "4",
                                 },
                                 {
-                                    questionId: "1",
+                                    questionId: "5",
                                     title: "title",
                                     href: "#a",
-                                    userId: "1",
+                                    userId: "5",
                                 },
                             ]}
                         />
