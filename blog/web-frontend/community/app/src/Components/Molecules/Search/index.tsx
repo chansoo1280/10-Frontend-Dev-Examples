@@ -4,7 +4,7 @@ import classNames from "classnames"
 // #endregion Global Imports
 
 // #region Local Imports
-import { defaultProps, Space, Input, Button, Icon } from "@Components"
+import { defaultProps, Space, Input, Button } from "@Components"
 import styles from "./Search.module.scss"
 import useClickAnimating from "@Hooks/useClickAnimating"
 // #endregion Local Imports
