@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QuestionAuthorInfo renders questionAuthorInfo unchanged 1`] = `
+<div>
+  <span
+    class="text text--small question-author-info"
+  >
+    <button
+      class="btn btn--small btn--link"
+      data-click-animating="false"
+      type="button"
+    >
+      <img
+        alt="Picture of the user"
+        data-nimg="1"
+        decoding="async"
+        height="24"
+        loading="lazy"
+        src="/public/Images/me.png?w=48&q=75"
+        srcset="/public/Images/me.png?w=32&q=75 1x, /public/Images/me.png?w=48&q=75 2x"
+        style="color: transparent;"
+        width="24"
+      />
+    </button>
+    published at
+     
+    <span
+      class="text text--small text--link"
+    >
+      https://ant.design
+    </span>
+    <span
+      class="text text--small question-author-info__date"
+    />
+  </span>
+</div>
+`;

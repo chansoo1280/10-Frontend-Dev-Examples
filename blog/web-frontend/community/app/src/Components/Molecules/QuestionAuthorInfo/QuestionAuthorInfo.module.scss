@@ -1,0 +1,9 @@
+@import "@Styles/scss/default.scss";
+
+.question-author-info {
+
+    &__date {
+        padding-left: 16px;
+        color: $black-25;
+    }
+}
