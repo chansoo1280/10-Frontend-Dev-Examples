@@ -6,6 +6,7 @@ import classNames from "classnames"
 // #region Local Imports
 import { defaultProps, Space, Button } from "@Components"
 import styles from "./Breadcrumbs.module.scss"
+import { SpaceProps } from "@Components/Atoms/Space"
 // #endregion Local Imports
 
 export interface Breadcrumb {
@@ -14,10 +15,11 @@ export interface Breadcrumb {
 }
 interface BreadcrumbsProps extends defaultProps {
     breadcrumbList: Breadcrumb[]
+    BoxProps?: SpaceProps
 }
 
 const Breadcrumbs = (props: BreadcrumbsProps): JSX.Element => {
-    const { breadcrumbList, show, className, ...rest } = props
+    const { breadcrumbList, BoxProps, show, className, ...rest } = props
     const breadcrumbListLen = breadcrumbList.length
     const prefixCls = "breadcrumbs"
     const classes = classNames(
@@ -28,7 +30,7 @@ const Breadcrumbs = (props: BreadcrumbsProps): JSX.Element => {
         className,
     )
     return (
-        <Space separator="/" className={classes} {...rest}>
+        <Space separator="/" className={classes} {...BoxProps} {...rest}>
             {breadcrumbList.map((breadcrumb, idx) => (
                 <Button
                     size="small"
