@@ -25,7 +25,7 @@ const Card = (props: CardProps): JSX.Element => {
         className,
     )
     return (
-        <Space className={classes} {...BoxProps} {...rest}>
+        <Space className={classes} style={{ padding }} {...BoxProps} {...rest}>
             {children}
         </Space>
     )
