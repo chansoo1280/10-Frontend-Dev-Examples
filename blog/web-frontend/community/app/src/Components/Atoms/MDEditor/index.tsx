@@ -12,14 +12,16 @@ import styles from "./MDEditor.module.scss"
 // #endregion Local Imports
 
 const ReactMDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false })
+const MarkdownPreview = dynamic(() => import("@uiw/react-markdown-preview"), { ssr: false })
 
 interface MDEditorProps extends defaultProps {
     value: string
-    onChange: ChangeEventHandler<HTMLTextAreaElement>
+    onChange?: ChangeEventHandler<HTMLTextAreaElement>
+    type?: "preview"
 }
 
 const MDEditor = (props: MDEditorProps): JSX.Element => {
-    const { value, show, className, onChange, ...rest } = props
+    const { type, value, show, className, onChange, ...rest } = props
     const [innerValue, setValue] = useState(value)
     const prefixCls = "MD-editor"
     const classes = classNames(
@@ -31,7 +33,7 @@ const MDEditor = (props: MDEditorProps): JSX.Element => {
     )
     const handleChange = (markdownText?: string, e?: ChangeEvent<HTMLTextAreaElement>) => {
         setValue(markdownText || "")
-        if (e !== undefined) {
+        if (e !== undefined && onChange) {
             onChange(e)
         }
     }
@@ -42,6 +44,6 @@ const MDEditor = (props: MDEditorProps): JSX.Element => {
         onChange: handleChange,
         ...rest,
     }
-    return <ReactMDEditor {...editorProps} />
+    return type === "preview" ? <MarkdownPreview className={classes} style={{ minHeight: 100 }} source={innerValue} /> : <ReactMDEditor {...editorProps} />
 }
 export default MDEditor
