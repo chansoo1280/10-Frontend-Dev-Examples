@@ -5,10 +5,11 @@ import classNames from "classnames"
 
 // #region Local Imports
 import { defaultProps } from "@Components"
+import Typography from "../Typography"
 import { useClickAnimating } from "@Hooks"
 import styles from "./Checkbox.module.scss"
 // #endregion Local Imports
-
+const { Text } = Typography
 interface CheckboxProps extends defaultProps {
     checked?: boolean
     onChange: ChangeEventHandler<HTMLInputElement>
@@ -54,7 +55,11 @@ const Checkbox = (props: CheckboxProps): JSX.Element => {
     return (
         <div {...boxProps}>
             <input type="checkbox" {...checkboxProps} />
-            {label && <label htmlFor={id}>{label}</label>}
+            {label && (
+                <label htmlFor={id}>
+                    <Text size="small">{label}</Text>
+                </label>
+            )}
         </div>
     )
 }
