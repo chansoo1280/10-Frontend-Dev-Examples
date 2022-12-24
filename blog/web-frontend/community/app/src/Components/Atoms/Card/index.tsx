@@ -9,13 +9,8 @@ import styles from "./Card.module.scss"
 import { SpaceProps } from "../Space"
 // #endregion Local Imports
 
-export interface CardProps extends defaultProps {
-    padding?: string | number
-    onClick?: React.MouseEventHandler
-    BoxProps?: SpaceProps
-}
-const Card = (props: CardProps): JSX.Element => {
-    const { show, className, padding, children, BoxProps, ...rest } = props
+const Card = (props: SpaceProps): JSX.Element => {
+    const { show, className, children, ...rest } = props
     const prefixCls = "card"
     const classes = classNames(
         styles[`${prefixCls}`],
@@ -25,14 +20,25 @@ const Card = (props: CardProps): JSX.Element => {
         className,
     )
     return (
-        <Space className={classes} style={{ padding }} {...BoxProps} {...rest}>
+        <Space className={classes} {...rest}>
             {children}
         </Space>
     )
 }
-const Wrap = (props: defaultProps) => {
-    const { ...rest } = props
-    return <div className={classNames(styles[`card-wrap`])} {...rest} />
+interface CardWrapProps extends defaultProps {
+    padding?: string | number
+}
+const Wrap = (props: CardWrapProps) => {
+    const { padding, ...rest } = props
+    return (
+        <div
+            className={classNames(styles[`card-wrap`])}
+            style={{
+                padding,
+            }}
+            {...rest}
+        />
+    )
 }
 Card.wrap = Wrap
 export default Card
