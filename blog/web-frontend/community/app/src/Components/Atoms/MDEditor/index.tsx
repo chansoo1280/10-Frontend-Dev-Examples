@@ -1,5 +1,5 @@
 // #region Global Imports
-import React, { ChangeEvent, ChangeEventHandler, useRef, useState } from "react"
+import React, { ChangeEvent, ChangeEventHandler, useState } from "react"
 import classNames from "classnames"
 import "@uiw/react-md-editor/markdown-editor.css"
 import "@uiw/react-markdown-preview/markdown.css"
@@ -8,7 +8,6 @@ import dynamic from "next/dynamic"
 
 // #region Local Imports
 import { defaultProps } from "@Components"
-import { useClickAnimating } from "@Hooks"
 import styles from "./MDEditor.module.scss"
 // #endregion Local Imports
 
