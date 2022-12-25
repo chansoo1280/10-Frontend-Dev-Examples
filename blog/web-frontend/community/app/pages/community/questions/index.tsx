@@ -1,21 +1,24 @@
 // #region Global Imports
 import Head from "next/head"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 // #endregion Global Imports
 
 // #region Local Imports
 import { Tabs, Space, Typography, Button, Search, Tags, QuestionList, Card } from "@Components"
 import { Tab } from "@Components/Molecules/Tabs"
 import { Tag } from "@Components/Molecules/Tags"
+import { Http } from "@Services"
 // #endregion Local Imports
 
 const { Text } = Typography
-const Question = () => {
+const Question = (props: { email: any }) => {
+    console.log(props.email)
     const [activeIdx, setActiveIdx] = useState(0)
     const [tabList, _] = useState([{ title: "Question" }, { title: "Articles", disabled: true }])
     const onClickTab = (tab: Tab, idx: number) => {
         setActiveIdx(idx)
     }
+
     return (
         <>
             <Head>
@@ -104,4 +107,12 @@ const Question = () => {
     )
 }
 
+export async function getStaticProps() {
+    const email = await Http.Request<string>("GET", "/api/userList/1", { email: "chansoo1280@naver.com" })
+    return {
+        props: {
+            email,
+        }, // will be passed to the page component as props
+    }
+}
 export default Question

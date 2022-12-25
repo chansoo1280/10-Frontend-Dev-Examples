@@ -7,36 +7,38 @@ import queryString from "query-string"
 import { HttpModel } from "./Http.d"
 // #endregion Interface Imports
 
-// const BaseUrl = `http://localhost:10001`
-const BaseUrl = `/`
+const BaseUrl = `http://localhost:3000`
+// const BaseUrl = `/`
+const defaultOptions = {
+    // cache: "no-cache",
+    headers: {
+        "content-type": "application/json",
+        SECRET: "secret",
+    },
+}
 export const Http = {
-    Request: async (methodType: HttpModel.IRequestMethodType, url: string, params?: HttpModel.IRequestQueryPayload, payload?: HttpModel.IRequestPayload): Promise<unknown> =>
-        new Promise((resolve, reject) => {
-            const query = params
-                ? `?${queryString.stringify({
-                      ...params,
-                      api_key: process.env.NEXT_PUBLIC_API_KEY,
-                  })}`
-                : ""
+    Request: async <T>(methodType: HttpModel.IRequestMethodType, url: string, params?: HttpModel.IRequestQueryPayload | null, payload?: HttpModel.IRequestPayload): Promise<T> => {
+        const query = params
+            ? `?${queryString.stringify({
+                  ...params,
+                  api_key: process.env.NEXT_PUBLIC_API_KEY,
+              })}`
+            : ""
 
-            fetch(`${BaseUrl}${url}${query}`, {
-                body: JSON.stringify(payload),
-                // cache: "no-cache",
-                headers: {
-                    "content-type": "application/json",
-                    SECRET: "secret",
-                },
-                method: `${methodType}`,
-            })
-                .then(async (response) => {
-                    if (response.status === 200) {
-                        return response.json().then((res) => {
-                            console.log(res)
-                            resolve(res)
-                        })
-                    }
-                    return reject(response)
-                })
-                .catch((e) => reject(e))
-        }),
+        return fetch(
+            `${BaseUrl}${url}${query}`,
+            methodType === "GET"
+                ? {
+                      method: `${methodType}`,
+                      ...defaultOptions,
+                  }
+                : {
+                      body: JSON.stringify(payload || "") || null,
+                      method: `${methodType}`,
+                      ...defaultOptions,
+                  },
+        ).then(async (response) => {
+            return response.json()
+        })
+    },
 }
