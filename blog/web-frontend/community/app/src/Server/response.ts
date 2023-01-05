@@ -3,7 +3,15 @@ export interface ErrorRes {
     message: string
 }
 
-export const errorRes: ErrorRes = {
-    state: 403,
-    message: "error",
-}
+export const errorRes: {
+    [k: number]: ErrorRes
+} = {
+    403: {
+        state: 403,
+        message: "Forbidden",
+    },
+    400: {
+        state: 400,
+        message: "Bad Request",
+    },
+} as const
