@@ -7,7 +7,8 @@ import { ChangeEvent, useEffect, useState } from "react"
 import { Tabs, Space, Typography, Button, Search, Tags, QuestionList, Card } from "@Components"
 import { Tab } from "@Components/Molecules/Tabs"
 import { Tag } from "@Components/Molecules/Tags"
-import { Http } from "@Services"
+import { APIUserGET, Http, ReqType } from "@Services"
+import { ErrorRes } from "@Server/response"
 // #endregion Local Imports
 
 const { Text } = Typography
@@ -108,10 +109,21 @@ const Question = (props: { email: any }) => {
 }
 
 export async function getStaticProps() {
-    const email = await Http.Request<string>("GET", "/api/userList/1", { email: "chansoo1280@naver.com" })
+    const result = await Http<APIUserGET>(ReqType.GET, "/api/userList/24").catch((e: ErrorRes) => {
+        switch (e.state) {
+            case 204:
+                console.log("유저가 없습니다.")
+                break
+
+            default:
+                break
+        }
+        return null
+    })
+    const user = result ? result.data : null
     return {
         props: {
-            email,
+            email: user?.email,
         }, // will be passed to the page component as props
     }
 }

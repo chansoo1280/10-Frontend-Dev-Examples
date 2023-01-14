@@ -8,6 +8,16 @@ const db = mysql({
         password: process.env.MYSQL_PASSWORD,
     },
 })
+export type QueryResult = {
+    fieldCount: number
+    affectedRows: number
+    insertId: number
+    serverStatus: number
+    warningCount: number
+    message: string
+    protocol41: boolean
+    changedRows: number
+}
 export default async function excuteQuery<T>({ query, values }: { query: string; values: any }): Promise<Awaited<T>> {
     const results = await db.query<T>(query, values)
     await db.end()
