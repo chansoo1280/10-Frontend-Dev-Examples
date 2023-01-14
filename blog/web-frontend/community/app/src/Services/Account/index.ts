@@ -21,8 +21,15 @@ export function generateRefreshToken(user: jwt.JwtPayload) {
 }
 
 export function verifyAccessToken(token: string) {
-    const result = jwt.verify(token, process.env.SERVER_SECRET || "", undefined)
-    return result
+    try {
+        const result = jwt.verify(token.replace("Bearer ", ""), process.env.SERVER_SECRET || "", undefined)
+        if (typeof result === "string") {
+            return null
+        }
+        return result
+    } catch (error) {
+        return null
+    }
 }
 
 export function refreshAccessToken(token: string) {
