@@ -1,11 +1,9 @@
-import crypto from "crypto"
 import jwt from "jsonwebtoken"
-import excuteQuery, { QueryResult } from "@Server/db"
-import { findUserByEmail, User } from "@Services/User"
+import { User } from "@Services/User"
+import { checkHash } from "@Services/Crypto"
 
 export async function validatePassword(user: User, inputPassword: string) {
-    const inputHash = crypto.pbkdf2Sync(inputPassword, user.salt, 1000, 64, "sha512").toString("hex")
-    return user.password === inputHash
+    return checkHash(user.password, inputPassword, user.salt)
 }
 
 export function generateAccessToken(user: jwt.JwtPayload) {

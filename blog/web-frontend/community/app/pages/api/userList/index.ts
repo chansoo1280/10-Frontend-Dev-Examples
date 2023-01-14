@@ -1,8 +1,7 @@
-import crypto from "crypto"
-
 import { errorRes, successRes } from "@Server/response"
 import { APIUserList, makeRouter, ReqType } from "@Services"
 import { createUser, deleteAllUser, findAllUser, findUserByEmail } from "@Services/User"
+import { getHash } from "@Services/Crypto"
 
 const apiUserList: APIUserList = {
     [ReqType.GET]: async (req, res) => {
@@ -23,8 +22,7 @@ const apiUserList: APIUserList = {
             return
         }
 
-        const salt = crypto.randomBytes(16).toString("hex")
-        const hash = crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, "sha512").toString("hex")
+        const { salt, hash } = getHash(req.body.password)
 
         const result = await createUser({ ...req.body, password: hash, salt: salt })
         if (result !== null) {
