@@ -7,6 +7,11 @@ import { findUserByEmail } from "@Services/User"
 const apiLogin: APILogin = {
     [ReqType.GET]: async (req, res) => {
         const refreshToken = getCookie("refreshToken", { req, res })
+        if (refreshToken === undefined) {
+            res.status(403).json(errorRes[403])
+            return
+        }
+
         const accessToken = refreshAccessToken(String(refreshToken))
 
         if (accessToken) {

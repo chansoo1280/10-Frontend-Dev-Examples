@@ -75,6 +75,18 @@ export type APILoginPOST = {
     ResPayload: Pick<User, "id" | "name" | "email">
 }
 
+export type APILogoutGET = {
+    ReqQueryPayload: never
+    ReqBodyPayload: never
+    ResPayload: string
+}
+
+export type APIFindPWGET = {
+    ReqQueryPayload: { email: string }
+    ReqBodyPayload: never
+    ResPayload: string
+}
+
 export type APIUserList = {
     [ReqType.GET]: ApiFunction<ReqType.GET, APIUserListGET>
     [ReqType.POST]: ApiFunction<ReqType.POST, APIUserListPOST>
@@ -89,6 +101,14 @@ export type APIUser = {
 export type APILogin = {
     [ReqType.GET]: ApiFunction<ReqType.GET, APILoginGET>
     [ReqType.POST]: ApiFunction<ReqType.POST, APILoginPOST>
+}
+
+export type APILogout = {
+    [ReqType.GET]: ApiFunction<ReqType.GET, APILogoutGET>
+}
+
+export type APIFindPW = {
+    [ReqType.GET]: ApiFunction<ReqType.GET, APIFindPWGET>
 }
 
 export const makeRouter =
