@@ -113,6 +113,7 @@ export async function getStaticProps() {
         switch (e.state) {
             case 204:
                 console.log("유저가 없습니다.")
+                return null
                 break
 
             default:
@@ -123,7 +124,7 @@ export async function getStaticProps() {
     const user = result ? result.data : null
     return {
         props: {
-            email: user?.email,
+            email: "",
         }, // will be passed to the page component as props
     }
 }

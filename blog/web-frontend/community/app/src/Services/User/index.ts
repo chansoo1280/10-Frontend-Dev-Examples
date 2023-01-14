@@ -13,7 +13,7 @@ export async function findAllUser(): Promise<User[] | null> {
         return null
     }
 }
-export async function findUserById(id: User["id"]): Promise<Pick<User, "id" | "name" | "email"> | null> {
+export async function findUserById(id: User["id"]): Promise<Pick<User, "id" | "name" | "email" | "salt"> | null> {
     try {
         const result = await excuteQuery<User[]>({
             query: "SELECT * FROM user WHERE id = ?",
@@ -25,6 +25,7 @@ export async function findUserById(id: User["id"]): Promise<Pick<User, "id" | "n
                 id: user.id,
                 name: user.name,
                 email: user.email,
+                salt: user.salt,
             } || null
         )
     } catch (error) {
@@ -69,10 +70,10 @@ export async function deleteUserById(id: User["id"]): Promise<true | null> {
     }
 }
 
-export async function createUser(user: Pick<User, "name" | "email" | "password">): Promise<User["id"] | null> {
-    const queryString = `INSERT INTO user (email, name, password) 
-    VALUES (?, ?, ?);`
-    const queryValues = [user.email, user.name, user.password]
+export async function createUser(user: Pick<User, "name" | "email" | "password" | "salt">): Promise<User["id"] | null> {
+    const queryString = `INSERT INTO user (email, name, password, salt) 
+    VALUES (?, ?, ?, ?);`
+    const queryValues = [user.email, user.name, user.password, user.salt]
     try {
         const result = await excuteQuery<QueryResult>({
             query: queryString,
@@ -80,6 +81,7 @@ export async function createUser(user: Pick<User, "name" | "email" | "password">
         })
         return result.insertId
     } catch (error) {
+        console.log(error)
         return null
     }
 }

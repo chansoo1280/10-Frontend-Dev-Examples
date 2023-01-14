@@ -50,12 +50,6 @@ export type APIUserListDELETE = {
     ResPayload: User[]
 }
 
-export type APIUserList = {
-    [ReqType.GET]: ApiFunction<ReqType.GET, APIUserListGET>
-    [ReqType.POST]: ApiFunction<ReqType.POST, APIUserListPOST>
-    [ReqType.DELETE]: ApiFunction<ReqType.DELETE, APIUserListDELETE>
-}
-
 export type APIUserGET = {
     ReqQueryPayload: { id: string }
     ReqBodyPayload: never
@@ -64,12 +58,37 @@ export type APIUserGET = {
 export type APIUserDELETE = {
     ReqQueryPayload: { id: string }
     ReqBodyPayload: never
-    ResPayload: User[]
+    ResPayload: {
+        state: number
+        message: string
+    }
+}
+
+export type APILoginGET = {
+    ReqQueryPayload: never
+    ReqBodyPayload: never
+    ResPayload: string
+}
+export type APILoginPOST = {
+    ReqQueryPayload: never
+    ReqBodyPayload: { email: string; password: string }
+    ResPayload: Pick<User, "id" | "name" | "email">
+}
+
+export type APIUserList = {
+    [ReqType.GET]: ApiFunction<ReqType.GET, APIUserListGET>
+    [ReqType.POST]: ApiFunction<ReqType.POST, APIUserListPOST>
+    [ReqType.DELETE]: ApiFunction<ReqType.DELETE, APIUserListDELETE>
 }
 
 export type APIUser = {
     [ReqType.GET]: ApiFunction<ReqType.GET, APIUserGET>
     [ReqType.DELETE]: ApiFunction<ReqType.DELETE, APIUserDELETE>
+}
+
+export type APILogin = {
+    [ReqType.GET]: ApiFunction<ReqType.GET, APILoginGET>
+    [ReqType.POST]: ApiFunction<ReqType.POST, APILoginPOST>
 }
 
 export const makeRouter =

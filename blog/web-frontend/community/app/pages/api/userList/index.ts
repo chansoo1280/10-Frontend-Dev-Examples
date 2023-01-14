@@ -1,3 +1,5 @@
+import crypto from "crypto"
+
 import { errorRes, successRes } from "@Server/response"
 import { APIUserList, makeRouter, ReqType } from "@Services"
 import { createUser, deleteAllUser, findAllUser, findUserByEmail } from "@Services/User"
@@ -20,7 +22,11 @@ const apiUserList: APIUserList = {
             })
             return
         }
-        const result = await createUser(req.body)
+
+        const salt = crypto.randomBytes(16).toString("hex")
+        const hash = crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, "sha512").toString("hex")
+
+        const result = await createUser({ ...req.body, password: hash, salt: salt })
         if (result !== null) {
             res.status(200).json(successRes(result))
             return
