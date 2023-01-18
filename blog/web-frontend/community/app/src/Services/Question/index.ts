@@ -25,7 +25,7 @@ export async function findQuestionById(id: Question["id"]): Promise<Question | n
                 id: question.id,
                 title: question.title,
                 contents: question.contents,
-                authorId: 12,
+                authorId: question.authorId,
             } || null
         )
     } catch (error) {
@@ -59,9 +59,9 @@ export async function deleteQuestionById(id: Question["id"]): Promise<true | nul
     }
 }
 
-export async function createQuestion(question: Question): Promise<Question["id"] | null> {
+export async function createQuestion(question: Pick<Question, "title" | "contents" | "authorId">): Promise<Question["id"] | null> {
     const queryString = `INSERT INTO question (title, contents, authorId) 
-    VALUES (?, ?, ?, ?);`
+    VALUES (?, ?, ?);`
     const queryValues = [question.title, question.contents, question.authorId]
     try {
         const result = await excuteQuery<QueryResult>({

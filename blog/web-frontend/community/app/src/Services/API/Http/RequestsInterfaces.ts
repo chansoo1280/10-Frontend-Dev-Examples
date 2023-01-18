@@ -1,6 +1,8 @@
 import { ErrorRes, SuccessRes } from "@Server/response"
-import { User } from "@Services/User"
 import { NextApiRequest, NextApiResponse } from "next"
+import { APILoginGET, APILoginPOST, APILogoutGET, APIFindPWGET } from "./APIAccount"
+import { APIQuestionListGET, APIQuestionListPOST, APIQuestionListDELETE, APIQuestionGET, APIQuestionDELETE } from "./APIQuestionList"
+import { APIUserDELETE, APIUserGET, APIUserListDELETE, APIUserListGET, APIUserListPOST } from "./APIUserList"
 
 export enum ReqType {
     "GET" = "GET",
@@ -34,59 +36,6 @@ type ApiFunction<Key extends ReqType, T extends BaseApiInfo> = (
     res: NextApiResponse<SuccessRes<T["ResPayload"]> | ErrorRes>,
 ) => Promise<void>
 
-export type APIUserListGET = {
-    ReqQueryPayload: never
-    ReqBodyPayload: never
-    ResPayload: User[]
-}
-export type APIUserListPOST = {
-    ReqQueryPayload: never
-    ReqBodyPayload: Pick<User, "name" | "email" | "password">
-    ResPayload: User["id"]
-}
-export type APIUserListDELETE = {
-    ReqQueryPayload: never
-    ReqBodyPayload: never
-    ResPayload: User[]
-}
-
-export type APIUserGET = {
-    ReqQueryPayload: { id: string }
-    ReqBodyPayload: never
-    ResPayload: Pick<User, "id" | "name" | "email">
-}
-export type APIUserDELETE = {
-    ReqQueryPayload: { id: string }
-    ReqBodyPayload: never
-    ResPayload: {
-        state: number
-        message: string
-    }
-}
-
-export type APILoginGET = {
-    ReqQueryPayload: never
-    ReqBodyPayload: never
-    ResPayload: string
-}
-export type APILoginPOST = {
-    ReqQueryPayload: never
-    ReqBodyPayload: { email: string; password: string }
-    ResPayload: Pick<User, "id" | "name" | "email">
-}
-
-export type APILogoutGET = {
-    ReqQueryPayload: never
-    ReqBodyPayload: never
-    ResPayload: string
-}
-
-export type APIFindPWGET = {
-    ReqQueryPayload: { email: string }
-    ReqBodyPayload: never
-    ResPayload: string
-}
-
 export type APIUserList = {
     [ReqType.GET]: ApiFunction<ReqType.GET, APIUserListGET>
     [ReqType.POST]: ApiFunction<ReqType.POST, APIUserListPOST>
@@ -96,6 +45,17 @@ export type APIUserList = {
 export type APIUser = {
     [ReqType.GET]: ApiFunction<ReqType.GET, APIUserGET>
     [ReqType.DELETE]: ApiFunction<ReqType.DELETE, APIUserDELETE>
+}
+
+export type APIQuestionList = {
+    [ReqType.GET]: ApiFunction<ReqType.GET, APIQuestionListGET>
+    [ReqType.POST]: ApiFunction<ReqType.POST, APIQuestionListPOST>
+    [ReqType.DELETE]: ApiFunction<ReqType.DELETE, APIQuestionListDELETE>
+}
+
+export type APIQuestion = {
+    [ReqType.GET]: ApiFunction<ReqType.GET, APIQuestionGET>
+    [ReqType.DELETE]: ApiFunction<ReqType.DELETE, APIQuestionDELETE>
 }
 
 export type APILogin = {
