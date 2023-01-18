@@ -4,10 +4,10 @@ export interface ErrorRes {
     message: string
 }
 export interface SuccessRes<T> {
-    state: 200
+    state: number
     data: T
 }
-export const successRes = (data: any): SuccessRes<any> => ({
+export const successRes = <T>(data: T): SuccessRes<T> => ({
     state: 200,
     data: data,
 })

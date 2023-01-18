@@ -1,3 +1,4 @@
+import { successRes, SuccessRes } from "@Server/response"
 import { User } from "@Services/User"
 
 export type APIUserListGET = {
@@ -19,8 +20,9 @@ export type APIUserListDELETE = {
 export type APIUserGET = {
     ReqQueryPayload: { id: string }
     ReqBodyPayload: never
-    ResPayload: Pick<User, "id" | "name" | "email">
+    ResPayload: Pick<User, "id" | "email" | "name">
 }
+
 export type APIUserDELETE = {
     ReqQueryPayload: { id: string }
     ReqBodyPayload: never

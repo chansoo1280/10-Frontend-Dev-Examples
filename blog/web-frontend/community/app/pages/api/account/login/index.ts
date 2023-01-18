@@ -26,7 +26,7 @@ const apiLogin: APILogin = {
             res.status(400).json(errorRes[400])
             return
         }
-        const isVaildatePassword = await validatePassword(user, req.body.password)
+        const isVaildatePassword = validatePassword(user, req.body.password)
         if (isVaildatePassword === true) {
             const refreshToken = generateRefreshToken(user)
             setCookie("refreshToken", refreshToken, {
@@ -36,7 +36,13 @@ const apiLogin: APILogin = {
                 sameSite: true,
                 secure: true,
             })
-            res.status(200).json(successRes(user))
+            res.status(200).json(
+                successRes({
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                }),
+            )
             return
         }
         res.status(403).json(errorRes[403])

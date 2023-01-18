@@ -2,39 +2,34 @@ import excuteQuery, { QueryResult } from "@Server/db"
 import { Question } from "./Question.entity"
 export type { Question }
 
-export async function findAllQuestion(): Promise<Question[] | null> {
+export const findAllQuestion = async (): Promise<Question[] | null> => {
     try {
         const result = await excuteQuery<Question[]>({
-            query: "SELECT * FROM question",
+            query: "SELECT * FROM question WHERE deleted IS NULL",
             values: [],
         })
         return result || null
     } catch (error) {
+        console.log(error)
         return null
     }
 }
-export async function findQuestionById(id: Question["id"]): Promise<Question | null> {
+export const findQuestionById = async (id: Question["id"]): Promise<Question | null> => {
     try {
         const result = await excuteQuery<Question[]>({
-            query: "SELECT * FROM question WHERE id = ?",
+            query: "SELECT * FROM question WHERE id = ? AND deleted IS NULL",
             values: [id],
         })
         const question = result[0]
-        return (
-            {
-                id: question.id,
-                title: question.title,
-                contents: question.contents,
-                authorId: question.authorId,
-            } || null
-        )
+        return question || null
     } catch (error) {
+        console.log(error)
         return null
     }
 }
-export async function deleteAllQuestion(): Promise<Question[] | null> {
-    const queryString = `DELETE FROM question`
-    const queryValues: never[] = []
+export const deleteAllQuestion = async (): Promise<Question[] | null> => {
+    const queryString = `UPDATE question SET deleted=?`
+    const queryValues = [new Date()]
     try {
         const result = await excuteQuery<QueryResult>({
             query: queryString,
@@ -42,12 +37,13 @@ export async function deleteAllQuestion(): Promise<Question[] | null> {
         })
         return result.fieldCount === 0 ? [] : null
     } catch (error) {
+        console.log(error)
         return null
     }
 }
-export async function deleteQuestionById(id: Question["id"]): Promise<true | null> {
-    const queryString = `DELETE FROM question WHERE id = ?`
-    const queryValues = [id]
+export const deleteQuestionById = async (id: Question["id"]): Promise<true | null> => {
+    const queryString = `UPDATE question SET deleted=? WHERE id = ?`
+    const queryValues = [new Date(), id]
     try {
         const result = await excuteQuery<QueryResult>({
             query: queryString,
@@ -55,14 +51,15 @@ export async function deleteQuestionById(id: Question["id"]): Promise<true | nul
         })
         return true
     } catch (error) {
+        console.log(error)
         return null
     }
 }
 
-export async function createQuestion(question: Pick<Question, "title" | "contents" | "authorId">): Promise<Question["id"] | null> {
-    const queryString = `INSERT INTO question (title, contents, authorId) 
-    VALUES (?, ?, ?);`
-    const queryValues = [question.title, question.contents, question.authorId]
+export const createQuestion = async (question: Pick<Question, "title" | "contents" | "authorId">): Promise<Question["id"] | null> => {
+    const queryString = `INSERT INTO question (title, contents, authorId, created) 
+    VALUES (?, ?, ?, ?);`
+    const queryValues = [question.title, question.contents, question.authorId, new Date()]
     try {
         const result = await excuteQuery<QueryResult>({
             query: queryString,

@@ -4,4 +4,6 @@ export interface User {
     name: string
     password: string
     salt: string
+    created: string
+    deleted: string | null
 }

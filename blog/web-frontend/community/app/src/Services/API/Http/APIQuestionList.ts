@@ -15,7 +15,6 @@ export type APIQuestionListDELETE = {
     ReqBodyPayload: never
     ResPayload: Question[]
 }
-
 export type APIQuestionGET = {
     ReqQueryPayload: { id: string }
     ReqBodyPayload: never

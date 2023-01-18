@@ -5,4 +5,6 @@ export interface Question {
     title: string
     contents: string
     authorId: User["id"]
+    created: string
+    deleted: string | null
 }

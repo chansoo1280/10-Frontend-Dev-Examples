@@ -2,23 +2,23 @@ import jwt from "jsonwebtoken"
 import { User } from "@Services/User"
 import { checkHash } from "@Services/Crypto"
 
-export async function validatePassword(user: User, inputPassword: string) {
+export const validatePassword = (user: User, inputPassword: string): boolean => {
     return checkHash(user.password, inputPassword, user.salt)
 }
 
-export function generateAccessToken(user: jwt.JwtPayload) {
+export const generateAccessToken = (user: jwt.JwtPayload): string => {
     return jwt.sign({ id: user.id, email: user.email }, process.env.SERVER_SECRET || "", {
         expiresIn: "3h", // For test
     })
 }
 
-export function generateRefreshToken(user: jwt.JwtPayload) {
+export const generateRefreshToken = (user: jwt.JwtPayload): string => {
     return jwt.sign({ id: user.id, email: user.email }, process.env.SERVER_SECRET || "", {
         expiresIn: "180 days",
     })
 }
 
-export function verifyAccessToken(token: string) {
+export const verifyAccessToken = (token: string): jwt.JwtPayload | null => {
     try {
         const result = jwt.verify(token.replace("Bearer ", ""), process.env.SERVER_SECRET || "", undefined)
         if (typeof result === "string") {
@@ -30,7 +30,7 @@ export function verifyAccessToken(token: string) {
     }
 }
 
-export function refreshAccessToken(token: string) {
+export const refreshAccessToken = (token: string): string | null => {
     const result = jwt.verify(token, process.env.SERVER_SECRET || "", undefined)
     if (typeof result === "string") {
         return null
