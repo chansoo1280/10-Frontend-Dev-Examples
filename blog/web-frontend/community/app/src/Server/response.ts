@@ -1,30 +1,32 @@
-type ErrorCode = 204 | 400 | 403
-export interface ErrorRes {
-    state: ErrorCode
-    message: string
-}
-export interface SuccessRes<T> {
-    state: number
-    data: T
-}
-export const successRes = <T>(data: T): SuccessRes<T> => ({
-    state: 200,
-    data: data,
-})
+import { NextApiResponse } from "next"
 
-export const errorRes: {
-    [k in ErrorCode]: ErrorRes
-} = {
-    204: {
-        state: 204,
-        message: "No Content",
-    },
-    400: {
-        state: 400,
-        message: "Bad Request",
-    },
-    403: {
-        state: 403,
-        message: "Forbidden",
-    },
+export enum ResStatus {
+    Success = 200,
+    NoContent = 204,
+    BadRequest = 400,
+    Forbidden = 403,
+}
+export const ResMessage = {
+    [ResStatus.Success]: "Success",
+    [ResStatus.NoContent]: "No Content",
+    [ResStatus.BadRequest]: "Bad Request",
+    [ResStatus.Forbidden]: "Forbidden",
 } as const
+export type ResMessage = typeof ResMessage[keyof typeof ResMessage]
+
+export type ResMessageWithDesc = {
+    status: ResStatus
+    message: ResMessage
+    description: string
+}
+
+export const resMessageWithDesc = <T extends NextApiResponse>(res: T, status: ResStatus, description: string) => {
+    const resPayload: ResMessageWithDesc = {
+        status: status,
+        message: ResMessage[status],
+        description: description,
+    }
+    res.status(status).json(resPayload)
+    return
+}
+export const resMessage = <T extends NextApiResponse>(res: T, status: ResStatus) => resMessageWithDesc<T>(res, status, ResMessage[status])

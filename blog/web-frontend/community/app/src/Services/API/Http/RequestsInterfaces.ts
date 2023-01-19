@@ -1,4 +1,4 @@
-import { ErrorRes, SuccessRes } from "@Server/response"
+import { ResMessageWithDesc } from "@Server/response"
 import { NextApiRequest, NextApiResponse } from "next"
 import { APILoginGET, APILoginPOST, APILogoutGET, APIFindPWGET } from "./APIAccount"
 import { APIQuestionListGET, APIQuestionListPOST, APIQuestionListDELETE, APIQuestionGET, APIQuestionDELETE } from "./APIQuestionList"
@@ -33,7 +33,7 @@ export type BaseApiInfo = {
 }
 type ApiFunction<Key extends ReqType, T extends BaseApiInfo> = (
     req: ApiRequest<T["ReqQueryPayload"], T["ReqBodyPayload"]>[Key],
-    res: NextApiResponse<SuccessRes<T["ResPayload"]> | ErrorRes>,
+    res: NextApiResponse<T["ResPayload"] | ResMessageWithDesc>,
 ) => Promise<void>
 
 export type APIUserList = {

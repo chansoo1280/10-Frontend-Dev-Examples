@@ -1,5 +1,5 @@
 import { setCookie, getCookie } from "cookies-next"
-import { errorRes, successRes } from "@Server/response"
+import { resMessage, ResStatus } from "@Server/response"
 import { APILogin, makeRouter, ReqType } from "@Services"
 import { generateRefreshToken, refreshAccessToken, validatePassword } from "@Services/Account"
 import { findUserByEmail } from "@Services/User"
@@ -8,22 +8,22 @@ const apiLogin: APILogin = {
     [ReqType.GET]: async (req, res) => {
         const refreshToken = getCookie("refreshToken", { req, res })
         if (refreshToken === undefined) {
-            res.status(403).json(errorRes[403])
+            resMessage(res, ResStatus.Forbidden)
             return
         }
 
         const accessToken = refreshAccessToken(String(refreshToken))
 
         if (accessToken) {
-            res.status(200).json(successRes(accessToken))
+            res.status(ResStatus.Success).json(accessToken)
             return
         }
-        res.status(403).json(errorRes[403])
+        resMessage(res, ResStatus.Forbidden)
     },
     [ReqType.POST]: async (req, res) => {
         const user = await findUserByEmail(req.body.email)
         if (user === null) {
-            res.status(400).json(errorRes[400])
+            resMessage(res, ResStatus.BadRequest)
             return
         }
         const isVaildatePassword = validatePassword(user, req.body.password)
@@ -36,16 +36,14 @@ const apiLogin: APILogin = {
                 sameSite: true,
                 secure: true,
             })
-            res.status(200).json(
-                successRes({
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                }),
-            )
+            res.status(ResStatus.Success).json({
+                id: user.id,
+                name: user.name,
+                email: user.email,
+            })
             return
         }
-        res.status(403).json(errorRes[403])
+        resMessage(res, ResStatus.Forbidden)
     },
 }
 

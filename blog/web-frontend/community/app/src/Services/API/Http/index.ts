@@ -1,5 +1,5 @@
 // #region Global Imports
-import { ErrorRes, SuccessRes } from "@Server/response"
+import { ResMessage, ResMessageWithDesc } from "@Server/response"
 import "isomorphic-unfetch"
 import queryString from "query-string"
 // #endregion Global Imports
@@ -17,7 +17,7 @@ const defaultOptions = {
         SECRET: "secret",
     },
 }
-export const Http = async <T extends BaseApiInfo>(methodType: ReqType, url: string, params?: T["ReqQueryPayload"], payload?: T["ReqBodyPayload"]): Promise<SuccessRes<T["ResPayload"]> | null> => {
+export const Http = async <T extends BaseApiInfo>(methodType: ReqType, url: string, params?: T["ReqQueryPayload"], payload?: T["ReqBodyPayload"]): Promise<T["ResPayload"] | null> => {
     const query = params
         ? `?${queryString.stringify({
               ...params,
@@ -39,14 +39,14 @@ export const Http = async <T extends BaseApiInfo>(methodType: ReqType, url: stri
               },
     ).then(async (response) => {
         if (response.status === 200) {
-            const result: SuccessRes<T["ResPayload"]> | ErrorRes = await response.json()
-            if (result.state !== 200) {
-                return Promise.reject(result)
-            }
+            const result: T["ResPayload"] = await response.json()
             return result
-        } else {
+        } else if (response.status === 500) {
             console.log("error " + response)
             return null
+        } else {
+            const result: ResMessageWithDesc = await response.json()
+            return Promise.reject(result)
         }
     })
 }

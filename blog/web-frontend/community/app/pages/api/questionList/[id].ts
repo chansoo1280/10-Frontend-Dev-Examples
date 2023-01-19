@@ -1,4 +1,4 @@
-import { errorRes, successRes } from "@Server/response"
+import { resMessage, ResStatus } from "@Server/response"
 import { APIQuestion, makeRouter, ReqType } from "@Services"
 import { verifyAccessToken } from "@Services/Account"
 import { findQuestionById, deleteQuestionById } from "@Services/Question"
@@ -6,59 +6,51 @@ const apiQuestion: APIQuestion = {
     [ReqType.GET]: async (req, res) => {
         const id = Number(req.query.id)
         if (id === undefined) {
-            res.status(400).json(errorRes[400])
+            resMessage(res, ResStatus.BadRequest)
             return
         }
-
         const result = await findQuestionById(id)
         if (result !== null) {
-            res.status(200).json(
-                successRes({
-                    id: result.id,
-                    title: result.title,
-                    contents: result.contents,
-                    authorId: result.authorId,
-                }),
-            )
+            res.status(ResStatus.Success).json({
+                id: result.id,
+                title: result.title,
+                contents: result.contents,
+                authorId: result.authorId,
+            })
             return
         }
-        res.status(200).json(errorRes[204])
+        resMessage(res, ResStatus.NoContent)
     },
     [ReqType.DELETE]: async (req, res) => {
         const id = Number(req.query.id)
         if (id === undefined) {
-            res.status(400).json(errorRes[400])
+            resMessage(res, ResStatus.BadRequest)
             return
         }
 
         const question = await findQuestionById(id)
         if (question === null) {
-            res.status(400).json(errorRes[400])
+            resMessage(res, ResStatus.BadRequest)
             return
         }
 
         if (req.headers.authorization === undefined) {
-            res.status(403).json(errorRes[403])
+            resMessage(res, ResStatus.Forbidden)
             return
         }
         // Authorization: `Bearer ${user.token}`
         const user = verifyAccessToken(req.headers.authorization)
         if (user === null || user.id !== question.authorId) {
-            res.status(403).json(errorRes[403])
+            resMessage(res, ResStatus.Forbidden)
             return
         }
 
         const result = await deleteQuestionById(id)
         if (result !== null) {
-            res.status(200).json(
-                successRes({
-                    state: 200,
-                    message: "삭제 성공",
-                }),
-            )
+            res.status(ResStatus.Success).json("삭제 성공")
             return
         }
-        res.status(400).json(errorRes[400])
+        resMessage(res, ResStatus.BadRequest)
     },
 }
 

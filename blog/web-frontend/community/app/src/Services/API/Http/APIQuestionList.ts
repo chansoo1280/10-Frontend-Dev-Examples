@@ -23,8 +23,5 @@ export type APIQuestionGET = {
 export type APIQuestionDELETE = {
     ReqQueryPayload: { id: string }
     ReqBodyPayload: never
-    ResPayload: {
-        state: number
-        message: string
-    }
+    ResPayload: string
 }
