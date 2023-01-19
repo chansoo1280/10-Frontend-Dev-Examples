@@ -28,20 +28,19 @@ const apiQuestion: APIQuestion = {
             return
         }
 
-        const question = await findQuestionById(id)
-        if (question === null) {
-            resMessage(res, ResStatus.BadRequest)
+        const user = verifyAccessToken(req.headers.authorization)
+        if (user === undefined) {
+            resMessage(res, ResStatus.Forbidden)
+            return
+        }
+        if (user === null || user.id !== id) {
+            resMessage(res, ResStatus.Forbidden)
             return
         }
 
-        if (req.headers.authorization === undefined) {
-            resMessage(res, ResStatus.Forbidden)
-            return
-        }
-        // Authorization: `Bearer ${user.token}`
-        const user = verifyAccessToken(req.headers.authorization)
-        if (user === null || user.id !== question.authorId) {
-            resMessage(res, ResStatus.Forbidden)
+        const question = await findQuestionById(id)
+        if (question === null) {
+            resMessage(res, ResStatus.BadRequest)
             return
         }
 

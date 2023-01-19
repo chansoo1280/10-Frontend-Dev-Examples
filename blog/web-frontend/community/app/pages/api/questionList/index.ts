@@ -13,12 +13,11 @@ const apiQuestionList: APIQuestionList = {
         resMessage(res, ResStatus.Forbidden)
     },
     [ReqType.POST]: async (req, res) => {
-        if (req.headers.authorization === undefined) {
+        const user = verifyAccessToken(req.headers.authorization)
+        if (user === undefined) {
             resMessage(res, ResStatus.Forbidden)
             return
         }
-        // Authorization: `Bearer ${user.token}`
-        const user = verifyAccessToken(req.headers.authorization)
         if (user === null) {
             resMessageWithDesc(res, ResStatus.BadRequest, "작성자를 찾을 수 없습니다.")
             return

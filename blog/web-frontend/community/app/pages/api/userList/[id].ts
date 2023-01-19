@@ -2,6 +2,7 @@ import { resMessage, ResStatus } from "@Server/response"
 import { APIUser, makeRouter, ReqType } from "@Services"
 import { verifyAccessToken } from "@Services/Account"
 import { findUserById, deleteUserById } from "@Services/User"
+
 const apiUser: APIUser = {
     [ReqType.GET]: async (req, res) => {
         const id = Number(req.query.id)
@@ -9,12 +10,12 @@ const apiUser: APIUser = {
             resMessage(res, ResStatus.BadRequest)
             return
         }
-        if (req.headers.authorization === undefined) {
+
+        const user = verifyAccessToken(req.headers.authorization)
+        if (user === undefined) {
             resMessage(res, ResStatus.Forbidden)
             return
         }
-        // Authorization: `Bearer ${user.token}`
-        const user = verifyAccessToken(req.headers.authorization)
         if (user === null || user.id !== id) {
             resMessage(res, ResStatus.Forbidden)
             return

@@ -18,7 +18,11 @@ export const generateRefreshToken = (user: jwt.JwtPayload): string => {
     })
 }
 
-export const verifyAccessToken = (token: string): jwt.JwtPayload | null => {
+export const verifyAccessToken = (token?: string): jwt.JwtPayload | null | undefined => {
+    if (token === undefined) {
+        return undefined
+    }
+    // Authorization: `Bearer ${user.token}`
     try {
         const result = jwt.verify(token.replace("Bearer ", ""), process.env.SERVER_SECRET || "", undefined)
         if (typeof result === "string") {
