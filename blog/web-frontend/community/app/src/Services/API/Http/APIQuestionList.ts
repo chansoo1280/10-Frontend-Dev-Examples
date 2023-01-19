@@ -1,4 +1,5 @@
 import { Question } from "@Services/Question"
+import { ApiFunction, ReqType } from "./RequestsInterfaces"
 
 export type APIQuestionListGET = {
     ReqQueryPayload: never
@@ -24,4 +25,15 @@ export type APIQuestionDELETE = {
     ReqQueryPayload: { id: string }
     ReqBodyPayload: never
     ResPayload: string
+}
+
+export type APIQuestionList = {
+    [ReqType.GET]: ApiFunction<ReqType.GET, APIQuestionListGET>
+    [ReqType.POST]: ApiFunction<ReqType.POST, APIQuestionListPOST>
+    [ReqType.DELETE]: ApiFunction<ReqType.DELETE, APIQuestionListDELETE>
+}
+
+export type APIQuestion = {
+    [ReqType.GET]: ApiFunction<ReqType.GET, APIQuestionGET>
+    [ReqType.DELETE]: ApiFunction<ReqType.DELETE, APIQuestionDELETE>
 }

@@ -1,4 +1,5 @@
 import { User } from "@Services/User"
+import { ApiFunction, ReqType } from "./RequestsInterfaces"
 
 export type APIUserListGET = {
     ReqQueryPayload: never
@@ -26,4 +27,15 @@ export type APIUserDELETE = {
     ReqQueryPayload: { id: string }
     ReqBodyPayload: never
     ResPayload: never
+}
+
+export type APIUserList = {
+    [ReqType.GET]: ApiFunction<ReqType.GET, APIUserListGET>
+    [ReqType.POST]: ApiFunction<ReqType.POST, APIUserListPOST>
+    [ReqType.DELETE]: ApiFunction<ReqType.DELETE, APIUserListDELETE>
+}
+
+export type APIUser = {
+    [ReqType.GET]: ApiFunction<ReqType.GET, APIUserGET>
+    [ReqType.DELETE]: ApiFunction<ReqType.DELETE, APIUserDELETE>
 }
