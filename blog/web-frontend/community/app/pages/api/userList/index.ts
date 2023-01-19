@@ -2,6 +2,7 @@ import { resMessage, resMessageWithDesc, ResStatus } from "@Server/response"
 import { APIUserList, makeRouter, ReqType } from "@Services"
 import { createUser, deleteAllUser, findAllUser, findUserByEmail } from "@Services/User"
 import { getHash } from "@Services/Crypto"
+import { verifyUser } from "@Services/User/User.entity"
 
 const apiUserList: APIUserList = {
     [ReqType.GET]: async (req, res) => {
@@ -21,7 +22,15 @@ const apiUserList: APIUserList = {
 
         const { salt, hash } = getHash(req.body.password)
 
-        const result = await createUser({ ...req.body, password: hash, salt: salt })
+        const userInfo = { ...req.body, password: hash, salt: salt }
+
+        const verifyResult = verifyUser(userInfo, ["email", "name", "password", "salt"])
+        if (verifyResult !== true) {
+            resMessageWithDesc(res, ResStatus.BadRequest, verifyResult)
+            return
+        }
+
+        const result = await createUser(userInfo)
         if (result !== null) {
             res.status(ResStatus.Success).json(result)
             return
