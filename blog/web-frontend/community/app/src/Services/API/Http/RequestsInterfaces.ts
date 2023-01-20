@@ -1,4 +1,4 @@
-import { ResMessageWithDesc } from "@Server/response"
+import { resMessageWithDesc, ResMessageWithDesc, ResStatus } from "@Server/response"
 import { NextApiRequest, NextApiResponse } from "next"
 
 export enum ReqType {
@@ -33,15 +33,15 @@ export type ApiFunction<Key extends ReqType, T extends BaseApiInfo> = (
     res: NextApiResponse<T["ResPayload"] | ResMessageWithDesc>,
 ) => Promise<void>
 type APIList = {
-    [key in ReqType]: ApiFunction<ReqType, BaseApiInfo>
+    [key in ReqType]?: ApiFunction<any, any>
 }
 export const makeRouter =
     <T extends APIList>(apiList: T) =>
     async (req: ExtendedNextApiRequest<any> | ExtendedNextApiRequestBody<any, any>, res: NextApiResponse): Promise<void> => {
         const allowedMethodList = Object.keys(apiList)
         if (req.method && allowedMethodList.includes(req.method)) {
-            await apiList[req.method](req, res)
+            await apiList[req.method]?.(req, res)
             return
         }
-        res.status(405).json({ message: `Allowed Method: ${allowedMethodList.join(", ")}` })
+        resMessageWithDesc(res, ResStatus.MethodNotAllowed, `Allowed Method: ${allowedMethodList.join(", ")}`)
     }

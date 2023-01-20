@@ -9,4 +9,4 @@ const apiLogout: APILogout = {
     },
 }
 
-export default makeRouter<APILogout>(apiLogout)
+export default makeRouter(apiLogout)

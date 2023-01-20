@@ -34,9 +34,10 @@ export const verifyUser = (user: Partial<User>, checkKeyList: (keyof User)[]): s
                 if (requiredList.includes(key) && user[key] === undefined) {
                     return key + " 값은 필수입니다."
                 }
-                if (conditionOfKeys[key](user[key]) === false) {
+                if (!conditionOfKeys[key](user[key])) {
                     return key + " 형식이 올바르지 않습니다."
                 }
+                return null
             })
             .find((cur) => cur !== null) || true
     return checkResult

@@ -53,4 +53,4 @@ const apiQuestion: APIQuestion = {
     },
 }
 
-export default makeRouter<APIQuestion>(apiQuestion)
+export default makeRouter(apiQuestion)

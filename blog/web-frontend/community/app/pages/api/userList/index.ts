@@ -24,7 +24,13 @@ const apiUserList: APIUserList = {
 
         const userInfo = { ...req.body, password: hash, salt: salt }
 
-        const verifyResult = verifyUser(userInfo, ["email", "name", "password", "salt"])
+        const verifyResult = verifyUser(
+            {
+                ...userInfo,
+                password: req.body.password,
+            },
+            ["email", "name", "password", "salt"],
+        )
         if (verifyResult !== true) {
             resMessageWithDesc(res, ResStatus.BadRequest, verifyResult)
             return
@@ -47,4 +53,4 @@ const apiUserList: APIUserList = {
     },
 }
 
-export default makeRouter<APIUserList>(apiUserList)
+export default makeRouter(apiUserList)

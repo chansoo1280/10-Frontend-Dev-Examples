@@ -5,12 +5,14 @@ export enum ResStatus {
     NoContent = 204,
     BadRequest = 400,
     Forbidden = 403,
+    MethodNotAllowed = 405,
 }
 export const ResMessage = {
     [ResStatus.Success]: "Success",
     [ResStatus.NoContent]: "No Content",
     [ResStatus.BadRequest]: "Bad Request",
     [ResStatus.Forbidden]: "Forbidden",
+    [ResStatus.MethodNotAllowed]: "Method Not Allowed",
 } as const
 export type ResMessage = typeof ResMessage[keyof typeof ResMessage]
 

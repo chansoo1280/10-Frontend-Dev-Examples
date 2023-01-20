@@ -47,4 +47,4 @@ const apiUser: APIUser = {
     },
 }
 
-export default makeRouter<APIUser>(apiUser)
+export default makeRouter(apiUser)

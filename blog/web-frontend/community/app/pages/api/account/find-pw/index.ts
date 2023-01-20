@@ -15,4 +15,4 @@ const apiFindPW: APIFindPW = {
     },
 }
 
-export default makeRouter<APIFindPW>(apiFindPW)
+export default makeRouter(apiFindPW)

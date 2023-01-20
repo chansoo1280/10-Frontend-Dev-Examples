@@ -47,4 +47,4 @@ const apiLogin: APILogin = {
     },
 }
 
-export default makeRouter<APILogin>(apiLogin)
+export default makeRouter(apiLogin)
