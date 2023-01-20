@@ -1,5 +1,5 @@
 import { Question } from "@Services/Question"
-import { ApiFunction, ReqType } from "./RequestsInterfaces"
+import { ApiFunction, ReqType } from "./Http"
 
 export type APIQuestionListGET = {
     ReqQueryPayload: never

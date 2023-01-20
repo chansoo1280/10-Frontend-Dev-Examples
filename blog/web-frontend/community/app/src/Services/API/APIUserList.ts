@@ -1,5 +1,5 @@
 import { User } from "@Services/User"
-import { ApiFunction, ReqType } from "./RequestsInterfaces"
+import { ApiFunction, ReqType } from "./Http"
 
 export type APIUserListGET = {
     ReqQueryPayload: never
