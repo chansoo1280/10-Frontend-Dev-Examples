@@ -31,6 +31,8 @@
         // "@Redux/*": ["src/Redux/*"],
         "@Server": ["src/Server"],
         "@Server/*": ["src/Server/*"],
+        "@Utils": ["src/Utils"],
+        "@Utils/*": ["src/Utils/*"],
         "@Services": ["src/Services"],
         "@Services/*": ["src/Services/*"],
         "@Styles/*": ["src/Styles/*"],
