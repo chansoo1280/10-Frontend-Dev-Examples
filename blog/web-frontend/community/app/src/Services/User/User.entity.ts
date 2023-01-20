@@ -1,4 +1,5 @@
 import { isDate, isString } from "@Utils"
+import { ConditionOfKeys, verifyEntity } from "@Utils/VerifyEntity"
 
 export interface User {
     email: string
@@ -9,13 +10,11 @@ export interface User {
     created: Date
     deleted: Date | null
 }
-const requiredList = ["email", "id", "name", "password", "salt", "created"]
+const requiredList: (keyof User)[] = ["email", "id", "name", "password", "salt", "created"]
 const emailRegexp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
 const passwordRegexp = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)
 const nameRegexp = new RegExp(/^[A-z0-9]{7,14}$/)
-const conditionOfKeys: {
-    [key in keyof User]: (target: any) => boolean
-} = {
+const conditionOfKeys: ConditionOfKeys<User, keyof User> = {
     email: (target) => isString(target) && target.length <= 100 && emailRegexp.test(target),
     id: (target) => isString(target),
     name: (target) => isString(target) && nameRegexp.test(target),
@@ -24,21 +23,4 @@ const conditionOfKeys: {
     created: (target) => isDate(target),
     deleted: (target) => isDate(target),
 }
-export const verifyUser = (user: Partial<User>, checkKeyList: (keyof User)[]): string | true => {
-    const checkResult =
-        checkKeyList
-            .map((key) => {
-                if (checkKeyList.includes(key) === false) {
-                    return null
-                }
-                if (requiredList.includes(key) && user[key] === undefined) {
-                    return key + " 값은 필수입니다."
-                }
-                if (!conditionOfKeys[key](user[key])) {
-                    return key + " 형식이 올바르지 않습니다."
-                }
-                return null
-            })
-            .find((cur) => cur !== null) || true
-    return checkResult
-}
+export const verifyUser = (user: Partial<User>, checkKeyList: (keyof User)[]) => verifyEntity(user, checkKeyList, requiredList, conditionOfKeys)
