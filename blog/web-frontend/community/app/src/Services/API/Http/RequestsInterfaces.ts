@@ -32,13 +32,15 @@ export type ApiFunction<Key extends ReqType, T extends BaseApiInfo> = (
     req: ApiRequest<T["ReqQueryPayload"], T["ReqBodyPayload"]>[Key],
     res: NextApiResponse<T["ResPayload"] | ResMessageWithDesc>,
 ) => Promise<void>
-
+type APIList = {
+    [key in ReqType]: ApiFunction<ReqType, BaseApiInfo>
+}
 export const makeRouter =
-    <APIList>(apiList: any) =>
-    async (req: ExtendedNextApiRequest<any & never> & ExtendedNextApiRequestBody<any & never, any & never>, res: NextApiResponse): Promise<void> => {
+    <T extends APIList>(apiList: T) =>
+    async (req: ExtendedNextApiRequest<any> | ExtendedNextApiRequestBody<any, any>, res: NextApiResponse): Promise<void> => {
         const allowedMethodList = Object.keys(apiList)
-        if (allowedMethodList.includes(req.method)) {
-            await apiList[req.method as keyof APIList](req, res)
+        if (req.method && allowedMethodList.includes(req.method)) {
+            await apiList[req.method](req, res)
             return
         }
         res.status(405).json({ message: `Allowed Method: ${allowedMethodList.join(", ")}` })
