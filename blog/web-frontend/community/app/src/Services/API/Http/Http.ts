@@ -1,4 +1,5 @@
 // #region Global Imports
+import { getStoredAccessToken } from "@Hooks/useUser"
 import { ResMessageWithDesc } from "@Server/response"
 import "isomorphic-unfetch"
 import queryString from "query-string"
@@ -10,14 +11,19 @@ import { BaseApiInfo, ReqType } from "./RequestsInterfaces"
 
 const BaseUrl = `http://localhost:3000`
 // const BaseUrl = `/`
-const defaultOptions = {
-    // cache: "no-cache",
-    headers: {
-        "content-type": "application/json",
-        SECRET: "secret_test",
-    },
-}
-export const Http = async <T extends BaseApiInfo>(methodType: ReqType, url: string, params?: T["ReqQueryPayload"], payload?: T["ReqBodyPayload"]): Promise<T["ResPayload"] | null> => {
+
+export const Http = async <T extends BaseApiInfo>(methodType: T["ReqType"], url: string, params?: T["ReqQueryPayload"], payload?: T["ReqBodyPayload"]): Promise<T["ResPayload"] | null> => {
+    const accessToken = getStoredAccessToken()
+
+    const defaultOptions = {
+        // cache: "no-cache",
+        headers: {
+            "content-type": "application/json",
+            SECRET: "secret_test",
+            Authorization: `Bearer ${accessToken}`,
+        },
+    }
+    console.log(defaultOptions)
     const query = params
         ? `?${queryString.stringify({
               ...params,

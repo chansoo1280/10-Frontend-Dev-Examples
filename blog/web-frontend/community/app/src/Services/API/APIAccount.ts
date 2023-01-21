@@ -2,23 +2,27 @@ import { User } from "@Services/User"
 import { ApiFunction, ReqType } from "./Http"
 
 export type APILoginGET = {
+    ReqType: ReqType.GET
     ReqQueryPayload: never
     ReqBodyPayload: never
     ResPayload: string
 }
 export type APILoginPOST = {
+    ReqType: ReqType.POST
     ReqQueryPayload: never
     ReqBodyPayload: { email: string; password: string }
     ResPayload: Pick<User, "id" | "name" | "email">
 }
 
 export type APILogoutGET = {
+    ReqType: ReqType.GET
     ReqQueryPayload: never
     ReqBodyPayload: never
     ResPayload: string
 }
 
 export type APIFindPWGET = {
+    ReqType: ReqType.GET
     ReqQueryPayload: { email: string }
     ReqBodyPayload: never
     ResPayload: string

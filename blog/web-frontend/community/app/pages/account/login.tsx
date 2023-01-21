@@ -7,15 +7,19 @@ import { useRouter } from "next/router"
 import { Input, Space, Typography, Checkbox, Button, Icon, AccountForm } from "@Components"
 import { Layout } from "@Components/Layouts"
 import { PageProps } from "../_app"
-import { APILogin, APILoginPOST, Http, ReqType } from "@Services"
+import { APILoginGET, APILoginPOST, Http, ReqType } from "@Services"
 import { ResMessageWithDesc, ResStatus } from "@Server/response"
+import { useMutation, useQuery, useQueryClient } from "react-query"
+import { getAccessToken, getStoredAccessToken, useUser } from "@Hooks/useUser"
 // #endregion Local Imports
 
 const { Text } = Typography
 const Login = () => {
     const router = useRouter()
+    const client = useQueryClient()
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
+    const { user, updateUser, clearUser } = useUser()
     const login = async () =>
         await Http<APILoginPOST>(ReqType.POST, "/api/account/login", undefined, {
             email: email,
@@ -74,7 +78,21 @@ const Login = () => {
                 </AccountForm.Row>
                 <AccountForm.Row>
                     <Space.Box>
-                        <Button onClick={login} size="large">
+                        <Button
+                            onClick={async () => {
+                                const user = await login()
+                                if (user === null) {
+                                    return
+                                }
+                                const accessToken = await getAccessToken()
+                                if (accessToken === null) {
+                                    return
+                                }
+                                updateUser(user, accessToken)
+                                console.log(client.getQueryData("user"))
+                            }}
+                            size="large"
+                        >
                             로그인
                         </Button>
                     </Space.Box>

@@ -7,7 +7,10 @@ import { Roboto } from "@next/font/google"
 import "@Styles/reset.css"
 import { createRef } from "react"
 import TheLayout, { Layout } from "@Components/Layouts"
+import { QueryClient, QueryClientProvider } from "react-query"
 // #endregion Local Imports
+
+const queryClient = new QueryClient()
 
 const roboto = Roboto({
     weight: ["400", "500", "700"],
@@ -15,6 +18,7 @@ const roboto = Roboto({
 })
 export interface PageProps {
     layout?: Layout
+    dehydratedState?: any
 }
 const App = ({ Component, pageProps }: AppProps<PageProps>) => {
     const layoutRef = createRef<HTMLDivElement>()
@@ -26,9 +30,11 @@ const App = ({ Component, pageProps }: AppProps<PageProps>) => {
                     font-family: ${roboto.style.fontFamily};
                 }
             `}</style>
-            <AppLayout {...pageProps} ref={layoutRef}>
-                <Component {...pageProps} layoutRef={layoutRef} />
-            </AppLayout>
+            <QueryClientProvider client={queryClient}>
+                <AppLayout {...pageProps} ref={layoutRef}>
+                    <Component {...pageProps} layoutRef={layoutRef} />
+                </AppLayout>
+            </QueryClientProvider>
         </>
     )
 }

@@ -7,13 +7,19 @@ import { ChangeEvent, useEffect, useState } from "react"
 import { Tabs, Space, Typography, Button, Search, Tags, QuestionList, Card } from "@Components"
 import { Tab } from "@Components/Molecules/Tabs"
 import { Tag } from "@Components/Molecules/Tags"
-import { APIUserGET, Http, ReqType } from "@Services"
+import { APILoginGET, APIUserGET, Http, ReqType } from "@Services"
 import { ResMessageWithDesc, ResStatus } from "@Server/response"
+import { QueryClient, useQuery, useQueryClient } from "react-query"
+import { User } from "@Services/User"
+import { getUser, useUser } from "@Hooks/useUser"
 // #endregion Local Imports
 
 const { Text } = Typography
 const Question = (props: { email: any }) => {
-    console.log(props.email)
+    const client = useQueryClient()
+    const { user, updateUser, clearUser } = useUser()
+    console.log(user)
+
     const [activeIdx, setActiveIdx] = useState(0)
     const [tabList, _] = useState([{ title: "Question" }, { title: "Articles", disabled: true }])
     const onClickTab = (tab: Tab, idx: number) => {

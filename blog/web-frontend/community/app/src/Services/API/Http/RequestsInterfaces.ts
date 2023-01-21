@@ -24,6 +24,7 @@ type ApiRequest<T, U> = {
 }
 
 export type BaseApiInfo = {
+    ReqType: ReqType
     ReqQueryPayload: any
     ReqBodyPayload: any
     ResPayload: any
