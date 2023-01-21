@@ -8,7 +8,7 @@ import { Tabs, Space, Typography, Button, Search, Tags, QuestionList, Card } fro
 import { Tab } from "@Components/Molecules/Tabs"
 import { Tag } from "@Components/Molecules/Tags"
 import { APIUserGET, Http, ReqType } from "@Services"
-import { ErrorRes } from "@Server/response"
+import { ResMessageWithDesc, ResStatus } from "@Server/response"
 // #endregion Local Imports
 
 const { Text } = Typography
@@ -109,22 +109,21 @@ const Question = (props: { email: any }) => {
 }
 
 export async function getStaticProps() {
-    const result = await Http<APIUserGET>(ReqType.GET, "/api/userList/24").catch((e: ErrorRes) => {
-        switch (e.state) {
-            case 204:
-                console.log("유저가 없습니다.")
+    const result = await Http<APIUserGET>(ReqType.GET, "/api/userList/24").catch((e: ResMessageWithDesc) => {
+        switch (e.status) {
+            case ResStatus.NoContent:
+                console.log(e.description)
                 return null
-                break
 
             default:
                 break
         }
         return null
     })
-    const user = result ? result.data : null
+    const email = result !== null ? result?.email : ""
     return {
         props: {
-            email: "",
+            email: email,
         }, // will be passed to the page component as props
     }
 }

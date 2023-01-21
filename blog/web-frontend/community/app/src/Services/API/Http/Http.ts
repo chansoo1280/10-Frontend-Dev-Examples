@@ -29,16 +29,21 @@ export const Http = async <T extends BaseApiInfo>(methodType: ReqType, url: stri
         body: methodType === "GET" ? undefined : JSON.stringify(payload || "") || null,
         method: `${methodType}`,
         ...defaultOptions,
-    }).then(async (response) => {
-        if (response.status === 200) {
-            const result: T["ResPayload"] = await response.json()
-            return result
-        } else if (response.status === 500) {
-            console.log("error " + response)
-            return null
-        } else {
-            const result: ResMessageWithDesc = await response.json()
-            return Promise.reject(result)
-        }
     })
+        .then(async (response) => {
+            if (response.status === 200) {
+                const result: T["ResPayload"] = await response.json()
+                return result
+            }
+            throw response
+        })
+        .catch(async (response) => {
+            if (response.status === 500) {
+                console.log("error " + response)
+                throw null
+            } else {
+                const result: ResMessageWithDesc = await response.json()
+                throw Promise.resolve(result)
+            }
+        })
 }

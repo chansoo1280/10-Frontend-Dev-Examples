@@ -25,7 +25,7 @@ interface InputProps extends defaultProps {
 }
 
 const Input = (props: InputProps, ref?: React.Ref<HTMLInputElement>) => {
-    const { value, show, size, className, onChange, onBlur, onEnter, disabled, prefix, suffix, placeholder, widthType, ...rest } = props
+    const { value, show, size, className, onChange, onBlur, onEnter, disabled, prefix, suffix, placeholder, widthType, type, ...rest } = props
     const inputRef = useRef<HTMLInputElement>(null)
     const [innerValue, setValue] = useState(value)
     const [focused, setFocused] = useState(false)
@@ -85,6 +85,7 @@ const Input = (props: InputProps, ref?: React.Ref<HTMLInputElement>) => {
         value: innerValue,
         onClick: handleClick,
         placeholder: placeholder,
+        type: type,
         onBlur,
         onKeyDown: handleKeyDown,
     }
