@@ -1,5 +1,6 @@
 import { ResMessageWithDesc, ResStatus } from "@Server/response"
 import { Http, APILoginGET, ReqType } from "@Services"
+import { decrypt, encrypt } from "@Services/Crypto"
 import { useState } from "react"
 import { useQueryClient, useQuery } from "react-query"
 type AccessToken = string
@@ -56,10 +57,12 @@ export function getStoredAccessToken(): string | null {
         return null
     }
     const storedAccessToken = localStorage.getItem("ACCESSTOKEN_LOCALSTORAGE_KEY")
-    return storedAccessToken ? JSON.parse(storedAccessToken) : null
+    const decryptedToken = decrypt(storedAccessToken || "")
+    return decryptedToken ? decryptedToken : null
 }
 export function setStoredAccessToken(accessToken: string): void {
-    localStorage.setItem("ACCESSTOKEN_LOCALSTORAGE_KEY", JSON.stringify(accessToken))
+    const encryptedToken = encrypt(accessToken)
+    localStorage.setItem("ACCESSTOKEN_LOCALSTORAGE_KEY", encryptedToken)
 }
 export function clearStoredAccessToken(): void {
     localStorage.removeItem("ACCESSTOKEN_LOCALSTORAGE_KEY")
