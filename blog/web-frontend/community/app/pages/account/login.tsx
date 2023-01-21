@@ -7,24 +7,24 @@ import { useRouter } from "next/router"
 import { Input, Space, Typography, Checkbox, Button, Icon, AccountForm } from "@Components"
 import { Layout } from "@Components/Layouts"
 import { PageProps } from "../_app"
-import { APILoginGET, APILoginPOST, Http, ReqType } from "@Services"
+import { APILoginPOST, Http, ReqType } from "@Services"
 import { ResMessageWithDesc, ResStatus } from "@Server/response"
-import { useMutation, useQuery, useQueryClient } from "react-query"
-import { getAccessToken, getStoredAccessToken, useUser } from "@Hooks/useUser"
+import { useUser } from "@Hooks/useUser"
 // #endregion Local Imports
 
 const { Text } = Typography
 const Login = () => {
     const router = useRouter()
-    const client = useQueryClient()
-    const [email, setEmail] = useState<string>("")
-    const [password, setPassword] = useState<string>("")
-    const { user, updateUser, clearUser } = useUser()
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const { updateUser } = useUser()
+
     const login = async () =>
         await Http<APILoginPOST>(ReqType.POST, "/api/account/login", undefined, {
             email: email,
             password: password,
         }).catch((e: ResMessageWithDesc) => {
+            console.log(e)
             switch (e.status) {
                 case ResStatus.NoContent:
                     console.log(e.description)
@@ -38,6 +38,14 @@ const Login = () => {
             }
             return null
         })
+
+    const handleClickLogin = async () => {
+        const user = await login()
+        if (user === null) {
+            return
+        }
+        updateUser(user)
+    }
     return (
         <>
             <AccountForm header="Login">
@@ -66,7 +74,7 @@ const Login = () => {
                 <AccountForm.Row>
                     <Space.Box>
                         <Checkbox
-                            onChange={function (event: React.ChangeEvent<HTMLInputElement>): void {
+                            onChange={function (): void {
                                 throw new Error("Function not implemented.")
                             }}
                             label="로그인 유지하기"
@@ -78,21 +86,7 @@ const Login = () => {
                 </AccountForm.Row>
                 <AccountForm.Row>
                     <Space.Box>
-                        <Button
-                            onClick={async () => {
-                                const user = await login()
-                                if (user === null) {
-                                    return
-                                }
-                                const accessToken = await getAccessToken()
-                                if (accessToken === null) {
-                                    return
-                                }
-                                updateUser(user, accessToken)
-                                console.log(client.getQueryData("user"))
-                            }}
-                            size="large"
-                        >
+                        <Button onClick={handleClickLogin} size="large">
                             로그인
                         </Button>
                     </Space.Box>

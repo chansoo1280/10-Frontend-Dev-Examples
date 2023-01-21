@@ -8,7 +8,7 @@ export const validatePassword = (user: User, inputPassword: string): boolean => 
 
 export const generateAccessToken = (user: jwt.JwtPayload): string => {
     return jwt.sign({ id: user.id, email: user.email }, process.env.SERVER_SECRET || "", {
-        expiresIn: "3h", // For test
+        expiresIn: "3h",
     })
 }
 

@@ -7,23 +7,44 @@ import { ChangeEvent, useEffect, useState } from "react"
 import { Tabs, Space, Typography, Button, Search, Tags, QuestionList, Card } from "@Components"
 import { Tab } from "@Components/Molecules/Tabs"
 import { Tag } from "@Components/Molecules/Tags"
-import { APILoginGET, APIUserGET, Http, ReqType } from "@Services"
+import { APILoginGET, APIQuestionListPOST, APIUserGET, Http, ReqType } from "@Services"
 import { ResMessageWithDesc, ResStatus } from "@Server/response"
 import { QueryClient, useQuery, useQueryClient } from "react-query"
 import { User } from "@Services/User"
 import { getUser, useUser } from "@Hooks/useUser"
+import { useAccessToken } from "@Hooks/useAccessToken"
 // #endregion Local Imports
 
 const { Text } = Typography
 const Question = (props: { email: any }) => {
-    const client = useQueryClient()
-    const { user, updateUser, clearUser } = useUser()
+    const { user } = useUser()
     console.log(user)
 
     const [activeIdx, setActiveIdx] = useState(0)
     const [tabList, _] = useState([{ title: "Question" }, { title: "Articles", disabled: true }])
     const onClickTab = (tab: Tab, idx: number) => {
         setActiveIdx(idx)
+    }
+    const createQuestion = async () => {
+        if (!user) {
+            return null
+        }
+        await Http<APIQuestionListPOST>(ReqType.POST, `/api/questionList`, undefined, {
+            title: "test1",
+            contents: "asdf",
+            authorId: user.id,
+        }).catch((e: ResMessageWithDesc) => {
+            console.log(e)
+            switch (e.status) {
+                case ResStatus.NoContent:
+                    console.log(e.description)
+                    return null
+
+                default:
+                    break
+            }
+            return null
+        })
     }
 
     return (
@@ -41,6 +62,7 @@ const Question = (props: { email: any }) => {
                             <Text>커뮤니티</Text>
                         </Space.Box>
                         <Button href={"/community/questions/create"}>글작성</Button>
+                        {/* <Button onClick={() => createQuestion()}>글작성</Button> */}
                     </Space>
                     <Search
                         value={""}
@@ -115,21 +137,9 @@ const Question = (props: { email: any }) => {
 }
 
 export async function getStaticProps() {
-    const result = await Http<APIUserGET>(ReqType.GET, "/api/userList/24").catch((e: ResMessageWithDesc) => {
-        switch (e.status) {
-            case ResStatus.NoContent:
-                console.log(e.description)
-                return null
-
-            default:
-                break
-        }
-        return null
-    })
-    const email = result !== null ? result?.email : ""
     return {
         props: {
-            email: email,
+            email: "",
         }, // will be passed to the page component as props
     }
 }
