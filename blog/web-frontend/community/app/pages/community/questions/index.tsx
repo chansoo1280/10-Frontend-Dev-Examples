@@ -1,22 +1,19 @@
 // #region Global Imports
 import Head from "next/head"
-import { ChangeEvent, useEffect, useState } from "react"
+import { ChangeEvent, useState } from "react"
 // #endregion Global Imports
 
 // #region Local Imports
-import { Tabs, Space, Typography, Button, Search, Tags, QuestionList, Card } from "@Components"
+import { Tabs, Space, Text, Button, Search, Tags, QuestionList, Card } from "@Components"
 import { Tab } from "@Components/Molecules/Tabs"
 import { Tag } from "@Components/Molecules/Tags"
-import { APILoginGET, APIQuestionListPOST, APIUserGET, Http, ReqType } from "@Services"
+import { APIQuestionListPOST, Http, ReqType } from "@Services"
 import { ResMessageWithDesc, ResStatus } from "@Server/response"
-import { QueryClient, useQuery, useQueryClient } from "react-query"
-import { User } from "@Services/User"
-import { getUser, useUser } from "@Hooks/useUser"
-import { useAccessToken } from "@Hooks/useAccessToken"
+import { useUser } from "@Hooks/useUser"
+import { useRouter } from "next/router"
 // #endregion Local Imports
-
-const { Text } = Typography
 const Question = (props: { email: any }) => {
+    const router = useRouter()
     const { user } = useUser()
     console.log(user)
 
@@ -61,7 +58,7 @@ const Question = (props: { email: any }) => {
                         <Space.Box>
                             <Text>커뮤니티</Text>
                         </Space.Box>
-                        <Button href={"/community/questions/create"}>글작성</Button>
+                        <Button href={{ pathname: "/community/questions/create", query: { prevPath: router.pathname } }}>글작성</Button>
                         {/* <Button onClick={() => createQuestion()}>글작성</Button> */}
                     </Space>
                     <Search

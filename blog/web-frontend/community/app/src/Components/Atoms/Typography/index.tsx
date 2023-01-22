@@ -14,7 +14,7 @@ interface TextProps extends defaultProps {
     type?: "defalut" | "link"
 }
 
-const Text = ({ as = "span", size = "medium", className, show, type, ...rest }: TextProps) => {
+export const Text = ({ as = "span", size = "medium", className, show, type, ...rest }: TextProps) => {
     const TextNode = `${as}` as keyof JSX.IntrinsicElements
     const prefixCls = `text`
     return (
@@ -32,7 +32,3 @@ const Text = ({ as = "span", size = "medium", className, show, type, ...rest }: 
         />
     )
 }
-const Typography = {
-    Text,
-}
-export default Typography

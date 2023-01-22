@@ -1,17 +1,14 @@
 // #region Global Imports
 import React from "react"
 import classNames from "classnames"
-import Image, { ImageLoader } from "next/image"
 // #endregion Global Imports
 
 // #region Local Imports
-import { defaultProps, Space, Button, Typography, Tags, IconList, QuestionAuthorInfo, Rows } from "@Components"
+import { defaultProps, Space, Button, Text, Tags, IconList, QuestionAuthorInfo, Rows, Row } from "@Components"
 import { Tag } from "@Components/Molecules/Tags"
 import styles from "./QuestionList.module.scss"
 import Link from "next/link"
 // #endregion Local Imports
-
-const { Text } = Typography
 
 export interface Question {
     questionId: string
@@ -55,10 +52,10 @@ const QuestionList = (props: QuestionListProps): JSX.Element => {
                                 }}
                             />
                         </Space>
-                        <Rows.Row>
+                        <Row>
                             <QuestionAuthorInfo userName="asd" created={"2021-02-05 13:51"} />
-                        </Rows.Row>
-                        <Rows.Row>
+                        </Row>
+                        <Row>
                             <IconList
                                 iconList={[
                                     {
@@ -75,7 +72,7 @@ const QuestionList = (props: QuestionListProps): JSX.Element => {
                                     },
                                 ]}
                             />
-                        </Rows.Row>
+                        </Row>
                     </Rows>
                 </Link>
             ))}

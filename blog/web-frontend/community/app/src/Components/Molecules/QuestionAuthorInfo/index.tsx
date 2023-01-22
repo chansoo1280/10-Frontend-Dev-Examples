@@ -5,10 +5,9 @@ import Image, { ImageLoader } from "next/image"
 // #endregion Global Imports
 
 // #region Local Imports
-import { defaultProps, Button, Typography } from "@Components"
+import { defaultProps, Button, Text } from "@Components"
 import styles from "./QuestionAuthorInfo.module.scss"
 // #endregion Local Imports
-const { Text } = Typography
 const myLoader: ImageLoader = ({ src, width, quality }) => {
     return `/public/Images/${src}?w=${width}&q=${quality || 75}`
 }

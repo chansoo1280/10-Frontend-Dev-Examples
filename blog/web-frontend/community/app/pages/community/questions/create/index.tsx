@@ -5,12 +5,11 @@ import { useRouter } from "next/router"
 // #endregion Global Imports
 
 // #region Local Imports
-import { Input, Space, Typography, Button, Tags, Card, MDEditor, QuestionAuthorInfo, Breadcrumbs, Rows } from "@Components"
+import { Input, Space, Button, Tags, Card, MDEditor, QuestionAuthorInfo, Breadcrumbs, Rows, Row } from "@Components"
 import { Tab } from "@Components/Molecules/Tabs"
 import { Tag } from "@Components/Molecules/Tags"
 // #endregion Local Imports
 
-const { Text } = Typography
 const QuestionCreate = () => {
     const router = useRouter()
     return (
@@ -50,7 +49,7 @@ const QuestionCreate = () => {
                                     throw new Error("Function not implemented.")
                                 }}
                             />
-                            <Rows.Row>
+                            <Row>
                                 <Tags
                                     onAdd={(text) => {
                                         console.log(text)
@@ -66,7 +65,7 @@ const QuestionCreate = () => {
                                         throw new Error("Function not implemented.")
                                     }}
                                 />
-                            </Rows.Row>
+                            </Row>
                         </Rows>
                         <Rows padding="24px">
                             <MDEditor
@@ -75,16 +74,16 @@ const QuestionCreate = () => {
                                     throw new Error("Function not implemented.")
                                 }}
                             ></MDEditor>
-                            <Rows.Row>
+                            <Row>
                                 <QuestionAuthorInfo userName="asd" created={"2021-02-05 13:51"} />
-                            </Rows.Row>
-                            <Rows.Row>
+                            </Row>
+                            <Row>
                                 <Space.Box></Space.Box>
                                 <Button>저장</Button>
                                 <Button onClick={() => router.back()} type="secondary">
                                     취소
                                 </Button>
-                            </Rows.Row>
+                            </Row>
                         </Rows>
                     </Card>
                 </Card.wrap>

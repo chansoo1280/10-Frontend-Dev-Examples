@@ -5,11 +5,10 @@ import classNames from "classnames"
 
 // #region Local Imports
 import { defaultProps } from "@Components"
-import Typography from "../Typography"
+import { Text } from "../Typography"
 import { useClickAnimating } from "@Hooks"
 import styles from "./Checkbox.module.scss"
 // #endregion Local Imports
-const { Text } = Typography
 interface CheckboxProps extends defaultProps {
     checked?: boolean
     onChange: ChangeEventHandler<HTMLInputElement>

@@ -5,12 +5,10 @@ import { useRouter } from "next/router"
 // #endregion Global Imports
 
 // #region Local Imports
-import { Input, Space, Typography, Button, Tags, Card, MDEditor, QuestionAuthorInfo, Breadcrumbs, Icon, IconList, Rows } from "@Components"
+import { Input, Space, Text, Button, Tags, Card, MDEditor, QuestionAuthorInfo, Breadcrumbs, Icon, IconList, Rows, Row } from "@Components"
 import { Tab } from "@Components/Molecules/Tabs"
 import { Tag } from "@Components/Molecules/Tags"
 // #endregion Local Imports
-
-const { Text } = Typography
 const QuestionInfo = () => {
     const router = useRouter()
     return (
@@ -42,7 +40,7 @@ const QuestionInfo = () => {
                 <Card.wrap padding={"24px"}>
                     <Card gap={"0"} padding={"0"} direction={"vertical"} bgType={"white"} separator={<div style={{ width: "100%", height: "1px", background: "#0000000F" }}></div>}>
                         <Rows gap="12px">
-                            <Rows.Row>
+                            <Row>
                                 <Space.Box>
                                     <Button onClick={() => router.back()} type="text" icon={<Icon iconName="xi-arrow-left"></Icon>}></Button>
                                     <Text>Alipay</Text>
@@ -55,8 +53,8 @@ const QuestionInfo = () => {
                                         삭제
                                     </Button>
                                 </Space>
-                            </Rows.Row>
-                            <Rows.Row>
+                            </Row>
+                            <Row>
                                 <Tags
                                     boxProps={{ padding: "4px" }}
                                     tagList={[
@@ -68,7 +66,7 @@ const QuestionInfo = () => {
                                         throw new Error("Function not implemented.")
                                     }}
                                 />
-                            </Rows.Row>
+                            </Row>
                         </Rows>
                         <Rows padding="24px">
                             <MDEditor
@@ -80,10 +78,10 @@ const QuestionInfo = () => {
 
 `}
                             ></MDEditor>
-                            <Rows.Row>
+                            <Row>
                                 <QuestionAuthorInfo userName="asd" created={"2021-02-05 13:51"} />
-                            </Rows.Row>
-                            <Rows.Row>
+                            </Row>
+                            <Row>
                                 <IconList
                                     iconList={[
                                         {
@@ -100,13 +98,13 @@ const QuestionInfo = () => {
                                         },
                                     ]}
                                 />
-                            </Rows.Row>
+                            </Row>
                         </Rows>
                         <Space direction="vertical" widthType="wide" padding="0">
                             <Rows padding="24px 24px 24px 48px">
-                                <Rows.Row>
+                                <Row>
                                     <QuestionAuthorInfo userName="asd" created={"2021-02-05 13:51"} />
-                                </Rows.Row>
+                                </Row>
                                 <MDEditor
                                     value={`
 ## MarkdownPreview
@@ -115,15 +113,15 @@ const QuestionInfo = () => {
 
 `}
                                 ></MDEditor>
-                                <Rows.Row>
+                                <Row>
                                     <Space.Box></Space.Box>
                                     <Button>저장</Button>
-                                </Rows.Row>
+                                </Row>
                             </Rows>
                             <Rows padding="24px 24px 24px 48px">
-                                <Rows.Row>
+                                <Row>
                                     <QuestionAuthorInfo userName="asd" created={"2021-02-05 13:51"} />
-                                </Rows.Row>
+                                </Row>
                                 <MDEditor
                                     type="preview"
                                     value={`
@@ -133,7 +131,7 @@ const QuestionInfo = () => {
 
 `}
                                 ></MDEditor>
-                                <Rows.Row>
+                                <Row>
                                     <IconList
                                         iconList={[
                                             {
@@ -146,7 +144,7 @@ const QuestionInfo = () => {
                                             },
                                         ]}
                                     />
-                                </Rows.Row>
+                                </Row>
                             </Rows>
                         </Space>
                     </Card>

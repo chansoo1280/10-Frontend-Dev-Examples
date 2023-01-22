@@ -4,13 +4,12 @@ import classNames from "classnames"
 // #endregion Global Imports
 
 // #region Local Imports
-import { defaultProps, Space, Button, Typography, Icon } from "@Components"
+import { defaultProps, Space, Button, Text, Icon } from "@Components"
 import styles from "./IconList.module.scss"
 import { SpaceProps } from "@Components/Atoms/Space"
 import { IconNames } from "@Components/Atoms/Icon/IconNames"
 // #endregion Local Imports
 
-const { Text } = Typography
 export interface IconItem {
     iconName: IconNames
     value: string

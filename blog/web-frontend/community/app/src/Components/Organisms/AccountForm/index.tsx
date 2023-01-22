@@ -4,10 +4,9 @@ import classNames from "classnames"
 // #endregion Global Imports
 
 // #region Local Imports
-import { defaultProps, Typography, Rows } from "@Components"
+import { defaultProps, Text, Rows, Row } from "@Components"
 import styles from "./AccountForm.module.scss"
 // #endregion Local Imports
-const { Text } = Typography
 
 interface AccountFormProps extends defaultProps {
     header?: string
@@ -27,12 +26,12 @@ const AccountForm = (props: AccountFormProps): JSX.Element => {
         <Rows className={classes} gap="22px" {...rest}>
             <Text className={styles[`${prefixCls}__title`]}>Example Project</Text>
 
-            <Rows.Row>
+            <Row>
                 <Text className={styles[`${prefixCls}__header`]}>{header}</Text>
-            </Rows.Row>
+            </Row>
             {children}
         </Rows>
     )
 }
-AccountForm.Row = Rows.Row
+AccountForm.Row = Row
 export default AccountForm
