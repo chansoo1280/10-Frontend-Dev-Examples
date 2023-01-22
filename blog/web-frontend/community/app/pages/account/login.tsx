@@ -4,7 +4,7 @@ import { useRouter } from "next/router"
 // #endregion Global Imports
 
 // #region Local Imports
-import { Input, Space, Typography, Checkbox, Button, Icon, AccountForm } from "@Components"
+import { Input, Space, Checkbox, Button, Icon, AccountForm, Rows, Row } from "@Components"
 import { Layout } from "@Components/Layouts"
 import { PageProps } from "../_app"
 import { APILoginPOST, Http, ReqType } from "@Services"
@@ -12,7 +12,6 @@ import { ResMessageWithDesc, ResStatus } from "@Server/response"
 import { useUser } from "@Hooks/useUser"
 // #endregion Local Imports
 
-const { Text } = Typography
 const Login = () => {
     const router = useRouter()
     const [email, setEmail] = useState("")
@@ -45,6 +44,11 @@ const Login = () => {
             return
         }
         updateUser(user)
+        if (router.query.prevPath !== undefined) {
+            router.back()
+        } else {
+            router.replace("/community/questions")
+        }
     }
     return (
         <>
@@ -56,7 +60,7 @@ const Login = () => {
                     placeholder="Email"
                     type="email"
                     value={email}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    onChange={(event) => {
                         setEmail(event.target.value)
                     }}
                 />
@@ -67,11 +71,11 @@ const Login = () => {
                     placeholder="Password"
                     type="password"
                     value={password}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    onChange={(event) => {
                         setPassword(event.target.value)
                     }}
                 />
-                <AccountForm.Row>
+                <Row>
                     <Space.Box>
                         <Checkbox
                             onChange={function (): void {
@@ -83,8 +87,8 @@ const Login = () => {
                     <Button href={"/account/find-pw"} size="small" type="link">
                         비밀번호를 잊으셨나요?
                     </Button>
-                </AccountForm.Row>
-                <AccountForm.Row>
+                </Row>
+                <Row>
                     <Space.Box>
                         <Button onClick={handleClickLogin} size="large">
                             로그인
@@ -93,7 +97,7 @@ const Login = () => {
                     <Button onClick={() => router.back()} type="link">
                         이전으로
                     </Button>
-                </AccountForm.Row>
+                </Row>
             </AccountForm>
         </>
     )

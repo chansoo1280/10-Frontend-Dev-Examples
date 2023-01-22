@@ -28,7 +28,12 @@ const apiLogin: APILogin = {
         }
         const isVaildatePassword = validatePassword(user, req.body.password)
         if (isVaildatePassword === true) {
-            const refreshToken = generateRefreshToken(user)
+            const tokenInfo = {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+            }
+            const refreshToken = generateRefreshToken(tokenInfo)
             setCookie("refreshToken", refreshToken, {
                 req,
                 res,
@@ -36,11 +41,7 @@ const apiLogin: APILogin = {
                 sameSite: true,
                 secure: true,
             })
-            res.status(ResStatus.Success).json({
-                id: user.id,
-                name: user.name,
-                email: user.email,
-            })
+            res.status(ResStatus.Success).json(tokenInfo)
             return
         }
         resMessage(res, ResStatus.Forbidden)

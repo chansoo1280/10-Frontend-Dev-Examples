@@ -2,6 +2,7 @@ import { clearStoredAccessToken, useAccessToken } from "@Hooks/useAccessToken"
 import { ResMessageWithDesc, ResStatus } from "@Server/response"
 import { Http, ReqType, APIUserGET } from "@Services"
 import { User } from "@Services/User"
+import { useEffect, useState } from "react"
 import { useQueryClient, useQuery, UseQueryResult } from "react-query"
 type StoredUser = Pick<User, "id" | "email" | "name">
 export const getUser = async (user: StoredUser | null | undefined) => {
@@ -26,6 +27,7 @@ export const getUser = async (user: StoredUser | null | undefined) => {
 
 export const useUser = () => {
     const queryclient = useQueryClient()
+    const [user, setUser] = useState<StoredUser | null>(null)
     const { refetchAccessToken } = useAccessToken()
     const queryResult: UseQueryResult<StoredUser | null> = useQuery("user", () => getUser(queryResult.data), {
         initialData: getStoredUser,
@@ -33,39 +35,43 @@ export const useUser = () => {
         onSuccess: (received: StoredUser | null) => {
             // 쿼리함수나 setQueryData에서 데이터를 가져오는 함수
             if (!received) {
-                console.log("clearStoredUser")
                 // falsy의 값을 받을 경우
-                // clearStoredUser()
-                // clearStoredAccessToken()
+                clearStoredUser()
+                clearStoredAccessToken()
             } else {
                 // truthy의 값을 받을 경우
                 setStoredUser(received)
             }
         },
     })
+    useEffect(() => {
+        setUser(queryResult.data || null)
+    }, [queryResult.data])
 
     const updateUser = (newUser: Pick<User, "id" | "email" | "name">): void => {
         queryclient.setQueryData("user", newUser)
-
+        setStoredUser(newUser)
         refetchAccessToken()
     }
 
     const clearUser = () => {
         queryclient.setQueryData("user", null)
+        clearStoredUser()
+        clearStoredAccessToken()
     }
 
-    return { user: queryResult.data || null, updateUser, clearUser }
+    return { user, updateUser, clearUser }
 }
-export function getStoredUser(): StoredUser | null {
+export const getStoredUser = (): StoredUser | null => {
     if (typeof window === "undefined") {
         return null
     }
     const storedUser = localStorage.getItem("USER_LOCALSTORAGE_KEY")
     return storedUser ? JSON.parse(storedUser) : null
 }
-export function setStoredUser(user: StoredUser): void {
+export const setStoredUser = (user: StoredUser): void => {
     localStorage.setItem("USER_LOCALSTORAGE_KEY", JSON.stringify(user))
 }
-export function clearStoredUser(): void {
+export const clearStoredUser = (): void => {
     localStorage.removeItem("USER_LOCALSTORAGE_KEY")
 }

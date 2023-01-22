@@ -11,7 +11,7 @@ export type APIUserListPOST = {
     ReqType: ReqType.POST
     ReqQueryPayload: never
     ReqBodyPayload: Pick<User, "name" | "email" | "password">
-    ResPayload: User["id"]
+    ResPayload: Pick<User, "id" | "name" | "email">
 }
 export type APIUserListDELETE = {
     ReqType: ReqType.DELETE

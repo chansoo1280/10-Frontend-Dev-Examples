@@ -52,7 +52,7 @@ export const useAccessToken = () => {
     return { accessToken: data, updateAccessToken, clearAccessToken, refetchAccessToken: refetch }
 }
 
-export function getStoredAccessToken(): string | null {
+export const getStoredAccessToken = (): string | null => {
     if (typeof window === "undefined") {
         return null
     }
@@ -60,10 +60,10 @@ export function getStoredAccessToken(): string | null {
     const decryptedToken = decrypt(storedAccessToken || "")
     return decryptedToken ? decryptedToken : null
 }
-export function setStoredAccessToken(accessToken: string): void {
+export const setStoredAccessToken = (accessToken: string): void => {
     const encryptedToken = encrypt(accessToken)
     localStorage.setItem("ACCESSTOKEN_LOCALSTORAGE_KEY", encryptedToken)
 }
-export function clearStoredAccessToken(): void {
+export const clearStoredAccessToken = (): void => {
     localStorage.removeItem("ACCESSTOKEN_LOCALSTORAGE_KEY")
 }

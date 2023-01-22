@@ -2,7 +2,9 @@ import { resMessage, resMessageWithDesc, ResStatus } from "@Server/response"
 import { APIUserList, makeRouter, ReqType } from "@Services"
 import { createUser, deleteAllUser, findAllUser, findUserByEmail } from "@Services/User"
 import { getHash } from "@Services/Crypto"
-import { verifyUser } from "@Services/User/User.entity"
+import { User, verifyUser } from "@Services/User/User.entity"
+import { generateRefreshToken } from "@Services/Account"
+import { setCookie } from "cookies-next"
 
 const apiUserList: APIUserList = {
     [ReqType.GET]: async (req, res) => {
@@ -38,7 +40,20 @@ const apiUserList: APIUserList = {
 
         const result = await createUser(userInfo)
         if (result !== null) {
-            res.status(ResStatus.Success).json(result)
+            const tokenInfo = {
+                id: result,
+                email: userInfo.email,
+                name: userInfo.name,
+            }
+            const refreshToken = generateRefreshToken(tokenInfo)
+            setCookie("refreshToken", refreshToken, {
+                req,
+                res,
+                httpOnly: true,
+                sameSite: true,
+                secure: true,
+            })
+            res.status(ResStatus.Success).json(tokenInfo)
             return
         }
         resMessage(res, ResStatus.BadRequest)
