@@ -2,18 +2,21 @@ import { User } from "@Services/User"
 import { ApiFunction, ReqType } from "./Http"
 
 export type APIUserListGET = {
+    PathName: ["/api/userList"]
     ReqType: ReqType.GET
     ReqQueryPayload: never
     ReqBodyPayload: never
     ResPayload: User[]
 }
 export type APIUserListPOST = {
+    PathName: ["/api/userList"]
     ReqType: ReqType.POST
     ReqQueryPayload: never
     ReqBodyPayload: Pick<User, "name" | "email" | "password">
     ResPayload: Pick<User, "id" | "name" | "email">
 }
 export type APIUserListDELETE = {
+    PathName: ["/api/userList"]
     ReqType: ReqType.DELETE
     ReqQueryPayload: never
     ReqBodyPayload: never
@@ -21,6 +24,12 @@ export type APIUserListDELETE = {
 }
 
 export type APIUserGET = {
+    PathName: [
+        "/api/userList/[id]",
+        {
+            id: number
+        },
+    ]
     ReqType: ReqType.GET
     ReqQueryPayload: { id: string }
     ReqBodyPayload: never
@@ -28,6 +37,12 @@ export type APIUserGET = {
 }
 
 export type APIUserDELETE = {
+    PathName: [
+        "/api/userList/[id]",
+        {
+            id: number
+        },
+    ]
     ReqType: ReqType.DELETE
     ReqQueryPayload: { id: string }
     ReqBodyPayload: never

@@ -12,7 +12,7 @@ import { BaseApiInfo, ReqType } from "./RequestsInterfaces"
 const BaseUrl = `http://localhost:3000`
 // const BaseUrl = `/`
 
-export const Http = async <T extends BaseApiInfo>(methodType: T["ReqType"], url: string, params?: T["ReqQueryPayload"], payload?: T["ReqBodyPayload"]): Promise<T["ResPayload"] | null> => {
+export const Http = async <T extends BaseApiInfo>(methodType: T["ReqType"], url: T["PathName"], params?: T["ReqQueryPayload"], payload?: T["ReqBodyPayload"]): Promise<T["ResPayload"] | null> => {
     const accessToken = getStoredAccessToken()
 
     const defaultOptions = {
@@ -30,8 +30,13 @@ export const Http = async <T extends BaseApiInfo>(methodType: T["ReqType"], url:
               api_key: process.env.NEXT_PUBLIC_API_KEY,
           })}`
         : ""
+    const pathName = url[0]
+    const pathObj = url[1] || {}
 
-    return fetch(`${BaseUrl}${url}${query}`, {
+    const mappedUrl = Object.keys(pathObj).reduce((path: string, key: string) => {
+        return path.replace(`[${key}]`, String(pathObj[key]))
+    }, pathName)
+    return fetch(`${BaseUrl}${mappedUrl}${query}`, {
         body: methodType === "GET" ? undefined : JSON.stringify(payload || "") || null,
         method: `${methodType}`,
         ...defaultOptions,

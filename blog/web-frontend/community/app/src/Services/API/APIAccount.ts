@@ -2,12 +2,14 @@ import { User } from "@Services/User"
 import { ApiFunction, ReqType } from "./Http"
 
 export type APILoginGET = {
+    PathName: ["/api/account/login"]
     ReqType: ReqType.GET
     ReqQueryPayload: never
     ReqBodyPayload: never
     ResPayload: string
 }
 export type APILoginPOST = {
+    PathName: ["/api/account/login"]
     ReqType: ReqType.POST
     ReqQueryPayload: never
     ReqBodyPayload: { email: string; password: string }
@@ -15,6 +17,7 @@ export type APILoginPOST = {
 }
 
 export type APILogoutGET = {
+    PathName: ["/api/account/logout"]
     ReqType: ReqType.GET
     ReqQueryPayload: never
     ReqBodyPayload: never
@@ -22,6 +25,7 @@ export type APILogoutGET = {
 }
 
 export type APIFindPWGET = {
+    PathName: ["/api/account/find-pw"]
     ReqType: ReqType.GET
     ReqQueryPayload: { email: string }
     ReqBodyPayload: never

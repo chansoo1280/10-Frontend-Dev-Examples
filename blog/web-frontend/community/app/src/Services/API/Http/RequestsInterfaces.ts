@@ -24,6 +24,14 @@ type ApiRequest<T, U> = {
 }
 
 export type BaseApiInfo = {
+    PathName:
+        | [string]
+        | [
+              string,
+              {
+                  [key: string]: string | number
+              },
+          ]
     ReqType: ReqType
     ReqQueryPayload: any
     ReqBodyPayload: any

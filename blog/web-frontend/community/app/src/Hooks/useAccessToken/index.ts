@@ -5,7 +5,7 @@ import { useState } from "react"
 import { useQueryClient, useQuery } from "react-query"
 type AccessToken = string
 export const getAccessToken = async () =>
-    await Http<APILoginGET>(ReqType.GET, "/api/account/login").catch((e: ResMessageWithDesc) => {
+    await Http<APILoginGET>(ReqType.GET, ["/api/account/login"]).catch((e: ResMessageWithDesc) => {
         switch (e.status) {
             case ResStatus.NoContent:
                 console.log(e.description)

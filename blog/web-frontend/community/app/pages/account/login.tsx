@@ -19,7 +19,7 @@ const Login = () => {
     const { updateUser } = useUser()
 
     const login = async () =>
-        await Http<APILoginPOST>(ReqType.POST, "/api/account/login", undefined, {
+        await Http<APILoginPOST>(ReqType.POST, ["/api/account/login"], undefined, {
             email: email,
             password: password,
         }).catch((e: ResMessageWithDesc) => {

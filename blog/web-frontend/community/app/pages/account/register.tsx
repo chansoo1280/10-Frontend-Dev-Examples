@@ -4,7 +4,7 @@ import { useRouter } from "next/router"
 // #endregion Global Imports
 
 // #region Local Imports
-import { Input, Space, Typography, Checkbox, Button, Icon, AccountForm } from "@Components"
+import { Input, Space, Button, AccountForm } from "@Components"
 import { Layout } from "@Components/Layouts"
 import { PageProps } from "../_app"
 import { APIUserListPOST, Http, ReqType } from "@Services"
@@ -12,7 +12,6 @@ import { ResMessageWithDesc, ResStatus } from "@Server/response"
 import { useUser } from "@Hooks/useUser"
 // #endregion Local Imports
 
-const { Text } = Typography
 const Login = () => {
     const router = useRouter()
     const [name, setName] = useState("")
@@ -23,7 +22,7 @@ const Login = () => {
     const { updateUser } = useUser()
 
     const register = async () =>
-        await Http<APIUserListPOST>(ReqType.POST, "/api/userList", undefined, {
+        await Http<APIUserListPOST>(ReqType.POST, ["/api/userList"], undefined, {
             name: name,
             email: email,
             password: password,
