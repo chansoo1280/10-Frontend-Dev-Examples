@@ -9,7 +9,7 @@ export const getUser = async (user: StoredUser | null | undefined) => {
     if (user === null || user === undefined) {
         return null
     }
-    return await Http<APIUserGET>(ReqType.GET, ["/api/userList/[id]", { id: user.id }], undefined, undefined).catch((e: ResMessageWithDesc) => {
+    return await Http<APIUserGET>(ReqType.GET, ["/api/userList/[id]", { id: user.id }], {}).catch((e: ResMessageWithDesc) => {
         switch (e.status) {
             case ResStatus.NoContent:
                 console.log(e.description)

@@ -12,7 +12,11 @@ import { BaseApiInfo, ReqType } from "./RequestsInterfaces"
 const BaseUrl = `http://localhost:3000`
 // const BaseUrl = `/`
 
-export const Http = async <T extends BaseApiInfo>(methodType: T["ReqType"], url: T["PathName"], params?: T["ReqQueryPayload"], payload?: T["ReqBodyPayload"]): Promise<T["ResPayload"] | null> => {
+export const Http = async <T extends BaseApiInfo>(
+    methodType: T["ReqType"],
+    url: T["PathName"],
+    { query, body }: { query?: T["ReqPayload"]["query"]; body?: T["ReqPayload"]["body"] },
+): Promise<T["ResPayload"] | null> => {
     const accessToken = getStoredAccessToken()
 
     const defaultOptions = {
@@ -23,11 +27,10 @@ export const Http = async <T extends BaseApiInfo>(methodType: T["ReqType"], url:
             Authorization: `Bearer ${accessToken}`,
         },
     }
-    console.log(defaultOptions)
-    const query = params
+    // console.log(defaultOptions)
+    const queryStr = query
         ? `?${queryString.stringify({
-              ...params,
-              api_key: process.env.NEXT_PUBLIC_API_KEY,
+              ...query,
           })}`
         : ""
     const pathName = url[0]
@@ -36,12 +39,12 @@ export const Http = async <T extends BaseApiInfo>(methodType: T["ReqType"], url:
     const mappedUrl = Object.keys(pathObj).reduce((path: string, key: string) => {
         return path.replace(`[${key}]`, String(pathObj[key]))
     }, pathName)
-    return fetch(`${BaseUrl}${mappedUrl}${query}`, {
-        body: methodType === "GET" ? undefined : JSON.stringify(payload || "") || null,
+    return fetch(`${BaseUrl}${mappedUrl}${queryStr}`, {
+        body: methodType === "GET" ? undefined : JSON.stringify(body || "") || null,
         method: `${methodType}`,
         ...defaultOptions,
     }).then(async (response) => {
-        console.log(response)
+        // console.log(response)
         if (response.status === 200) {
             const result: T["ResPayload"] = await response.json()
             return result

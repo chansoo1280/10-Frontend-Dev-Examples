@@ -16,27 +16,26 @@ const apiUserList: APIUserList = {
         resMessage(res, ResStatus.Forbidden)
     },
     [ReqType.POST]: async (req, res) => {
-        const user = await findUserByEmail(req.body.email)
-        if (user !== null) {
-            resMessageWithDesc(res, ResStatus.BadRequest, "중복된 이메일")
-            return
-        }
-
-        const { salt, hash } = getHash(req.body.password)
-
-        const userInfo = { ...req.body, password: hash, salt: salt }
-
+        const body = req.body
         const verifyResult = verifyUser(
             {
-                ...userInfo,
-                password: req.body.password,
+                ...body,
             },
-            ["email", "name", "password", "salt"],
+            ["email", "name", "password"],
         )
         if (verifyResult !== true) {
             resMessageWithDesc(res, ResStatus.BadRequest, verifyResult)
             return
         }
+        const user = await findUserByEmail(body.email || "")
+        if (user !== null) {
+            resMessageWithDesc(res, ResStatus.BadRequest, "중복된 이메일")
+            return
+        }
+
+        const { salt, hash } = getHash(body.password || "")
+
+        const userInfo = { email: body.email || "", name: body.name || "", password: hash, salt: salt }
 
         const result = await createUser(userInfo)
         if (result !== null) {

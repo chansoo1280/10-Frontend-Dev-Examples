@@ -1,14 +1,24 @@
 import { resMessage, resMessageWithDesc, ResStatus } from "@Server/response"
 import { APIQuestionList, makeRouter, ReqType } from "@Services"
 import { verifyAccessToken } from "@Services/Account"
-import { createQuestion, deleteAllQuestion, findAllQuestion } from "@Services/Question"
+import { createQuestion, deleteAllQuestion, findAllQuestion, getQuestionCnt } from "@Services/Question"
 import { verifyQuestion } from "@Services/Question/Question.entity"
 
 const apiQuestionList: APIQuestionList = {
     [ReqType.GET]: async (req, res) => {
-        const result = await findAllQuestion()
+        const query = req.query
+        const cntPerPage = Number(query.cntPerPage || "1")
+        const cnt = Number(query.cnt) || null
+        const result = await findAllQuestion({
+            cnt,
+        })
+        const questionCnt = await getQuestionCnt()
         if (result !== null) {
-            res.status(ResStatus.Success).json(result)
+            res.status(ResStatus.Success).json({
+                questionList: result,
+                totalCnt: questionCnt || 0,
+                totalPageCnt: Math.ceil((questionCnt || 0) / cntPerPage),
+            })
             return
         }
         resMessage(res, ResStatus.Forbidden)
@@ -24,7 +34,7 @@ const apiQuestionList: APIQuestionList = {
             return
         }
 
-        const questionInfo = { ...req.body, authorId: user.id }
+        const questionInfo = { title: req.body.title || "", contents: req.body.contents || "", authorId: user.id }
 
         const verifyResult = verifyQuestion(
             {

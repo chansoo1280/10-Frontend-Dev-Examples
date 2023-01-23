@@ -26,7 +26,7 @@ const SiteHeader = (props: defaultProps): JSX.Element => {
         className,
     )
     const logout = async () =>
-        await Http<APILogoutGET>(ReqType.GET, "/api/account/logout").catch((e: ResMessageWithDesc) => {
+        await Http<APILogoutGET>(ReqType.GET, ["/api/account/logout"], {}).catch((e: ResMessageWithDesc) => {
             console.log(e)
             switch (e.status) {
                 case ResStatus.BadRequest:

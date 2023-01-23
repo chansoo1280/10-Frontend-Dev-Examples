@@ -21,12 +21,12 @@ const apiLogin: APILogin = {
         resMessage(res, ResStatus.Forbidden)
     },
     [ReqType.POST]: async (req, res) => {
-        const user = await findUserByEmail(req.body.email)
+        const user = await findUserByEmail(req.body.email || "")
         if (user === null) {
             resMessage(res, ResStatus.BadRequest)
             return
         }
-        const isVaildatePassword = validatePassword(user, req.body.password)
+        const isVaildatePassword = validatePassword(user, req.body.password || "")
         if (isVaildatePassword === true) {
             const tokenInfo = {
                 id: user.id,

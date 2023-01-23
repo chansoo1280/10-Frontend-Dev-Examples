@@ -11,10 +11,10 @@ interface ExtendedNextApiRequest<T> extends NextApiRequest {
     query: Partial<{
         [key: string]: string | string[]
     }> &
-        T
+        Partial<T>
 }
 interface ExtendedNextApiRequestBody<T, U> extends ExtendedNextApiRequest<T> {
-    body: U
+    body: Partial<U>
 }
 
 type ApiRequest<T, U> = {
@@ -33,12 +33,14 @@ export type BaseApiInfo = {
               },
           ]
     ReqType: ReqType
-    ReqQueryPayload: any
-    ReqBodyPayload: any
+    ReqPayload: {
+        query?: any
+        body?: any
+    }
     ResPayload: any
 }
 export type ApiFunction<Key extends ReqType, T extends BaseApiInfo> = (
-    req: ApiRequest<T["ReqQueryPayload"], T["ReqBodyPayload"]>[Key],
+    req: ApiRequest<T["ReqPayload"]["query"], T["ReqPayload"]["body"]>[Key],
     res: NextApiResponse<T["ResPayload"] | ResMessageWithDesc>,
 ) => Promise<void>
 type APIList = {
