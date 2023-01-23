@@ -1,6 +1,6 @@
 // #region Global Imports
 import Head from "next/head"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useCallback, useEffect, useState } from "react"
 import { useRouter } from "next/router"
 // #endregion Global Imports
 
@@ -8,13 +8,24 @@ import { useRouter } from "next/router"
 import { Tabs, Space, Text, Button, Search, Tags, QuestionList, Card } from "@Components"
 import { Tab } from "@Components/Molecules/Tabs"
 import { Tag } from "@Components/Molecules/Tags"
-import { APIQuestionListGET, APIQuestionListPOST, Http, ReqType } from "@Services"
+import { APIQuestionListGET, APIQuestionListPagingGET, APIQuestionListPOST, Http, ReqType } from "@Services"
 import { ResMessageWithDesc, ResStatus } from "@Server/response"
 import { useUser } from "@Hooks/useUser"
 import { dehydrate, QueryClient, useQuery } from "react-query"
+import { GetServerSideProps } from "next"
+import { Question } from "@Services/Question"
+import { useScrollRestoration } from "@Hooks/index"
+import { QuestionWithAuthor } from "@Services/Question/Question.entity"
 // #endregion Local Imports
-const getQuestionList = async () =>
-    await Http<APIQuestionListGET>(ReqType.GET, ["/api/questionList"]).catch((e: ResMessageWithDesc) => {
+const getQuestionList = async (pageNo: string) => {
+    console.log(pageNo)
+    const cntPerPage = "2"
+    return await Http<APIQuestionListGET>(ReqType.GET, ["/api/questionList"], {
+        query: {
+            cnt: Number(pageNo) * Number(cntPerPage),
+            cntPerPage,
+        },
+    }).catch((e: ResMessageWithDesc) => {
         console.log(e)
         switch (e.status) {
             case ResStatus.NoContent:
@@ -29,10 +40,40 @@ const getQuestionList = async () =>
         }
         return null
     })
-const Question = (props: { email: any }) => {
+}
+const getQuestionListPaging = async (pageNo: string) => {
+    const cntPerPage = "2"
+    return await Http<APIQuestionListPagingGET>(ReqType.GET, ["/api/questionList/paging"], {
+        query: {
+            pageNo,
+            cntPerPage,
+        },
+    }).catch((e: ResMessageWithDesc) => {
+        console.log(e)
+        switch (e.status) {
+            case ResStatus.NoContent:
+                console.log(e.description)
+                return null
+            case ResStatus.BadRequest:
+                console.log(e.description)
+                return null
+
+            default:
+                break
+        }
+        return null
+    })
+}
+
+const Questions = (props: { layoutRef: React.RefObject<HTMLDivElement> }) => {
     const router = useRouter()
+    const query = router.query
     const { user } = useUser()
-    console.log(user)
+    const { initScrollTop } = useScrollRestoration(props.layoutRef, router.pathname)
+
+    const [pageNo, setPageNo] = useState(Number(query.pageNo || "1"))
+    const [totalPageCnt, setTotalPageCnt] = useState<number | null>(null)
+    const [questionList, setQuestionList] = useState<QuestionWithAuthor[]>([])
 
     const [activeIdx, setActiveIdx] = useState(0)
     const [tabList, _] = useState([{ title: "Question" }, { title: "Articles", disabled: true }])
@@ -40,15 +81,16 @@ const Question = (props: { email: any }) => {
         setActiveIdx(idx)
     }
 
-    const { data: questionList } = useQuery("questionList", getQuestionList)
     const createQuestion = async () => {
         if (!user) {
             return null
         }
-        await Http<APIQuestionListPOST>(ReqType.POST, ["/api/questionList"], undefined, {
-            title: "test1",
-            contents: "asdf",
-            authorId: user.id,
+        await Http<APIQuestionListPOST>(ReqType.POST, ["/api/questionList"], {
+            body: {
+                title: "test1",
+                contents: "asdf",
+                authorId: user.id,
+            },
         }).catch((e: ResMessageWithDesc) => {
             console.log(e)
             switch (e.status) {
@@ -62,6 +104,43 @@ const Question = (props: { email: any }) => {
             return null
         })
     }
+
+    const handleClickNext = async () => {
+        if (totalPageCnt === null || totalPageCnt < pageNo || totalPageCnt === pageNo) {
+            console.log("마지막페이지입니다.")
+            return
+        }
+        const nextPageNo = pageNo + 1
+        const result = await getQuestionListPaging(String(nextPageNo))
+        if (result === null) {
+            return
+        }
+        router.replace(
+            {
+                pathname: "/community/questions",
+                query: {
+                    pageNo: nextPageNo,
+                },
+            },
+            undefined,
+            { shallow: true },
+        )
+        setTotalPageCnt(result.totalPageCnt)
+        setQuestionList(questionList.concat(result.questionList))
+        setPageNo(nextPageNo)
+    }
+    const { data } = useQuery("questionList", () => getQuestionList(String(pageNo || "1")), {
+        onSuccess: (received) => {
+            if (!received) {
+            } else {
+                initScrollTop()
+            }
+        },
+    })
+    useEffect(() => {
+        setQuestionList(data?.questionList || [])
+        setTotalPageCnt(data?.totalPageCnt || null)
+    }, [data])
 
     return (
         <>
@@ -111,57 +190,22 @@ const Question = (props: { email: any }) => {
                                 />
                             </Space.Box>
                         </Space>
-                        <QuestionList
-                            questionList={[
-                                {
-                                    questionId: "1",
-                                    title: "title",
-                                    href: "/community/questions/1",
-                                    userId: "1",
-                                },
-                                {
-                                    questionId: "2",
-                                    title: "title",
-                                    href: "#a",
-                                    userId: "2",
-                                },
-                                {
-                                    questionId: "3",
-                                    title: "title",
-                                    href: "#a",
-                                    userId: "3",
-                                },
-                                {
-                                    questionId: "4",
-                                    title: "title",
-                                    href: "#a",
-                                    userId: "4",
-                                },
-                                {
-                                    questionId: "5",
-                                    title: "title",
-                                    href: "#a",
-                                    userId: "5",
-                                },
-                            ]}
-                        />
+                        <QuestionList onClickNext={handleClickNext} hideMore={totalPageCnt === null || totalPageCnt < pageNo || totalPageCnt === pageNo} questionList={questionList} />
                     </Card>
                 </Card.wrap>
             </div>
         </>
     )
 }
-
-export async function getStaticProps() {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+    const { pageNo } = query
     const queryClient = new QueryClient()
-
-    await queryClient.prefetchQuery("questionList", getQuestionList)
+    await queryClient.prefetchQuery("questionList", () => getQuestionList(String(pageNo || "1")))
 
     return {
         props: {
             dehydratedState: dehydrate(queryClient),
-            email: "",
-        }, // will be passed to the page component as props
+        },
     }
 }
-export default Question
+export default Questions

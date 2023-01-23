@@ -12,6 +12,13 @@ import { Tag } from "@Components/Molecules/Tags"
 
 const QuestionCreate = () => {
     const router = useRouter()
+    const historyBack = () => {
+        if (router.query.prevPath !== undefined) {
+            router.back()
+        } else {
+            router.replace("/community/questions")
+        }
+    }
     return (
         <>
             <Head>

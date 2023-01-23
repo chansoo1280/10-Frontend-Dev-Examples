@@ -8,20 +8,19 @@ import { defaultProps, Space, Button, Text, Tags, IconList, QuestionAuthorInfo, 
 import { Tag } from "@Components/Molecules/Tags"
 import styles from "./QuestionList.module.scss"
 import Link from "next/link"
+import { Question } from "@Services/Question"
+import { dateFormat } from "@Utils"
+import { QuestionWithAuthor } from "@Services/Question/Question.entity"
 // #endregion Local Imports
 
-export interface Question {
-    questionId: string
-    title: string
-    href: string
-    userId?: string
-}
 interface QuestionListProps extends defaultProps {
-    questionList: Question[]
+    questionList: QuestionWithAuthor[]
+    onClickNext: React.MouseEventHandler<HTMLAnchorElement> & React.MouseEventHandler<HTMLButtonElement>
+    hideMore?: boolean
 }
 
 const QuestionList = (props: QuestionListProps): JSX.Element => {
-    const { questionList, show, className, ...rest } = props
+    const { questionList, show, className, onClickNext, hideMore, ...rest } = props
     const prefixCls = "question-list"
     const classes = classNames(
         styles[`${prefixCls}`],
@@ -32,8 +31,8 @@ const QuestionList = (props: QuestionListProps): JSX.Element => {
     )
     return (
         <ul className={classes} {...rest}>
-            {questionList.map(({ questionId, title, href }) => (
-                <Link key={questionId} href={href}>
+            {questionList.map(({ id, title, author, created }) => (
+                <Link key={id} href={"/community/questions/" + id}>
                     <Rows className={classNames(styles[`${prefixCls}__item`])} as="li">
                         <Space direction="vertical" align="flex-start" padding="0" gap="12px">
                             <Text className={classNames(styles[`${prefixCls}__title`])}>{title}</Text>
@@ -53,7 +52,7 @@ const QuestionList = (props: QuestionListProps): JSX.Element => {
                             />
                         </Space>
                         <Row>
-                            <QuestionAuthorInfo userName="asd" created={"2021-02-05 13:51"} />
+                            <QuestionAuthorInfo userName={author.name} created={dateFormat(new Date(created), "yyyy-MM-dd hh:mm")} />
                         </Row>
                         <Row>
                             <IconList
@@ -76,8 +75,10 @@ const QuestionList = (props: QuestionListProps): JSX.Element => {
                     </Rows>
                 </Link>
             ))}
-            <Space as="li" direction="vertical" padding="12px 0 0" className={classNames(styles[`${prefixCls}__more-item`])}>
-                <Button type="secondary">loading more</Button>
+            <Space show={!hideMore} as="li" direction="vertical" padding="12px 0 0" className={classNames(styles[`${prefixCls}__more-item`])}>
+                <Button onClick={onClickNext} type="secondary">
+                    loading more
+                </Button>
             </Space>
         </ul>
     )

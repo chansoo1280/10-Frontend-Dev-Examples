@@ -1,6 +1,8 @@
 @import "@Styles/scss/default.scss";
 
 .question-author-info {
+    display: flex;
+    gap: 4px;
 
     &__date {
         padding-left: 16px;
