@@ -1,7 +1,7 @@
 // #region Global Imports
 import type { AppContext, AppInitialProps, AppProps } from "next/app"
 import { Roboto } from "@next/font/google"
-import { QueryClient, QueryClientProvider } from "react-query"
+import { Hydrate, QueryClient, QueryClientProvider } from "react-query"
 import { ReactQueryDevtools } from "react-query/devtools"
 // #endregion Global Imports
 
@@ -32,10 +32,12 @@ const App = ({ Component, pageProps }: AppProps<PageProps>) => {
                 }
             `}</style>
             <QueryClientProvider client={queryClient}>
-                <AppLayout {...pageProps} ref={layoutRef}>
-                    <Component {...pageProps} layoutRef={layoutRef} />
-                </AppLayout>
-                <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+                <Hydrate state={pageProps.dehydratedState}>
+                    <AppLayout {...pageProps} ref={layoutRef}>
+                        <Component {...pageProps} layoutRef={layoutRef} />
+                    </AppLayout>
+                    <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+                </Hydrate>
             </QueryClientProvider>
         </>
     )

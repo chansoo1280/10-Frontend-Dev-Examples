@@ -1,17 +1,34 @@
 // #region Global Imports
 import Head from "next/head"
 import { ChangeEvent, useState } from "react"
+import { useRouter } from "next/router"
 // #endregion Global Imports
 
 // #region Local Imports
 import { Tabs, Space, Text, Button, Search, Tags, QuestionList, Card } from "@Components"
 import { Tab } from "@Components/Molecules/Tabs"
 import { Tag } from "@Components/Molecules/Tags"
-import { APIQuestionListPOST, Http, ReqType } from "@Services"
+import { APIQuestionListGET, APIQuestionListPOST, Http, ReqType } from "@Services"
 import { ResMessageWithDesc, ResStatus } from "@Server/response"
 import { useUser } from "@Hooks/useUser"
-import { useRouter } from "next/router"
+import { dehydrate, QueryClient, useQuery } from "react-query"
 // #endregion Local Imports
+const getQuestionList = async () =>
+    await Http<APIQuestionListGET>(ReqType.GET, ["/api/questionList"]).catch((e: ResMessageWithDesc) => {
+        console.log(e)
+        switch (e.status) {
+            case ResStatus.NoContent:
+                console.log(e.description)
+                return null
+            case ResStatus.BadRequest:
+                console.log(e.description)
+                return null
+
+            default:
+                break
+        }
+        return null
+    })
 const Question = (props: { email: any }) => {
     const router = useRouter()
     const { user } = useUser()
@@ -22,11 +39,13 @@ const Question = (props: { email: any }) => {
     const onClickTab = (tab: Tab, idx: number) => {
         setActiveIdx(idx)
     }
+
+    const { data: questionList } = useQuery("questionList", getQuestionList)
     const createQuestion = async () => {
         if (!user) {
             return null
         }
-        await Http<APIQuestionListPOST>(ReqType.POST, `/api/questionList`, undefined, {
+        await Http<APIQuestionListPOST>(ReqType.POST, ["/api/questionList"], undefined, {
             title: "test1",
             contents: "asdf",
             authorId: user.id,
@@ -134,8 +153,13 @@ const Question = (props: { email: any }) => {
 }
 
 export async function getStaticProps() {
+    const queryClient = new QueryClient()
+
+    await queryClient.prefetchQuery("questionList", getQuestionList)
+
     return {
         props: {
+            dehydratedState: dehydrate(queryClient),
             email: "",
         }, // will be passed to the page component as props
     }
