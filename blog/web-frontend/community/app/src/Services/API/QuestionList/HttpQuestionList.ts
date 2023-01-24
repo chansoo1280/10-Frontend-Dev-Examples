@@ -5,17 +5,34 @@
 import { ReqType } from "@Server/request"
 import { ResMessageWithDesc, ResStatus } from "@Server/response"
 import { Http } from "@Services"
+import { Question } from "@Services/Question"
 import { User } from "@Services/User"
-import { APIQuestionListGET, APIQuestionListPagingGET, APIQuestionListPOST } from "./APIQuestionList"
+import { APIQuestionGET, APIQuestionListGET, APIQuestionListPagingGET, APIQuestionListPOST } from "./APIQuestionList"
 // #endregion Local Imports
 
-const getQuestionList = async (pageNo: string) => {
-    console.log(pageNo)
-    const cntPerPage = "2"
+const getQuestion = async ({ id }: Pick<Question, "id">) => {
+    return await Http<APIQuestionGET>(ReqType.GET, ["/api/questionList/[id]", { id }], {}).catch((e: ResMessageWithDesc) => {
+        console.log(e)
+        switch (e.status) {
+            case ResStatus.NoContent:
+                console.log(e.description)
+                return null
+            case ResStatus.BadRequest:
+                console.log(e.description)
+                return null
+
+            default:
+                break
+        }
+        return null
+    })
+}
+const getQuestionList = async (pageNo: number) => {
+    const cntPerPage = 2
     return await Http<APIQuestionListGET>(ReqType.GET, ["/api/questionList"], {
         query: {
-            cnt: Number(pageNo) * Number(cntPerPage),
-            cntPerPage,
+            cnt: pageNo * cntPerPage,
+            cntPerPage: String(cntPerPage),
         },
     }).catch((e: ResMessageWithDesc) => {
         console.log(e)
@@ -33,12 +50,12 @@ const getQuestionList = async (pageNo: string) => {
         return null
     })
 }
-const getQuestionListPaging = async (pageNo: string) => {
-    const cntPerPage = "2"
+const getQuestionListPaging = async (pageNo: number) => {
+    const cntPerPage = 2
     return await Http<APIQuestionListPagingGET>(ReqType.GET, ["/api/questionList/paging"], {
         query: {
-            pageNo,
-            cntPerPage,
+            pageNo: String(pageNo),
+            cntPerPage: String(cntPerPage),
         },
     }).catch((e: ResMessageWithDesc) => {
         console.log(e)
@@ -56,14 +73,14 @@ const getQuestionListPaging = async (pageNo: string) => {
         return null
     })
 }
-const createQuestion = async (user: User) => {
+const createQuestion = async (question: Pick<Question, "title" | "contents">, user: Pick<User, "id">) => {
     if (!user) {
         return null
     }
-    await Http<APIQuestionListPOST>(ReqType.POST, ["/api/questionList"], {
+    return await Http<APIQuestionListPOST>(ReqType.POST, ["/api/questionList"], {
         body: {
-            title: "test1",
-            contents: "asdf",
+            title: question.title,
+            contents: question.contents,
             authorId: user.id,
         },
     }).catch((e: ResMessageWithDesc) => {
@@ -80,6 +97,7 @@ const createQuestion = async (user: User) => {
     })
 }
 export const HttpQuestionList = {
+    getQuestion,
     getQuestionList,
     getQuestionListPaging,
     createQuestion,

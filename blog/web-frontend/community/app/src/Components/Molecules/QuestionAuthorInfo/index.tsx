@@ -7,6 +7,7 @@ import Image, { ImageLoader } from "next/image"
 // #region Local Imports
 import { defaultProps, Button, Text } from "@Components"
 import styles from "./QuestionAuthorInfo.module.scss"
+import { dateFormat } from "@Utils"
 // #endregion Local Imports
 const myLoader: ImageLoader = ({ src, width, quality }) => {
     return `/public/Images/${src}?w=${width}&q=${quality || 75}`
@@ -38,7 +39,7 @@ const QuestionAuthorInfo = (props: QuestionAuthorInfoProps): JSX.Element => {
             </Text>
             <Text show={created !== undefined} size="small" className={classNames(styles[`${prefixCls}__date`])}>
                 {/* 2021-02-05 13:51 */}
-                {created}
+                {dateFormat(new Date(created || ""), "yyyy-MM-dd hh:mm")}
             </Text>
         </Text>
     )

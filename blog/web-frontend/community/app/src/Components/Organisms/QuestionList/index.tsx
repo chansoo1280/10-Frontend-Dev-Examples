@@ -1,15 +1,14 @@
 // #region Global Imports
 import React from "react"
 import classNames from "classnames"
+import { useRouter } from "next/router"
+import Link from "next/link"
 // #endregion Global Imports
 
 // #region Local Imports
 import { defaultProps, Space, Button, Text, Tags, IconList, QuestionAuthorInfo, Rows, Row } from "@Components"
 import { Tag } from "@Components/Molecules/Tags"
 import styles from "./QuestionList.module.scss"
-import Link from "next/link"
-import { Question } from "@Services/Question"
-import { dateFormat } from "@Utils"
 import { QuestionWithAuthor } from "@Services/Question/Question.entity"
 // #endregion Local Imports
 
@@ -21,6 +20,7 @@ interface QuestionListProps extends defaultProps {
 
 const QuestionList = (props: QuestionListProps): JSX.Element => {
     const { questionList, show, className, onClickNext, hideMore, ...rest } = props
+    const router = useRouter()
     const prefixCls = "question-list"
     const classes = classNames(
         styles[`${prefixCls}`],
@@ -32,7 +32,7 @@ const QuestionList = (props: QuestionListProps): JSX.Element => {
     return (
         <ul className={classes} {...rest}>
             {questionList.map(({ id, title, author, created }) => (
-                <Link key={id} href={"/community/questionList/" + id}>
+                <Link key={id} href={{ pathname: "/community/questionList/" + id, query: { prevPath: location?.pathname + location?.search } }}>
                     <Rows className={classNames(styles[`${prefixCls}__item`])} as="li">
                         <Space direction="vertical" align="flex-start" padding="0" gap="12px">
                             <Text className={classNames(styles[`${prefixCls}__title`])}>{title}</Text>
@@ -52,7 +52,7 @@ const QuestionList = (props: QuestionListProps): JSX.Element => {
                             />
                         </Space>
                         <Row>
-                            <QuestionAuthorInfo userName={author.name} created={dateFormat(new Date(created), "yyyy-MM-dd hh:mm")} />
+                            <QuestionAuthorInfo userName={author.name} created={created} />
                         </Row>
                         <Row>
                             <IconList

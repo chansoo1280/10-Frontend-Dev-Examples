@@ -1,16 +1,31 @@
 // #region Global Imports
 import Head from "next/head"
-import { ChangeEvent, useState } from "react"
 import { useRouter } from "next/router"
 // #endregion Global Imports
 
 // #region Local Imports
-import { Input, Space, Text, Button, Tags, Card, MDEditor, QuestionAuthorInfo, Breadcrumbs, Icon, IconList, Rows, Row } from "@Components"
-import { Tab } from "@Components/Molecules/Tabs"
+import { Space, Text, Button, Tags, Card, MDEditor, QuestionAuthorInfo, Breadcrumbs, Icon, IconList, Rows, Row } from "@Components"
 import { Tag } from "@Components/Molecules/Tags"
+import { useUser } from "@Hooks/useUser"
+import { GetServerSideProps } from "next"
+import { dehydrate, QueryClient, useQuery } from "react-query"
+import { HttpQuestionList } from "@Services"
+import { useEffect, useState } from "react"
+import { Question } from "@Services/Question"
+import { useHistoryBack } from "@Hooks/useHistoryBack"
 // #endregion Local Imports
+
 const QuestionInfo = () => {
     const router = useRouter()
+    const { historyBack } = useHistoryBack("/community/questionList")
+    const { user } = useUser()
+    const { data } = useQuery(["question", router.query.questionId], () =>
+        HttpQuestionList.getQuestion({
+            id: Number(router.query.questionId),
+        }),
+    )
+    const question = data || null
+
     return (
         <>
             <Head>
@@ -42,8 +57,8 @@ const QuestionInfo = () => {
                         <Rows gap="12px">
                             <Row>
                                 <Space.Box>
-                                    <Button onClick={() => router.back()} type="text" icon={<Icon iconName="xi-arrow-left"></Icon>}></Button>
-                                    <Text>Alipay</Text>
+                                    <Button onClick={historyBack} type="text" icon={<Icon iconName="xi-arrow-left"></Icon>}></Button>
+                                    <Text>{question?.title}</Text>
                                 </Space.Box>
                                 <Space>
                                     <Button href="/community/questionList/1/modify" type="secondary">
@@ -69,17 +84,9 @@ const QuestionInfo = () => {
                             </Row>
                         </Rows>
                         <Rows padding="24px">
-                            <MDEditor
-                                type="preview"
-                                value={`
-## MarkdownPreview
-
-> todo: React component preview markdown text.
-
-`}
-                            ></MDEditor>
+                            <MDEditor type="preview" value={question?.contents || ""}></MDEditor>
                             <Row>
-                                <QuestionAuthorInfo userName="asd" created={"2021-02-05 13:51"} />
+                                <QuestionAuthorInfo userName={question?.author?.name || ""} created={question?.created} />
                             </Row>
                             <Row>
                                 <IconList
@@ -101,7 +108,7 @@ const QuestionInfo = () => {
                             </Row>
                         </Rows>
                         <Space direction="vertical" widthType="wide" padding="0">
-                            <Rows padding="24px 24px 24px 48px">
+                            {/* <Rows padding="24px 24px 24px 48px">
                                 <Row>
                                     <QuestionAuthorInfo userName="asd" created={"2021-02-05 13:51"} />
                                 </Row>
@@ -117,8 +124,8 @@ const QuestionInfo = () => {
                                     <Space.Box></Space.Box>
                                     <Button>저장</Button>
                                 </Row>
-                            </Rows>
-                            <Rows padding="24px 24px 24px 48px">
+                            </Rows> */}
+                            {/* <Rows padding="24px 24px 24px 48px">
                                 <Row>
                                     <QuestionAuthorInfo userName="asd" created={"2021-02-05 13:51"} />
                                 </Row>
@@ -145,7 +152,7 @@ const QuestionInfo = () => {
                                         ]}
                                     />
                                 </Row>
-                            </Rows>
+                            </Rows> */}
                         </Space>
                     </Card>
                 </Card.wrap>
@@ -153,5 +160,19 @@ const QuestionInfo = () => {
         </>
     )
 }
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+    const { questionId } = query
+    const queryClient = new QueryClient()
+    await queryClient.prefetchQuery(["question", questionId], () =>
+        HttpQuestionList.getQuestion({
+            id: Number(questionId),
+        }),
+    )
 
+    return {
+        props: {
+            dehydratedState: dehydrate(queryClient),
+        },
+    }
+}
 export default QuestionInfo

@@ -1,18 +1,20 @@
 // #region Global Imports
 import Head from "next/head"
-import { ChangeEvent, useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 // #endregion Global Imports
 
 // #region Local Imports
 import { Input, Space, Button, Tags, Card, MDEditor, QuestionAuthorInfo, Breadcrumbs, Rows, Row } from "@Components"
-import { Tab } from "@Components/Molecules/Tabs"
 import { Tag } from "@Components/Molecules/Tags"
 import { useUser } from "@Hooks/useUser"
+import { HttpQuestionList } from "@Services"
+import { useHistoryBack } from "@Hooks/useHistoryBack"
 // #endregion Local Imports
 
 const QuestionCreate = () => {
     const router = useRouter()
+    const { historyBack } = useHistoryBack("/community/questionList")
     const { user } = useUser()
     const [title, setTitle] = useState("")
     const [contents, setContents] = useState("")
@@ -22,12 +24,21 @@ const QuestionCreate = () => {
             type: "deletable",
         },
     ])
-    const historyBack = () => {
-        if (router.query.prevPath !== undefined) {
-            router.back()
-        } else {
-            router.replace("/community/questionList")
+    const handleClickSave = async () => {
+        if (user === null) {
+            return
         }
+        const result = await HttpQuestionList.createQuestion(
+            {
+                title,
+                contents,
+            },
+            { id: user.id },
+        )
+        if (result === null) {
+            return
+        }
+        historyBack()
     }
     return (
         <>
@@ -69,13 +80,12 @@ const QuestionCreate = () => {
                             <Row>
                                 <Tags
                                     onAdd={(text) => {
-                                        setTagList([
-                                            ...tagList,
-                                            {
+                                        setTagList(
+                                            tagList.concat({
                                                 title: text,
                                                 type: "deletable",
-                                            },
-                                        ])
+                                            }),
+                                        )
                                     }}
                                     boxProps={{ padding: "4px" }}
                                     tagList={tagList}
@@ -97,7 +107,7 @@ const QuestionCreate = () => {
                             </Row>
                             <Row>
                                 <Space.Box></Space.Box>
-                                <Button>저장</Button>
+                                <Button onClick={handleClickSave}>저장</Button>
                                 <Button onClick={() => router.back()} type="secondary">
                                     취소
                                 </Button>
