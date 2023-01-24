@@ -18,6 +18,9 @@ export interface QuestionWithAuthorRow extends Question {
     author_name: User["name"]
     author_email: User["email"]
 }
+export interface QuestionInfoWithAuthor extends QuestionWithAuthor {
+    contents: Question["contents"]
+}
 const requiredList: (keyof Question)[] = ["id", "title", "contents", "authorId", "created"]
 const conditionOfKeys: ConditionOfKeys<Question, keyof Question> = {
     id: (target) => isNumber(target),

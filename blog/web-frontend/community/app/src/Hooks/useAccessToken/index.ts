@@ -1,8 +1,10 @@
+import { ReqType } from "@Server/request"
 import { ResMessageWithDesc, ResStatus } from "@Server/response"
-import { Http, APILoginGET, ReqType } from "@Services"
-import { decrypt, encrypt } from "@Utils/Crypto"
+import { Http, APILoginGET } from "@Services"
+import { decrypt, encrypt } from "@Utils"
 import { useState } from "react"
 import { useQueryClient, useQuery } from "react-query"
+
 type AccessToken = string
 export const getAccessToken = async () =>
     await Http<APILoginGET>(ReqType.GET, ["/api/account/login"], {}).catch((e: ResMessageWithDesc) => {

@@ -1,6 +1,6 @@
 import { ReqType } from "@Server/request"
 import { Question } from "@Services/Question"
-import { QuestionWithAuthor } from "@Services/Question/Question.entity"
+import { QuestionInfoWithAuthor, QuestionWithAuthor } from "@Services/Question/Question.entity"
 import { ApiController } from "../ApiController"
 
 export type APIQuestionListGET = {
@@ -54,7 +54,7 @@ export type APIQuestionGET = {
     ReqPayload: {
         query: { id: string }
     }
-    ResPayload: Pick<Question, "id" | "title" | "contents" | "authorId">
+    ResPayload: QuestionInfoWithAuthor
 }
 export type APIQuestionDELETE = {
     PathName: [

@@ -40,7 +40,7 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
             return
         }
         const nextPageNo = pageNo + 1
-        const result = await HttpQuestionList.getQuestionListPaging(String(nextPageNo))
+        const result = await HttpQuestionList.getQuestionListPaging(nextPageNo)
         if (result === null) {
             return
         }
@@ -58,7 +58,7 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
         setQuestionList(questionList.concat(result.questionList))
         setPageNo(nextPageNo)
     }
-    const { data } = useQuery("questionList", () => HttpQuestionList.getQuestionList(String(pageNo || "1")), {
+    const { data } = useQuery("questionList", () => HttpQuestionList.getQuestionList(pageNo), {
         onSuccess: (received) => {
             if (!received) {
             } else {
@@ -85,7 +85,9 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
                         <Space.Box>
                             <Text>커뮤니티</Text>
                         </Space.Box>
-                        <Button href={{ pathname: "/community/questionList/create", query: { prevPath: router.pathname } }}>글작성</Button>
+                        <Button disabled={user === null} href={{ pathname: "/community/questionList/create", query: { prevPath: location?.pathname + location?.search } }}>
+                            글작성
+                        </Button>
                         {/* <Button onClick={() => createQuestion()}>글작성</Button> */}
                     </Space>
                     <Search
@@ -129,7 +131,7 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     const { pageNo } = query
     const queryClient = new QueryClient()
-    await queryClient.prefetchQuery("questionList", () => HttpQuestionList.getQuestionList(String(pageNo || "1")))
+    await queryClient.prefetchQuery("questionList", () => HttpQuestionList.getQuestionList(Number(pageNo || "1")))
 
     return {
         props: {

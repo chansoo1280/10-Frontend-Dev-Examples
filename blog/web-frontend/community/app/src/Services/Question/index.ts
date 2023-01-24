@@ -1,5 +1,5 @@
 import excuteQuery, { QueryResult } from "@Server/db"
-import { Question, QuestionWithAuthor, QuestionWithAuthorRow } from "./Question.entity"
+import { Question, QuestionInfoWithAuthor, QuestionWithAuthor, QuestionWithAuthorRow } from "./Question.entity"
 export type { Question }
 
 export const findAllQuestion = async ({ cnt }: { cnt: number | null }): Promise<QuestionWithAuthor[] | null> => {
@@ -24,33 +24,52 @@ export const findAllQuestion = async ({ cnt }: { cnt: number | null }): Promise<
             values: queryValues,
         })
         return (
-            result.map((row) => {
-                return {
-                    id: row.id,
-                    title: row.title,
-                    authorId: row.authorId,
-                    created: row.created,
-                    author: {
-                        id: row.author_id,
-                        name: row.author_name,
-                        email: row.author_email,
-                    },
-                }
-            }) || null
+            result.map((row) => ({
+                id: row.id,
+                title: row.title,
+                authorId: row.authorId,
+                created: row.created,
+                author: {
+                    id: row.author_id,
+                    name: row.author_name,
+                    email: row.author_email,
+                },
+            })) || null
         )
     } catch (error) {
         console.log(error)
         return null
     }
 }
-export const findQuestionById = async (id: Question["id"]): Promise<Question | null> => {
+export const findQuestionById = async (id: Question["id"]): Promise<QuestionInfoWithAuthor | null> => {
+    const queryString = `
+        SELECT question.id, question.title, question.authorId, question.created, question.contents, 
+            user.id as author_id, user.name as author_name, user.email as author_email 
+            FROM question LEFT JOIN user ON question.authorId = user.id
+        WHERE question.id = ?
+            AND question.deleted IS NULL
+    `
+    const queryValues = [id]
     try {
-        const result = await excuteQuery<Question[]>({
-            query: "SELECT * FROM question WHERE id = ? AND deleted IS NULL",
-            values: [id],
+        const result = await excuteQuery<QuestionWithAuthorRow[]>({
+            query: queryString,
+            values: queryValues,
         })
-        const question = result[0]
-        return question || null
+        const row = result[0]
+        return (
+            {
+                id: row.id,
+                title: row.title,
+                authorId: row.authorId,
+                created: row.created,
+                contents: row.contents,
+                author: {
+                    id: row.author_id,
+                    name: row.author_name,
+                    email: row.author_email,
+                },
+            } || null
+        )
     } catch (error) {
         console.log(error)
         return null
@@ -101,7 +120,7 @@ export const createQuestion = async (question: Pick<Question, "title" | "content
     }
 }
 
-export const findQuestionByPageNo = async (pageNo: number, cntPerPage: number): Promise<QuestionWithAuthor[] | null> => {
+export const findQuestionByPageNo = async (pageNo: number, cntPerPage: number): Promise<QuestionInfoWithAuthor[] | null> => {
     const startIdxOfPage = (pageNo - 1) * cntPerPage
     const queryString = `
         SELECT question.id, question.title, question.authorId, question.created, 
@@ -123,6 +142,7 @@ export const findQuestionByPageNo = async (pageNo: number, cntPerPage: number): 
                     title: row.title,
                     authorId: row.authorId,
                     created: row.created,
+                    contents: row.contents,
                     author: {
                         id: row.author_id,
                         name: row.author_name,

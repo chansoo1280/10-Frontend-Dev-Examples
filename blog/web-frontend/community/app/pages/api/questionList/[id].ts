@@ -13,12 +13,7 @@ const apiQuestion: APIQuestion = {
         }
         const result = await findQuestionById(id)
         if (result !== null) {
-            res.status(ResStatus.Success).json({
-                id: result.id,
-                title: result.title,
-                contents: result.contents,
-                authorId: result.authorId,
-            })
+            res.status(ResStatus.Success).json(result)
             return
         }
         resMessage(res, ResStatus.NoContent)
