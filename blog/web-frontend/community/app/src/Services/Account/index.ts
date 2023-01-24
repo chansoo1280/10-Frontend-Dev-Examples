@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken"
 import { User } from "@Services/User"
-import { checkHash } from "@Services/Crypto"
+import { checkHash } from "@Utils/Crypto"
 
 export const validatePassword = (user: User, inputPassword: string): boolean => {
     return checkHash(user.password, inputPassword, user.salt)

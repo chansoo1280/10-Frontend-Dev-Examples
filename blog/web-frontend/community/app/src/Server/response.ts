@@ -1,5 +1,5 @@
 import { NextApiResponse } from "next"
-
+export type { NextApiResponse }
 export enum ResStatus {
     Success = 200,
     NoContent = 204,

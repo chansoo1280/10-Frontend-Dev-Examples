@@ -7,9 +7,8 @@ import { useRouter } from "next/router"
 import { Input, Space, Button, AccountForm } from "@Components"
 import { Layout } from "@Components/Layouts"
 import { PageProps } from "../_app"
-import { APIUserListPOST, Http, ReqType } from "@Services"
-import { ResMessageWithDesc, ResStatus } from "@Server/response"
 import { useUser } from "@Hooks/useUser"
+import { HttpUserList } from "@Services"
 // #endregion Local Imports
 
 const Login = () => {
@@ -21,33 +20,13 @@ const Login = () => {
     const [verificationCode, setVerificationCode] = useState("")
     const { updateUser } = useUser()
 
-    const register = async () =>
-        await Http<APIUserListPOST>(ReqType.POST, ["/api/userList"], {
-            body: {
-                name: name,
-                email: email,
-                password: password,
-            },
-        }).catch((e: ResMessageWithDesc) => {
-            console.log(e)
-            switch (e.status) {
-                case ResStatus.BadRequest:
-                    console.log(e.description)
-                    return null
-
-                default:
-                    break
-            }
-            return null
-        })
-
     const handleClickRegister = async () => {
         if (password !== passwordConfirm) {
             alert("확인 비밀번호가 일치하지 않습니다.")
             return
         }
 
-        const user = await register()
+        const user = await HttpUserList.register({ name, email, password })
         if (user === null) {
             return
         }
@@ -55,7 +34,7 @@ const Login = () => {
         if (router.query.prevPath !== undefined) {
             router.back()
         } else {
-            router.replace("/community/questions")
+            router.replace("/community/questionList")
         }
     }
     return (

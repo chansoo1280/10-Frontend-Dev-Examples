@@ -1,9 +1,11 @@
-import { clearStoredAccessToken, useAccessToken } from "@Hooks/useAccessToken"
+import { useAccessToken, clearStoredAccessToken } from "@Hooks/useAccessToken"
+import { ReqType } from "@Server/request"
 import { ResMessageWithDesc, ResStatus } from "@Server/response"
-import { Http, ReqType, APIUserGET } from "@Services"
+import { Http, APIUserGET } from "@Services"
 import { User } from "@Services/User"
-import { useEffect, useState } from "react"
-import { useQueryClient, useQuery, UseQueryResult } from "react-query"
+import { useState, useEffect } from "react"
+import { useQueryClient, UseQueryResult, useQuery } from "react-query"
+
 type StoredUser = Pick<User, "id" | "email" | "name">
 export const getUser = async (user: StoredUser | null | undefined) => {
     if (user === null || user === undefined) {

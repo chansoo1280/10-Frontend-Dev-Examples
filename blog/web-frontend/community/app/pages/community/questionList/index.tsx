@@ -1,6 +1,6 @@
 // #region Global Imports
 import Head from "next/head"
-import { ChangeEvent, useCallback, useEffect, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import { useRouter } from "next/router"
 // #endregion Global Imports
 
@@ -8,64 +8,15 @@ import { useRouter } from "next/router"
 import { Tabs, Space, Text, Button, Search, Tags, QuestionList, Card } from "@Components"
 import { Tab } from "@Components/Molecules/Tabs"
 import { Tag } from "@Components/Molecules/Tags"
-import { APIQuestionListGET, APIQuestionListPagingGET, APIQuestionListPOST, Http, ReqType } from "@Services"
-import { ResMessageWithDesc, ResStatus } from "@Server/response"
 import { useUser } from "@Hooks/useUser"
 import { dehydrate, QueryClient, useQuery } from "react-query"
 import { GetServerSideProps } from "next"
-import { Question } from "@Services/Question"
 import { useScrollRestoration } from "@Hooks/index"
 import { QuestionWithAuthor } from "@Services/Question/Question.entity"
+import { HttpQuestionList } from "@Services/API/QuestionList"
 // #endregion Local Imports
-const getQuestionList = async (pageNo: string) => {
-    console.log(pageNo)
-    const cntPerPage = "2"
-    return await Http<APIQuestionListGET>(ReqType.GET, ["/api/questionList"], {
-        query: {
-            cnt: Number(pageNo) * Number(cntPerPage),
-            cntPerPage,
-        },
-    }).catch((e: ResMessageWithDesc) => {
-        console.log(e)
-        switch (e.status) {
-            case ResStatus.NoContent:
-                console.log(e.description)
-                return null
-            case ResStatus.BadRequest:
-                console.log(e.description)
-                return null
 
-            default:
-                break
-        }
-        return null
-    })
-}
-const getQuestionListPaging = async (pageNo: string) => {
-    const cntPerPage = "2"
-    return await Http<APIQuestionListPagingGET>(ReqType.GET, ["/api/questionList/paging"], {
-        query: {
-            pageNo,
-            cntPerPage,
-        },
-    }).catch((e: ResMessageWithDesc) => {
-        console.log(e)
-        switch (e.status) {
-            case ResStatus.NoContent:
-                console.log(e.description)
-                return null
-            case ResStatus.BadRequest:
-                console.log(e.description)
-                return null
-
-            default:
-                break
-        }
-        return null
-    })
-}
-
-const Questions = (props: { layoutRef: React.RefObject<HTMLDivElement> }) => {
+const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> }) => {
     const router = useRouter()
     const query = router.query
     const { user } = useUser()
@@ -81,43 +32,21 @@ const Questions = (props: { layoutRef: React.RefObject<HTMLDivElement> }) => {
         setActiveIdx(idx)
     }
 
-    const createQuestion = async () => {
-        if (!user) {
-            return null
-        }
-        await Http<APIQuestionListPOST>(ReqType.POST, ["/api/questionList"], {
-            body: {
-                title: "test1",
-                contents: "asdf",
-                authorId: user.id,
-            },
-        }).catch((e: ResMessageWithDesc) => {
-            console.log(e)
-            switch (e.status) {
-                case ResStatus.NoContent:
-                    console.log(e.description)
-                    return null
-
-                default:
-                    break
-            }
-            return null
-        })
-    }
+    const isLastPage = totalPageCnt === null || totalPageCnt < pageNo || totalPageCnt === pageNo
 
     const handleClickNext = async () => {
-        if (totalPageCnt === null || totalPageCnt < pageNo || totalPageCnt === pageNo) {
+        if (isLastPage) {
             console.log("마지막페이지입니다.")
             return
         }
         const nextPageNo = pageNo + 1
-        const result = await getQuestionListPaging(String(nextPageNo))
+        const result = await HttpQuestionList.getQuestionListPaging(String(nextPageNo))
         if (result === null) {
             return
         }
         router.replace(
             {
-                pathname: "/community/questions",
+                pathname: "/community/questionList",
                 query: {
                     pageNo: nextPageNo,
                 },
@@ -129,7 +58,7 @@ const Questions = (props: { layoutRef: React.RefObject<HTMLDivElement> }) => {
         setQuestionList(questionList.concat(result.questionList))
         setPageNo(nextPageNo)
     }
-    const { data } = useQuery("questionList", () => getQuestionList(String(pageNo || "1")), {
+    const { data } = useQuery("questionList", () => HttpQuestionList.getQuestionList(String(pageNo || "1")), {
         onSuccess: (received) => {
             if (!received) {
             } else {
@@ -156,7 +85,7 @@ const Questions = (props: { layoutRef: React.RefObject<HTMLDivElement> }) => {
                         <Space.Box>
                             <Text>커뮤니티</Text>
                         </Space.Box>
-                        <Button href={{ pathname: "/community/questions/create", query: { prevPath: router.pathname } }}>글작성</Button>
+                        <Button href={{ pathname: "/community/questionList/create", query: { prevPath: router.pathname } }}>글작성</Button>
                         {/* <Button onClick={() => createQuestion()}>글작성</Button> */}
                     </Space>
                     <Search
@@ -190,7 +119,7 @@ const Questions = (props: { layoutRef: React.RefObject<HTMLDivElement> }) => {
                                 />
                             </Space.Box>
                         </Space>
-                        <QuestionList onClickNext={handleClickNext} hideMore={totalPageCnt === null || totalPageCnt < pageNo || totalPageCnt === pageNo} questionList={questionList} />
+                        <QuestionList onClickNext={handleClickNext} hideMore={isLastPage} questionList={questionList} />
                     </Card>
                 </Card.wrap>
             </div>
@@ -200,7 +129,7 @@ const Questions = (props: { layoutRef: React.RefObject<HTMLDivElement> }) => {
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     const { pageNo } = query
     const queryClient = new QueryClient()
-    await queryClient.prefetchQuery("questionList", () => getQuestionList(String(pageNo || "1")))
+    await queryClient.prefetchQuery("questionList", () => HttpQuestionList.getQuestionList(String(pageNo || "1")))
 
     return {
         props: {
@@ -208,4 +137,4 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         },
     }
 }
-export default Questions
+export default QuestionListPage

@@ -1,5 +1,6 @@
+import { ReqType } from "@Server/request"
+import { ApiController } from "@Services"
 import { User } from "@Services/User"
-import { ApiFunction, ReqType } from "./Http"
 
 export type APIUserListGET = {
     PathName: ["/api/userList"]
@@ -47,12 +48,12 @@ export type APIUserDELETE = {
 }
 
 export type APIUserList = {
-    [ReqType.GET]: ApiFunction<ReqType.GET, APIUserListGET>
-    [ReqType.POST]: ApiFunction<ReqType.POST, APIUserListPOST>
-    [ReqType.DELETE]: ApiFunction<ReqType.DELETE, APIUserListDELETE>
+    [ReqType.GET]: ApiController<ReqType.GET, APIUserListGET>
+    [ReqType.POST]: ApiController<ReqType.POST, APIUserListPOST>
+    [ReqType.DELETE]: ApiController<ReqType.DELETE, APIUserListDELETE>
 }
 
 export type APIUser = {
-    [ReqType.GET]: ApiFunction<ReqType.GET, APIUserGET>
-    [ReqType.DELETE]: ApiFunction<ReqType.DELETE, APIUserDELETE>
+    [ReqType.GET]: ApiController<ReqType.GET, APIUserGET>
+    [ReqType.DELETE]: ApiController<ReqType.DELETE, APIUserDELETE>
 }

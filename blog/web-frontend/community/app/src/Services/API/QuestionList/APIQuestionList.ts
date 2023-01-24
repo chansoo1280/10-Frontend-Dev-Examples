@@ -1,6 +1,7 @@
+import { ReqType } from "@Server/request"
 import { Question } from "@Services/Question"
 import { QuestionWithAuthor } from "@Services/Question/Question.entity"
-import { ApiFunction, ReqType } from "./Http"
+import { ApiController } from "../ApiController"
 
 export type APIQuestionListGET = {
     PathName: ["/api/questionList"]
@@ -70,15 +71,15 @@ export type APIQuestionDELETE = {
 }
 
 export type APIQuestionList = {
-    [ReqType.GET]: ApiFunction<ReqType.GET, APIQuestionListGET>
-    [ReqType.POST]: ApiFunction<ReqType.POST, APIQuestionListPOST>
-    [ReqType.DELETE]: ApiFunction<ReqType.DELETE, APIQuestionListDELETE>
+    [ReqType.GET]: ApiController<ReqType.GET, APIQuestionListGET>
+    [ReqType.POST]: ApiController<ReqType.POST, APIQuestionListPOST>
+    [ReqType.DELETE]: ApiController<ReqType.DELETE, APIQuestionListDELETE>
 }
 export type APIQuestionListPaging = {
-    [ReqType.GET]: ApiFunction<ReqType.GET, APIQuestionListPagingGET>
+    [ReqType.GET]: ApiController<ReqType.GET, APIQuestionListPagingGET>
 }
 
 export type APIQuestion = {
-    [ReqType.GET]: ApiFunction<ReqType.GET, APIQuestionGET>
-    [ReqType.DELETE]: ApiFunction<ReqType.DELETE, APIQuestionDELETE>
+    [ReqType.GET]: ApiController<ReqType.GET, APIQuestionGET>
+    [ReqType.DELETE]: ApiController<ReqType.DELETE, APIQuestionDELETE>
 }

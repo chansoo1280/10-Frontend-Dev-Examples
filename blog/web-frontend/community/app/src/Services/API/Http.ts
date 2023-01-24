@@ -1,12 +1,11 @@
 // #region Global Imports
 import { getStoredAccessToken } from "@Hooks/useAccessToken"
-import { ResMessageWithDesc } from "@Server/response"
 import "isomorphic-unfetch"
 import queryString from "query-string"
 // #endregion Global Imports
 
 // #region Interface Imports
-import { BaseApiInfo, ReqType } from "./RequestsInterfaces"
+import { BaseApiInfo } from "@Server/request"
 // #endregion Interface Imports
 
 const BaseUrl = `http://localhost:3000`

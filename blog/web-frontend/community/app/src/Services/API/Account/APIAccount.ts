@@ -1,5 +1,6 @@
+import { ReqType } from "@Server/request"
 import { User } from "@Services/User"
-import { ApiFunction, ReqType } from "./Http"
+import { ApiController } from "../ApiController"
 
 export type APILoginGET = {
     PathName: ["/api/account/login"]
@@ -33,14 +34,14 @@ export type APIFindPWGET = {
 }
 
 export type APILogin = {
-    [ReqType.GET]: ApiFunction<ReqType.GET, APILoginGET>
-    [ReqType.POST]: ApiFunction<ReqType.POST, APILoginPOST>
+    [ReqType.GET]: ApiController<ReqType.GET, APILoginGET>
+    [ReqType.POST]: ApiController<ReqType.POST, APILoginPOST>
 }
 
 export type APILogout = {
-    [ReqType.GET]: ApiFunction<ReqType.GET, APILogoutGET>
+    [ReqType.GET]: ApiController<ReqType.GET, APILogoutGET>
 }
 
 export type APIFindPW = {
-    [ReqType.GET]: ApiFunction<ReqType.GET, APIFindPWGET>
+    [ReqType.GET]: ApiController<ReqType.GET, APIFindPWGET>
 }

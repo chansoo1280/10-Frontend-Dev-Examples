@@ -1,5 +1,6 @@
+import { ReqType } from "@Server/request"
 import { resMessageWithDesc, ResStatus } from "@Server/response"
-import { APIFindPW, makeRouter, ReqType } from "@Services"
+import { APIFindPW, makeRouter } from "@Services"
 import { sendEmail } from "@Services/Email"
 import { findUserByEmail } from "@Services/User"
 

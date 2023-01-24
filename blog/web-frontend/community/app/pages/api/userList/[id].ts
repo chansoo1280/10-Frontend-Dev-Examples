@@ -1,5 +1,6 @@
+import { ReqType } from "@Server/request"
 import { resMessage, ResStatus } from "@Server/response"
-import { APIUser, makeRouter, ReqType } from "@Services"
+import { APIUser, makeRouter } from "@Services"
 import { verifyAccessToken } from "@Services/Account"
 import { findUserById, deleteUserById } from "@Services/User"
 

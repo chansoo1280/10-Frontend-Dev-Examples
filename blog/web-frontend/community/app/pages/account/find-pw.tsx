@@ -4,14 +4,13 @@ import React from "react"
 // #endregion Global Imports
 
 // #region Local Imports
-import { Input, Space, Typography, Checkbox, Button, Icon, AccountForm } from "@Components"
+import { Input, Space, Text, Checkbox, Button, Icon, AccountForm } from "@Components"
 import { Layout } from "@Components/Layouts"
 import { PageProps } from "../_app"
 import { useRouter } from "next/router"
 
 // #endregion Local Imports
 
-const { Text } = Typography
 const Login = () => {
     const router = useRouter()
     return (

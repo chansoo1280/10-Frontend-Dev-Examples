@@ -1,7 +1,9 @@
+import { ReqType } from "@Server/request"
 import { resMessage, ResStatus } from "@Server/response"
-import { APIQuestion, makeRouter, ReqType } from "@Services"
+import { APIQuestion, makeRouter } from "@Services"
 import { verifyAccessToken } from "@Services/Account"
 import { findQuestionById, deleteQuestionById } from "@Services/Question"
+
 const apiQuestion: APIQuestion = {
     [ReqType.GET]: async (req, res) => {
         const id = Number(req.query.id)

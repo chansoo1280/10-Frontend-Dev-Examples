@@ -1,5 +1,6 @@
-import { resMessage, ResStatus } from "@Server/response"
-import { APIQuestionListPaging, makeRouter, ReqType } from "@Services"
+import { ReqType } from "@Server/request"
+import { ResStatus, resMessage } from "@Server/response"
+import { APIQuestionListPaging, makeRouter } from "@Services"
 import { findQuestionByPageNo, getQuestionCnt } from "@Services/Question"
 
 const apiQuestionList: APIQuestionListPaging = {

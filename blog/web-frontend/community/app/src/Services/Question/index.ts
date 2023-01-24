@@ -1,5 +1,4 @@
 import excuteQuery, { QueryResult } from "@Server/db"
-import { User } from "@Services/User"
 import { Question, QuestionWithAuthor, QuestionWithAuthorRow } from "./Question.entity"
 export type { Question }
 

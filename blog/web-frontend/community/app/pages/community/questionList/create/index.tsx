@@ -6,11 +6,29 @@ import { useRouter } from "next/router"
 
 // #region Local Imports
 import { Input, Space, Button, Tags, Card, MDEditor, QuestionAuthorInfo, Breadcrumbs, Rows, Row } from "@Components"
+import { Tab } from "@Components/Molecules/Tabs"
 import { Tag } from "@Components/Molecules/Tags"
+import { useUser } from "@Hooks/useUser"
 // #endregion Local Imports
 
 const QuestionCreate = () => {
     const router = useRouter()
+    const { user } = useUser()
+    const [title, setTitle] = useState("")
+    const [contents, setContents] = useState("")
+    const [tagList, setTagList] = useState<Tag[]>([
+        {
+            title: "Javascript",
+            type: "deletable",
+        },
+    ])
+    const historyBack = () => {
+        if (router.query.prevPath !== undefined) {
+            router.back()
+        } else {
+            router.replace("/community/questionList")
+        }
+    }
     return (
         <>
             <Head>
@@ -28,11 +46,11 @@ const QuestionCreate = () => {
                         breadcrumbList={[
                             {
                                 title: "커뮤니티",
-                                href: "/community/questions",
+                                href: "/community/questionList",
                             },
                             {
-                                title: "글수정",
-                                href: "/community/questions/1/modify",
+                                title: "글작성",
+                                href: "/community/questionList/create",
                             },
                         ]}
                     ></Breadcrumbs>
@@ -43,38 +61,39 @@ const QuestionCreate = () => {
                             <Input
                                 placeholder="제목을 입력해주세요."
                                 widthType="wide"
-                                value={""}
-                                onChange={function (event: ChangeEvent<HTMLInputElement>): void {
-                                    throw new Error("Function not implemented.")
+                                value={title}
+                                onChange={(event) => {
+                                    setTitle(event.target.value)
                                 }}
                             />
                             <Row>
                                 <Tags
                                     onAdd={(text) => {
-                                        console.log(text)
+                                        setTagList([
+                                            ...tagList,
+                                            {
+                                                title: text,
+                                                type: "deletable",
+                                            },
+                                        ])
                                     }}
                                     boxProps={{ padding: "4px" }}
-                                    tagList={[
-                                        {
-                                            title: "Javascript",
-                                            type: "deletable",
-                                        },
-                                    ]}
-                                    onClick={function (tag: Tag): void {
-                                        throw new Error("Function not implemented.")
+                                    tagList={tagList}
+                                    onClick={(tag: Tag) => {
+                                        setTagList(tagList.filter((tagObj) => tagObj !== tag))
                                     }}
                                 />
                             </Row>
                         </Rows>
                         <Rows padding="24px">
                             <MDEditor
-                                value={""}
-                                onChange={function (event: ChangeEvent<HTMLTextAreaElement>): void {
-                                    throw new Error("Function not implemented.")
+                                value={contents}
+                                onChange={(event) => {
+                                    setContents(event.target.value)
                                 }}
                             ></MDEditor>
                             <Row>
-                                <QuestionAuthorInfo userName="asd" created={"2021-02-05 13:51"} />
+                                <QuestionAuthorInfo userName={user?.name || ""} />
                             </Row>
                             <Row>
                                 <Space.Box></Space.Box>

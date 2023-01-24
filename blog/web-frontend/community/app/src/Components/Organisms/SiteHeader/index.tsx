@@ -8,8 +8,9 @@ import Image, { ImageLoader } from "next/image"
 import { defaultProps, Icon, Space, Button, Text } from "@Components"
 import styles from "./SiteHeader.module.scss"
 import { useUser } from "@Hooks/useUser"
-import { APILogoutGET, Http, ReqType } from "@Services"
+import { APILogoutGET, Http } from "@Services"
 import { ResMessageWithDesc, ResStatus } from "@Server/response"
+import { ReqType } from "@Server/request"
 // #endregion Local Imports
 const myLoader: ImageLoader = ({ src, width, quality }) => {
     return `/public/Images/${src}?w=${width}&q=${quality || 75}`

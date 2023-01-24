@@ -32,7 +32,7 @@ const QuestionList = (props: QuestionListProps): JSX.Element => {
     return (
         <ul className={classes} {...rest}>
             {questionList.map(({ id, title, author, created }) => (
-                <Link key={id} href={"/community/questions/" + id}>
+                <Link key={id} href={"/community/questionList/" + id}>
                     <Rows className={classNames(styles[`${prefixCls}__item`])} as="li">
                         <Space direction="vertical" align="flex-start" padding="0" gap="12px">
                             <Text className={classNames(styles[`${prefixCls}__title`])}>{title}</Text>

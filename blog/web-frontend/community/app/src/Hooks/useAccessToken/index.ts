@@ -1,6 +1,6 @@
 import { ResMessageWithDesc, ResStatus } from "@Server/response"
 import { Http, APILoginGET, ReqType } from "@Services"
-import { decrypt, encrypt } from "@Services/Crypto"
+import { decrypt, encrypt } from "@Utils/Crypto"
 import { useState } from "react"
 import { useQueryClient, useQuery } from "react-query"
 type AccessToken = string

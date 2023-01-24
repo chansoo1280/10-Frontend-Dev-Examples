@@ -6,19 +6,11 @@ import { useRouter } from "next/router"
 
 // #region Local Imports
 import { Input, Space, Button, Tags, Card, MDEditor, QuestionAuthorInfo, Breadcrumbs, Rows, Row } from "@Components"
-import { Tab } from "@Components/Molecules/Tabs"
 import { Tag } from "@Components/Molecules/Tags"
 // #endregion Local Imports
 
 const QuestionCreate = () => {
     const router = useRouter()
-    const historyBack = () => {
-        if (router.query.prevPath !== undefined) {
-            router.back()
-        } else {
-            router.replace("/community/questions")
-        }
-    }
     return (
         <>
             <Head>
@@ -36,11 +28,11 @@ const QuestionCreate = () => {
                         breadcrumbList={[
                             {
                                 title: "커뮤니티",
-                                href: "/community/questions",
+                                href: "/community/questionList",
                             },
                             {
-                                title: "글작성",
-                                href: "/community/questions/create",
+                                title: "글수정",
+                                href: "/community/questionList/1/modify",
                             },
                         ]}
                     ></Breadcrumbs>

@@ -1,6 +1,7 @@
-import { deleteCookie } from "cookies-next"
+import { ReqType } from "@Server/request"
 import { resMessage, ResStatus } from "@Server/response"
-import { APILogout, makeRouter, ReqType } from "@Services"
+import { APILogout, makeRouter } from "@Services"
+import { deleteCookie } from "cookies-next"
 
 const apiLogout: APILogout = {
     [ReqType.GET]: async (req, res) => {

@@ -4,12 +4,11 @@ import { useRouter } from "next/router"
 // #endregion Global Imports
 
 // #region Local Imports
-import { Input, Space, Checkbox, Button, Icon, AccountForm, Rows, Row } from "@Components"
+import { Input, Space, Checkbox, Button, Icon, AccountForm, Row } from "@Components"
 import { Layout } from "@Components/Layouts"
 import { PageProps } from "../_app"
-import { APILoginPOST, Http, ReqType } from "@Services"
-import { ResMessageWithDesc, ResStatus } from "@Server/response"
 import { useUser } from "@Hooks/useUser"
+import { HttpAccount } from "@Services/API/Account"
 // #endregion Local Imports
 
 const Login = () => {
@@ -18,30 +17,8 @@ const Login = () => {
     const [password, setPassword] = useState("")
     const { updateUser } = useUser()
 
-    const login = async () =>
-        await Http<APILoginPOST>(ReqType.POST, ["/api/account/login"], {
-            body: {
-                email: email,
-                password: password,
-            },
-        }).catch((e: ResMessageWithDesc) => {
-            console.log(e)
-            switch (e.status) {
-                case ResStatus.NoContent:
-                    console.log(e.description)
-                    return null
-                case ResStatus.BadRequest:
-                    console.log(e.description)
-                    return null
-
-                default:
-                    break
-            }
-            return null
-        })
-
     const handleClickLogin = async () => {
-        const user = await login()
+        const user = await HttpAccount.login({ email, password })
         if (user === null) {
             return
         }
@@ -49,7 +26,7 @@ const Login = () => {
         if (router.query.prevPath !== undefined) {
             router.back()
         } else {
-            router.replace("/community/questions")
+            router.replace("/community/questionList")
         }
     }
     return (

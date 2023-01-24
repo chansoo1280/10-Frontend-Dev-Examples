@@ -28,11 +28,11 @@ const QuestionInfo = () => {
                         breadcrumbList={[
                             {
                                 title: "커뮤니티",
-                                href: "/community/questions",
+                                href: "/community/questionList",
                             },
                             {
                                 title: "글제목",
-                                href: "/community/questions/1",
+                                href: "/community/questionList/1",
                             },
                         ]}
                     ></Breadcrumbs>
@@ -46,7 +46,7 @@ const QuestionInfo = () => {
                                     <Text>Alipay</Text>
                                 </Space.Box>
                                 <Space>
-                                    <Button href="/community/questions/1/modify" type="secondary">
+                                    <Button href="/community/questionList/1/modify" type="secondary">
                                         수정
                                     </Button>
                                     <Button danger type="secondary">

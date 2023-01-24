@@ -13,7 +13,7 @@ const myLoader: ImageLoader = ({ src, width, quality }) => {
 }
 interface QuestionAuthorInfoProps extends defaultProps {
     userName: string
-    created: string
+    created?: string
 }
 
 const QuestionAuthorInfo = (props: QuestionAuthorInfoProps): JSX.Element => {
@@ -36,7 +36,7 @@ const QuestionAuthorInfo = (props: QuestionAuthorInfoProps): JSX.Element => {
             <Text type="link" size="small">
                 https://ant.design
             </Text>
-            <Text size="small" className={classNames(styles[`${prefixCls}__date`])}>
+            <Text show={created !== undefined} size="small" className={classNames(styles[`${prefixCls}__date`])}>
                 {/* 2021-02-05 13:51 */}
                 {created}
             </Text>
