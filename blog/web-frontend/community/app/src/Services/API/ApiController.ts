@@ -5,6 +5,7 @@ type ApiRequest<T, U> = {
     [ReqType.GET]: ExtendedNextApiRequest<T>
     [ReqType.POST]: ExtendedNextApiRequestBody<T, U>
     [ReqType.DELETE]: ExtendedNextApiRequest<T>
+    [ReqType.PATCH]: ExtendedNextApiRequestBody<T, U>
 }
 export type ApiController<Key extends ReqType, T extends BaseApiInfo> = (
     req: ApiRequest<T["ReqPayload"]["query"] | T["PathName"][1], T["ReqPayload"]["body"]>[Key],

@@ -6,6 +6,7 @@ import queryString from "query-string"
 
 // #region Interface Imports
 import { BaseApiInfo } from "@Server/request"
+import { ResMessage, ResMessageWithDesc, ResStatus } from "@Server/response"
 // #endregion Interface Imports
 
 const BaseUrl = `http://localhost:3000`
@@ -48,9 +49,20 @@ export const Http = async <T extends BaseApiInfo>(
             const result: T["ResPayload"] = await response.json()
             return result
         }
+        if (response.status === 204) {
+            // 1xx, 204, 304는 응답 body가 없음
+            const result: ResMessageWithDesc = {
+                status: 204,
+                message: ResMessage[ResStatus.NoContent],
+                description: ResMessage[ResStatus.NoContent],
+            }
+            throw result
+        }
         if (response.status === 500) {
             return null
         }
-        throw await response.json()
+        const content = await response.text()
+        const result: ResMessageWithDesc = content.length > 0 ? JSON.parse(content) : {}
+        throw result
     })
 }

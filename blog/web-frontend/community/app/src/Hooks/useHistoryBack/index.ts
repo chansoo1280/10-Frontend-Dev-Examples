@@ -1,5 +1,5 @@
 import { useRouter } from "next/router"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 export const useHistoryBack = (defaultBackPath: string) => {
     const router = useRouter()
@@ -17,4 +17,12 @@ export const useHistoryBack = (defaultBackPath: string) => {
         }
     }, [])
     return { historyBack }
+}
+export const usePrevPath = () => {
+    const [prevPath, setPrevPath] = useState("")
+
+    useEffect(() => {
+        setPrevPath(window.location?.pathname + window.location?.search)
+    }, [])
+    return { prevPath }
 }

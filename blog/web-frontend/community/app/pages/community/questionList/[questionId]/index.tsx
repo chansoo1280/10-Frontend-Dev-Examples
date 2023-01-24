@@ -1,4 +1,5 @@
 // #region Global Imports
+import React from "react"
 import Head from "next/head"
 import { useRouter } from "next/router"
 // #endregion Global Imports
@@ -10,22 +11,29 @@ import { useUser } from "@Hooks/useUser"
 import { GetServerSideProps } from "next"
 import { dehydrate, QueryClient, useQuery } from "react-query"
 import { HttpQuestionList } from "@Services"
-import { useEffect, useState } from "react"
-import { Question } from "@Services/Question"
-import { useHistoryBack } from "@Hooks/useHistoryBack"
+import { useHistoryBack, usePrevPath } from "@Hooks/useHistoryBack"
 // #endregion Local Imports
 
 const QuestionInfo = () => {
     const router = useRouter()
     const { historyBack } = useHistoryBack("/community/questionList")
+    const { prevPath } = usePrevPath()
     const { user } = useUser()
-    const { data } = useQuery(["question", router.query.questionId], () =>
+    const { data: question } = useQuery(["question", router.query.questionId], () =>
         HttpQuestionList.getQuestion({
             id: Number(router.query.questionId),
         }),
     )
-    const question = data || null
-
+    const handleClickDelete = async () => {
+        if (confirm("삭제하시겠습니까?") === false) {
+            return
+        }
+        const result = await HttpQuestionList.deleteQuestion({ id: Number(router.query.questionId) })
+        if (result === null) {
+            return
+        }
+        historyBack()
+    }
     return (
         <>
             <Head>
@@ -61,10 +69,14 @@ const QuestionInfo = () => {
                                     <Text>{question?.title}</Text>
                                 </Space.Box>
                                 <Space>
-                                    <Button href="/community/questionList/1/modify" type="secondary">
+                                    <Button
+                                        show={user?.id === question?.authorId}
+                                        href={{ pathname: `/community/questionList/${question?.id}/modify`, query: { prevPath: prevPath } }}
+                                        type="secondary"
+                                    >
                                         수정
                                     </Button>
-                                    <Button danger type="secondary">
+                                    <Button onClick={handleClickDelete} show={user?.id === question?.authorId} danger type="secondary">
                                         삭제
                                     </Button>
                                 </Space>

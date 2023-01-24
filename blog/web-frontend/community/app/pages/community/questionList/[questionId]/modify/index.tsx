@@ -1,16 +1,41 @@
 // #region Global Imports
 import Head from "next/head"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import { useRouter } from "next/router"
 // #endregion Global Imports
 
 // #region Local Imports
 import { Input, Space, Button, Tags, Card, MDEditor, QuestionAuthorInfo, Breadcrumbs, Rows, Row } from "@Components"
 import { Tag } from "@Components/Molecules/Tags"
+import { useHistoryBack } from "@Hooks/useHistoryBack"
+import { dehydrate, QueryClient, useQuery } from "react-query"
+import { HttpQuestionList } from "@Services"
+import { GetServerSideProps } from "next"
+import { useUser } from "@Hooks/useUser"
 // #endregion Local Imports
 
 const QuestionCreate = () => {
     const router = useRouter()
+    const { historyBack } = useHistoryBack("/community/questionList")
+    const { user } = useUser()
+    const { data } = useQuery(["question", router.query.questionId], () =>
+        HttpQuestionList.getQuestion({
+            id: Number(router.query.questionId),
+        }),
+    )
+    const [title, setTitle] = useState(data?.title || "")
+    const [contents, setContents] = useState(data?.contents || "")
+    const handleClickSave = async () => {
+        const result = await HttpQuestionList.moodifyQuestion({
+            id: Number(router.query.questionId),
+            title,
+            contents,
+        })
+        if (result === null) {
+            return
+        }
+        historyBack()
+    }
     return (
         <>
             <Head>
@@ -43,9 +68,9 @@ const QuestionCreate = () => {
                             <Input
                                 placeholder="제목을 입력해주세요."
                                 widthType="wide"
-                                value={""}
-                                onChange={function (event: ChangeEvent<HTMLInputElement>): void {
-                                    throw new Error("Function not implemented.")
+                                value={title}
+                                onChange={(event) => {
+                                    setTitle(event.target.value)
                                 }}
                             />
                             <Row>
@@ -68,18 +93,18 @@ const QuestionCreate = () => {
                         </Rows>
                         <Rows padding="24px">
                             <MDEditor
-                                value={""}
-                                onChange={function (event: ChangeEvent<HTMLTextAreaElement>): void {
-                                    throw new Error("Function not implemented.")
+                                value={contents}
+                                onChange={(event) => {
+                                    setContents(event.target.value)
                                 }}
                             ></MDEditor>
                             <Row>
-                                <QuestionAuthorInfo userName="asd" created={"2021-02-05 13:51"} />
+                                <QuestionAuthorInfo userName={user?.name || ""} created={data?.created} />
                             </Row>
                             <Row>
                                 <Space.Box></Space.Box>
-                                <Button>저장</Button>
-                                <Button onClick={() => router.back()} type="secondary">
+                                <Button onClick={handleClickSave}>저장</Button>
+                                <Button onClick={historyBack} type="secondary">
                                     취소
                                 </Button>
                             </Row>
@@ -91,4 +116,19 @@ const QuestionCreate = () => {
     )
 }
 
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+    const { questionId } = query
+    const queryClient = new QueryClient()
+    await queryClient.prefetchQuery(["question", questionId], () =>
+        HttpQuestionList.getQuestion({
+            id: Number(questionId),
+        }),
+    )
+
+    return {
+        props: {
+            dehydratedState: dehydrate(queryClient),
+        },
+    }
+}
 export default QuestionCreate

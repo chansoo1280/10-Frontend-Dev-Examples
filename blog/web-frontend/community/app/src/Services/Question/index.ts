@@ -55,6 +55,9 @@ export const findQuestionById = async (id: Question["id"]): Promise<QuestionInfo
             query: queryString,
             values: queryValues,
         })
+        if (result.length === 0) {
+            return null
+        }
         const row = result[0]
         return (
             {
@@ -120,6 +123,25 @@ export const createQuestion = async (question: Pick<Question, "title" | "content
     }
 }
 
+export const modifyQuestion = async (question: Pick<Question, "id" | "title" | "contents">): Promise<boolean | null> => {
+    const queryString = `
+        UPDATE question SET title = ?, contents = ?
+        WHERE id = ?
+            AND deleted IS NULL
+        `
+    const queryValues = [question.title, question.contents, question.id]
+    try {
+        const result = await excuteQuery<QueryResult>({
+            query: queryString,
+            values: queryValues,
+        })
+        return result.changedRows === 1
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+}
+
 export const findQuestionByPageNo = async (pageNo: number, cntPerPage: number): Promise<QuestionInfoWithAuthor[] | null> => {
     const startIdxOfPage = (pageNo - 1) * cntPerPage
     const queryString = `
@@ -157,7 +179,7 @@ export const findQuestionByPageNo = async (pageNo: number, cntPerPage: number): 
     }
 }
 export const getQuestionCnt = async (): Promise<number | null> => {
-    const queryString = `SELECT COUNT(*) AS total FROM app.question;`
+    const queryString = `SELECT COUNT(*) AS total FROM app.question WHERE question.deleted IS NULL;`
     const queryValues: never[] = []
     try {
         const result = await excuteQuery<[{ total: number }]>({

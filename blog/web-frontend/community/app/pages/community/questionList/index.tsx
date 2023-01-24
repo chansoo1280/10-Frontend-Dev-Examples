@@ -2,6 +2,7 @@
 import Head from "next/head"
 import { ChangeEvent, useEffect, useState } from "react"
 import { useRouter } from "next/router"
+import { dehydrate, QueryClient, useQuery } from "react-query"
 // #endregion Global Imports
 
 // #region Local Imports
@@ -9,11 +10,11 @@ import { Tabs, Space, Text, Button, Search, Tags, QuestionList, Card } from "@Co
 import { Tab } from "@Components/Molecules/Tabs"
 import { Tag } from "@Components/Molecules/Tags"
 import { useUser } from "@Hooks/useUser"
-import { dehydrate, QueryClient, useQuery } from "react-query"
 import { GetServerSideProps } from "next"
 import { useScrollRestoration } from "@Hooks/index"
 import { QuestionWithAuthor } from "@Services/Question/Question.entity"
 import { HttpQuestionList } from "@Services/API/QuestionList"
+import { usePrevPath } from "@Hooks/useHistoryBack"
 // #endregion Local Imports
 
 const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> }) => {
@@ -21,10 +22,19 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
     const query = router.query
     const { user } = useUser()
     const { initScrollTop } = useScrollRestoration(props.layoutRef, router.pathname)
+    const { prevPath } = usePrevPath()
 
+    const { data } = useQuery("questionList", () => HttpQuestionList.getQuestionList(pageNo), {
+        onSuccess: (received) => {
+            if (!received) {
+            } else {
+                initScrollTop()
+            }
+        },
+    })
     const [pageNo, setPageNo] = useState(Number(query.pageNo || "1"))
-    const [totalPageCnt, setTotalPageCnt] = useState<number | null>(null)
-    const [questionList, setQuestionList] = useState<QuestionWithAuthor[]>([])
+    const [totalPageCnt, setTotalPageCnt] = useState<number | null>(data?.totalPageCnt || null)
+    const [questionList, setQuestionList] = useState<QuestionWithAuthor[]>(data?.questionList || [])
 
     const [activeIdx, setActiveIdx] = useState(0)
     const [tabList, _] = useState([{ title: "Question" }, { title: "Articles", disabled: true }])
@@ -58,18 +68,6 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
         setQuestionList(questionList.concat(result.questionList))
         setPageNo(nextPageNo)
     }
-    const { data } = useQuery("questionList", () => HttpQuestionList.getQuestionList(pageNo), {
-        onSuccess: (received) => {
-            if (!received) {
-            } else {
-                initScrollTop()
-            }
-        },
-    })
-    useEffect(() => {
-        setQuestionList(data?.questionList || [])
-        setTotalPageCnt(data?.totalPageCnt || null)
-    }, [data])
 
     return (
         <>
@@ -85,7 +83,7 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
                         <Space.Box>
                             <Text>커뮤니티</Text>
                         </Space.Box>
-                        <Button disabled={user === null} href={{ pathname: "/community/questionList/create", query: { prevPath: location?.pathname + location?.search } }}>
+                        <Button disabled={user === null} href={{ pathname: "/community/questionList/create", query: { prevPath } }}>
                             글작성
                         </Button>
                         {/* <Button onClick={() => createQuestion()}>글작성</Button> */}

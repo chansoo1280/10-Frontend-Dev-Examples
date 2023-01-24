@@ -10,6 +10,7 @@ import { defaultProps, Space, Button, Text, Tags, IconList, QuestionAuthorInfo, 
 import { Tag } from "@Components/Molecules/Tags"
 import styles from "./QuestionList.module.scss"
 import { QuestionWithAuthor } from "@Services/Question/Question.entity"
+import { usePrevPath } from "@Hooks/useHistoryBack"
 // #endregion Local Imports
 
 interface QuestionListProps extends defaultProps {
@@ -21,6 +22,7 @@ interface QuestionListProps extends defaultProps {
 const QuestionList = (props: QuestionListProps): JSX.Element => {
     const { questionList, show, className, onClickNext, hideMore, ...rest } = props
     const router = useRouter()
+    const { prevPath } = usePrevPath()
     const prefixCls = "question-list"
     const classes = classNames(
         styles[`${prefixCls}`],
@@ -32,7 +34,7 @@ const QuestionList = (props: QuestionListProps): JSX.Element => {
     return (
         <ul className={classes} {...rest}>
             {questionList.map(({ id, title, author, created }) => (
-                <Link key={id} href={{ pathname: "/community/questionList/" + id, query: { prevPath: location?.pathname + location?.search } }}>
+                <Link key={id} href={{ pathname: "/community/questionList/" + id, query: { prevPath } }}>
                     <Rows className={classNames(styles[`${prefixCls}__item`])} as="li">
                         <Space direction="vertical" align="flex-start" padding="0" gap="12px">
                             <Text className={classNames(styles[`${prefixCls}__title`])}>{title}</Text>

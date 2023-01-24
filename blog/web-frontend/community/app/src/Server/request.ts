@@ -4,6 +4,7 @@ export enum ReqType {
     "GET" = "GET",
     "POST" = "POST",
     "DELETE" = "DELETE",
+    "PATCH" = "PATCH",
 }
 export type BaseApiInfo = {
     PathName:
@@ -15,10 +16,12 @@ export type BaseApiInfo = {
               },
           ]
     ReqType: ReqType
-    ReqPayload: {
-        query?: any
-        body?: any
-    }
+    ReqPayload:
+        | {
+              query?: any
+              body?: any
+          }
+        | never
     ResPayload: any
 }
 export interface ExtendedNextApiRequest<T> extends NextApiRequest {

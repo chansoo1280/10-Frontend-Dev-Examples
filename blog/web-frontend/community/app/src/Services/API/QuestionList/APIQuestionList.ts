@@ -51,9 +51,7 @@ export type APIQuestionGET = {
         },
     ]
     ReqType: ReqType.GET
-    ReqPayload: {
-        query: { id: string }
-    }
+    ReqPayload: never
     ResPayload: QuestionInfoWithAuthor
 }
 export type APIQuestionDELETE = {
@@ -64,8 +62,19 @@ export type APIQuestionDELETE = {
         },
     ]
     ReqType: ReqType.DELETE
+    ReqPayload: never
+    ResPayload: string
+}
+export type APIQuestionPATCH = {
+    PathName: [
+        "/api/questionList/[id]",
+        {
+            id: number
+        },
+    ]
+    ReqType: ReqType.PATCH
     ReqPayload: {
-        query: { id: string }
+        body: Pick<Question, "title" | "contents">
     }
     ResPayload: string
 }
@@ -82,4 +91,5 @@ export type APIQuestionListPaging = {
 export type APIQuestion = {
     [ReqType.GET]: ApiController<ReqType.GET, APIQuestionGET>
     [ReqType.DELETE]: ApiController<ReqType.DELETE, APIQuestionDELETE>
+    [ReqType.PATCH]: ApiController<ReqType.PATCH, APIQuestionPATCH>
 }

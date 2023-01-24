@@ -7,7 +7,7 @@ import { ResMessageWithDesc, ResStatus } from "@Server/response"
 import { Http } from "@Services"
 import { Question } from "@Services/Question"
 import { User } from "@Services/User"
-import { APIQuestionGET, APIQuestionListGET, APIQuestionListPagingGET, APIQuestionListPOST } from "./APIQuestionList"
+import { APIQuestionDELETE, APIQuestionGET, APIQuestionListGET, APIQuestionListPagingGET, APIQuestionListPOST, APIQuestionPATCH } from "./APIQuestionList"
 // #endregion Local Imports
 
 const getQuestion = async ({ id }: Pick<Question, "id">) => {
@@ -86,7 +86,58 @@ const createQuestion = async (question: Pick<Question, "title" | "contents">, us
     }).catch((e: ResMessageWithDesc) => {
         console.log(e)
         switch (e.status) {
-            case ResStatus.NoContent:
+            case ResStatus.BadRequest:
+                console.log(e.description)
+                return null
+
+            default:
+                break
+        }
+        return null
+    })
+}
+const moodifyQuestion = async (question: Pick<Question, "id" | "title" | "contents">) => {
+    return await Http<APIQuestionPATCH>(
+        ReqType.PATCH,
+        [
+            "/api/questionList/[id]",
+            {
+                id: question.id,
+            },
+        ],
+        {
+            body: {
+                title: question.title,
+                contents: question.contents,
+            },
+        },
+    ).catch((e: ResMessageWithDesc) => {
+        console.log(e)
+        switch (e.status) {
+            case ResStatus.BadRequest:
+                console.log(e.description)
+                return null
+
+            default:
+                break
+        }
+        return null
+    })
+}
+const deleteQuestion = async (question: Pick<Question, "id">) => {
+    return await Http<APIQuestionDELETE>(
+        ReqType.DELETE,
+        [
+            "/api/questionList/[id]",
+            {
+                id: question.id,
+            },
+        ],
+        {},
+    ).catch((e: ResMessageWithDesc) => {
+        console.log(e)
+        switch (e.status) {
+            case ResStatus.BadRequest:
                 console.log(e.description)
                 return null
 
@@ -101,4 +152,6 @@ export const HttpQuestionList = {
     getQuestionList,
     getQuestionListPaging,
     createQuestion,
+    moodifyQuestion,
+    deleteQuestion,
 }

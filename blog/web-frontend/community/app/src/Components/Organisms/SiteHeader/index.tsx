@@ -11,6 +11,7 @@ import { useUser } from "@Hooks/useUser"
 import { APILogoutGET, Http } from "@Services"
 import { ResMessageWithDesc, ResStatus } from "@Server/response"
 import { ReqType } from "@Server/request"
+import { usePrevPath } from "@Hooks/useHistoryBack"
 // #endregion Local Imports
 const myLoader: ImageLoader = ({ src, width, quality }) => {
     return `/public/Images/${src}?w=${width}&q=${quality || 75}`
@@ -18,6 +19,7 @@ const myLoader: ImageLoader = ({ src, width, quality }) => {
 const SiteHeader = (props: defaultProps): JSX.Element => {
     const { show, className, ...rest } = props
     const { user, clearUser } = useUser()
+    const { prevPath } = usePrevPath()
     const prefixCls = "site-header"
     const classes = classNames(
         styles[`${prefixCls}`],
@@ -67,7 +69,15 @@ const SiteHeader = (props: defaultProps): JSX.Element => {
             )}
             <Button className={classNames(styles[`${prefixCls}__btn`])} size="small" type="text" icon={<Icon iconName="xi-translate" />} />
             <Space show={user === null}>
-                <Button href={"/account/login"} size="small">
+                <Button
+                    href={{
+                        pathname: "/account/login",
+                        query: {
+                            prevPath,
+                        },
+                    }}
+                    size="small"
+                >
                     Log in
                 </Button>
                 <Button href={"/account/register"} className={classNames(styles[`${prefixCls}__btn`])} size="small" type="secondary">

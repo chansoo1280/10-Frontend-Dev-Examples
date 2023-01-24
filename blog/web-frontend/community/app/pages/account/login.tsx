@@ -9,6 +9,7 @@ import { Layout } from "@Components/Layouts"
 import { PageProps } from "../_app"
 import { useUser } from "@Hooks/useUser"
 import { HttpAccount } from "@Services/API/Account"
+import { useHistoryBack } from "@Hooks/useHistoryBack"
 // #endregion Local Imports
 
 const Login = () => {
@@ -16,6 +17,7 @@ const Login = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const { updateUser } = useUser()
+    const { historyBack } = useHistoryBack("/community/questionList")
 
     const handleClickLogin = async () => {
         const user = await HttpAccount.login({ email, password })
@@ -23,11 +25,7 @@ const Login = () => {
             return
         }
         updateUser(user)
-        if (router.query.prevPath !== undefined) {
-            router.back()
-        } else {
-            router.replace("/community/questionList")
-        }
+        historyBack()
     }
     return (
         <>
@@ -73,7 +71,7 @@ const Login = () => {
                             로그인
                         </Button>
                     </Space.Box>
-                    <Button onClick={() => router.back()} type="link">
+                    <Button onClick={historyBack} type="link">
                         이전으로
                     </Button>
                 </Row>
