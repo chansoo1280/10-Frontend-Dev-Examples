@@ -9,7 +9,7 @@ import { Layout } from "@Components/Layouts"
 import { PageProps } from "../_app"
 // #endregion Local Imports
 
-const Login = () => {
+const ResetPw = () => {
     const router = useRouter()
     return (
         <>
@@ -50,4 +50,4 @@ export const getStaticProps = async (): Promise<{
         layout: Layout.AccountLayout,
     },
 })
-export default Login
+export default ResetPw

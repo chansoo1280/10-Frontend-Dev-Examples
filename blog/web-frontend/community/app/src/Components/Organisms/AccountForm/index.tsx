@@ -33,5 +33,5 @@ const AccountForm = (props: AccountFormProps): JSX.Element => {
         </Rows>
     )
 }
-AccountForm.Row = Row
+
 export default AccountForm
