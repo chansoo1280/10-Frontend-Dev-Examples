@@ -41,3 +41,23 @@ export const refreshAccessToken = (token: string): string | null => {
     }
     return generateAccessToken(result)
 }
+
+export const generateResetPwToken = (email: string): string => {
+    return jwt.sign({ email: email }, process.env.SERVER_SECRET || "", {
+        expiresIn: "3h",
+    })
+}
+export const verifyResetPwToken = (token?: string) => {
+    if (token === undefined) {
+        return undefined
+    }
+    try {
+        const result = jwt.verify(token, process.env.SERVER_SECRET || "", undefined) as { email: User["email"] } | string
+        if (typeof result === "string") {
+            return null
+        }
+        return result
+    } catch (error) {
+        return null
+    }
+}

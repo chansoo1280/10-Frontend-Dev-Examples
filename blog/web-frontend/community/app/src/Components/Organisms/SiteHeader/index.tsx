@@ -80,7 +80,17 @@ const SiteHeader = (props: defaultProps): JSX.Element => {
                 >
                     Log in
                 </Button>
-                <Button href={"/account/register"} className={classNames(styles[`${prefixCls}__btn`])} size="small" type="secondary">
+                <Button
+                    href={{
+                        pathname: "/account/register",
+                        query: {
+                            prevPath,
+                        },
+                    }}
+                    className={classNames(styles[`${prefixCls}__btn`])}
+                    size="small"
+                    type="secondary"
+                >
                     Register
                 </Button>
             </Space>

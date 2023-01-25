@@ -1,5 +1,6 @@
 // #region Global Imports
-import React from "react"
+import React, { useState } from "react"
+import { useRouter } from "next/router"
 
 // #endregion Global Imports
 
@@ -7,12 +8,25 @@ import React from "react"
 import { Input, Space, Text, Row, Button, Icon, AccountForm } from "@Components"
 import { Layout } from "@Components/Layouts"
 import { PageProps } from "../_app"
-import { useRouter } from "next/router"
+import { HttpAccount } from "@Services"
+import { useHistoryBack } from "@Hooks/useHistoryBack"
 
 // #endregion Local Imports
 
 const FindPw = () => {
     const router = useRouter()
+    const [email, setEmail] = useState("")
+    const { historyBack } = useHistoryBack("/account/login")
+    const handleSendEmail = async () => {
+        if (email === "") {
+            alert("이메일을 입력해주세요.")
+            return
+        }
+        const result = HttpAccount.sendEmailResetPwPath({ email })
+        if (result === null) {
+            return
+        }
+    }
     return (
         <>
             <AccountForm header="Find Password">
@@ -26,15 +40,17 @@ const FindPw = () => {
                     prefix={<Icon iconName="xi-user-o" />}
                     placeholder="Email"
                     value={""}
-                    onChange={function (event: React.ChangeEvent<HTMLInputElement>): void {
-                        throw new Error("Function not implemented.")
+                    onChange={(event) => {
+                        setEmail(event.target.value)
                     }}
                 />
                 <Row>
                     <Space.Box>
-                        <Button size="large">전송</Button>
+                        <Button onClick={handleSendEmail} size="large">
+                            전송
+                        </Button>
                     </Space.Box>
-                    <Button onClick={() => router.back()} type="link">
+                    <Button onClick={historyBack} type="link">
                         이전으로
                     </Button>
                 </Row>

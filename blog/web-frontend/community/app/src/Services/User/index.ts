@@ -83,3 +83,43 @@ export const createUser = async (user: Pick<User, "name" | "email" | "password" 
         return null
     }
 }
+
+export const modifyUser = async (user: Pick<User, "id"> & Partial<User>): Promise<boolean | null> => {
+    const queryValueList = (() => {
+        const ValueList: (keyof User)[] = []
+        if (user.email !== undefined) {
+            ValueList.push("email")
+        }
+        if (user.name !== undefined) {
+            ValueList.push("name")
+        }
+        if (user.password !== undefined) {
+            ValueList.push("password")
+        }
+        if (user.salt !== undefined) {
+            ValueList.push("salt")
+        }
+        return ValueList
+    })()
+    if (queryValueList.length === 0) {
+        return null
+    }
+    const queryString = `
+        UPDATE user 
+            SET 
+                ${queryValueList.map((key) => key + " = ?").join(", ")}
+        WHERE id = ?
+            AND deleted IS NULL
+        `
+    const queryValues = [...queryValueList.map((key) => user[key]), user.id]
+    try {
+        const result = await excuteQuery<QueryResult>({
+            query: queryString,
+            values: queryValues,
+        })
+        return result.changedRows === 1
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+}

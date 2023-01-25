@@ -1,5 +1,5 @@
 // #region Global Imports
-import React from "react"
+import React, { useState } from "react"
 import { useRouter } from "next/router"
 // #endregion Global Imports
 
@@ -7,10 +7,38 @@ import { useRouter } from "next/router"
 import { Input, Space, Text, Checkbox, Button, Icon, AccountForm } from "@Components"
 import { Layout } from "@Components/Layouts"
 import { PageProps } from "../_app"
+import { HttpAccount } from "@Services"
+import { useHistoryBack } from "@Hooks/useHistoryBack"
 // #endregion Local Imports
 
 const ResetPw = () => {
     const router = useRouter()
+    const { historyBack } = useHistoryBack("/account/login")
+    const [password, setPassword] = useState("")
+    const [passwordConfirm, setPasswordConfirm] = useState("")
+    const handleClickSave = async () => {
+        if (password === "") {
+            alert("비밀번호를 입력해주세요.")
+            return
+        }
+        if (passwordConfirm === "") {
+            alert("비밀번호 확인을 입력해주세요.")
+            return
+        }
+        if (password !== passwordConfirm) {
+            alert("확인 비밀번호가 일치하지 않습니다.")
+            return
+        }
+        const result = await HttpAccount.resetPw({
+            token: String(router.query.resetPwToken) || "",
+            email: String(router.query.email) || "",
+            password: password,
+        })
+        if (result !== null) {
+            return
+        }
+        historyBack()
+    }
     return (
         <>
             <AccountForm header="Reset Password">
@@ -20,9 +48,9 @@ const ResetPw = () => {
                     prefix={<Icon iconName="xi-user-o" />}
                     placeholder="Password(6 digits at least, case sensitive)"
                     type="password"
-                    value={""}
-                    onChange={function (event: React.ChangeEvent<HTMLInputElement>): void {
-                        throw new Error("Function not implemented.")
+                    value={password}
+                    onChange={(event) => {
+                        setPassword(event.target.value)
                     }}
                 />
                 <Input
@@ -31,12 +59,12 @@ const ResetPw = () => {
                     prefix={<Icon iconName="xi-lock-o" />}
                     placeholder="Comfirm password"
                     type="password"
-                    value={""}
-                    onChange={function (event: React.ChangeEvent<HTMLInputElement>): void {
-                        throw new Error("Function not implemented.")
+                    value={passwordConfirm}
+                    onChange={(event) => {
+                        setPasswordConfirm(event.target.value)
                     }}
                 />
-                <Button widthType="wide" size="large">
+                <Button onClick={handleClickSave} widthType="wide" size="large">
                     저장
                 </Button>
             </AccountForm>

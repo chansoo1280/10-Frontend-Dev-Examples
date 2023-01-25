@@ -4,15 +4,17 @@ import { useRouter } from "next/router"
 // #endregion Global Imports
 
 // #region Local Imports
-import { Input, Space, Button, AccountForm } from "@Components"
+import { Input, Space, Button, AccountForm, Row } from "@Components"
 import { Layout } from "@Components/Layouts"
 import { PageProps } from "../_app"
 import { useUser } from "@Hooks/useUser"
 import { HttpUserList } from "@Services"
+import { useHistoryBack } from "@Hooks/useHistoryBack"
 // #endregion Local Imports
 
 const Login = () => {
     const router = useRouter()
+    const { historyBack } = useHistoryBack("/community/questionList")
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -31,11 +33,7 @@ const Login = () => {
             return
         }
         updateUser(user)
-        if (router.query.prevPath !== undefined) {
-            router.back()
-        } else {
-            router.replace("/community/questionList")
-        }
+        historyBack()
     }
     return (
         <>
@@ -78,7 +76,7 @@ const Login = () => {
                         setPasswordConfirm(event.target.value)
                     }}
                 />
-                <AccountForm.Row>
+                <Row>
                     <Input
                         size="large"
                         placeholder="Verification code"
@@ -90,17 +88,17 @@ const Login = () => {
                     <Button size="large" type="secondary">
                         인증번호 받기
                     </Button>
-                </AccountForm.Row>
-                <AccountForm.Row>
+                </Row>
+                <Row>
                     <Space.Box>
                         <Button onClick={handleClickRegister} size="large">
                             회원가입
                         </Button>
                     </Space.Box>
-                    <Button onClick={() => router.back()} type="link">
+                    <Button onClick={historyBack} type="link">
                         이전으로
                     </Button>
-                </AccountForm.Row>
+                </Row>
             </AccountForm>
         </>
     )

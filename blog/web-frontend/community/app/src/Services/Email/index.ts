@@ -1,7 +1,6 @@
-import { User } from "@Services/User"
 import { SMTPClient } from "emailjs"
 
-export async function sendEmail(email: User["email"]) {
+export async function sendEmail({ text, to, subject }: { text: string; to: string; subject: string }) {
     const client = new SMTPClient({
         user: process.env.mail,
         password: process.env.password,
@@ -10,10 +9,10 @@ export async function sendEmail(email: User["email"]) {
     })
     client.send(
         {
-            text: `Just for testing purpose`,
+            text: text,
             from: [process.env.mail || ""],
-            to: email,
-            subject: "testing emailjs",
+            to: to,
+            subject: subject,
         },
         (e) => {
             console.log(e)

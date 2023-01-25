@@ -9,7 +9,7 @@ import { Layout } from "@Components/Layouts"
 import { PageProps } from "../_app"
 import { useUser } from "@Hooks/useUser"
 import { HttpAccount } from "@Services/API/Account"
-import { useHistoryBack } from "@Hooks/useHistoryBack"
+import { useHistoryBack, usePrevPath } from "@Hooks/useHistoryBack"
 // #endregion Local Imports
 
 const Login = () => {
@@ -18,6 +18,7 @@ const Login = () => {
     const [password, setPassword] = useState("")
     const { updateUser } = useUser()
     const { historyBack } = useHistoryBack("/community/questionList")
+    const { prevPath } = usePrevPath()
 
     const handleClickLogin = async () => {
         const user = await HttpAccount.login({ email, password })
@@ -61,7 +62,16 @@ const Login = () => {
                             label="로그인 유지하기"
                         />
                     </Space.Box>
-                    <Button href={"/account/find-pw"} size="small" type="link">
+                    <Button
+                        href={{
+                            pathname: "/account/find-pw",
+                            query: {
+                                prevPath,
+                            },
+                        }}
+                        size="small"
+                        type="link"
+                    >
                         비밀번호를 잊으셨나요?
                     </Button>
                 </Row>
