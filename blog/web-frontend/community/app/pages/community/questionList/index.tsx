@@ -1,16 +1,16 @@
 // #region Global Imports
 import Head from "next/head"
-import { ChangeEvent, useEffect, useState } from "react"
+import { GetServerSideProps } from "next"
+import { ChangeEvent, useState } from "react"
 import { useRouter } from "next/router"
 import { dehydrate, QueryClient, useQuery } from "react-query"
 // #endregion Global Imports
 
 // #region Local Imports
-import { Tabs, Space, Text, Button, Search, Tags, QuestionList, Card } from "@Components"
+import { Tabs, Space, Text, Button, Search, Tags, QuestionList, Card, LinedCard } from "@Components"
 import { Tab } from "@Components/Molecules/Tabs"
 import { Tag } from "@Components/Molecules/Tags"
 import { useUser } from "@Hooks/useUser"
-import { GetServerSideProps } from "next"
 import { useScrollRestoration } from "@Hooks/index"
 import { QuestionWithAuthor } from "@Services/Question/Question.entity"
 import { HttpQuestionList } from "@Services/API/QuestionList"
@@ -86,7 +86,6 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
                         <Button disabled={user === null} href={{ pathname: "/community/questionList/create", query: { prevPath } }}>
                             글작성
                         </Button>
-                        {/* <Button onClick={() => createQuestion()}>글작성</Button> */}
                     </Space>
                     <Search
                         value={""}
@@ -101,7 +100,7 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
                     <Tabs activeIdx={activeIdx} onClick={onClickTab} tabList={tabList} />
                 </Space>
                 <Card.wrap>
-                    <Card gap={"0"} padding={"0"} direction={"vertical"} bgType={"white"} separator={<div style={{ width: "100%", height: "1px", background: "#0000000F" }}></div>}>
+                    <LinedCard>
                         <Space widthType="wide" padding="24px">
                             <Text>Category :</Text>
                             <Space.Box>
@@ -120,7 +119,7 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
                             </Space.Box>
                         </Space>
                         <QuestionList onClickNext={handleClickNext} hideMore={isLastPage} questionList={questionList} />
-                    </Card>
+                    </LinedCard>
                 </Card.wrap>
             </div>
         </>

@@ -59,7 +59,6 @@ export const useUser = () => {
     const clearUser = () => {
         queryclient.setQueryData("user", null)
         clearStoredUser()
-        clearStoredAccessToken()
     }
 
     return { user, updateUser, clearUser }

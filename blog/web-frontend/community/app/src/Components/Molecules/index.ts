@@ -1,4 +1,6 @@
 export { default as Search } from "./Search"
+export { default as Popover } from "./Popover"
+export { default as LinedCard } from "./LinedCard"
 export { default as Tags } from "./Tags"
 export { default as Tabs } from "./Tabs"
 export { default as Breadcrumbs } from "./Breadcrumbs"

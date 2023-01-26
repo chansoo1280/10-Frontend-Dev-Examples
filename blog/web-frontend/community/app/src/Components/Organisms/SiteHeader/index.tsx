@@ -5,13 +5,14 @@ import Image, { ImageLoader } from "next/image"
 // #endregion Global Imports
 
 // #region Local Imports
-import { defaultProps, Icon, Space, Button, Text } from "@Components"
+import { defaultProps, Icon, Space, Button, Text, Popover, Card } from "@Components"
 import styles from "./SiteHeader.module.scss"
 import { useUser } from "@Hooks/useUser"
 import { APILogoutGET, Http } from "@Services"
 import { ResMessageWithDesc, ResStatus } from "@Server/response"
 import { ReqType } from "@Server/request"
 import { usePrevPath } from "@Hooks/useHistoryBack"
+import { useAccessToken } from "@Hooks/useAccessToken"
 // #endregion Local Imports
 const myLoader: ImageLoader = ({ src, width, quality }) => {
     return `/public/Images/${src}?w=${width}&q=${quality || 75}`
@@ -19,6 +20,7 @@ const myLoader: ImageLoader = ({ src, width, quality }) => {
 const SiteHeader = (props: defaultProps): JSX.Element => {
     const { show, className, ...rest } = props
     const { user, clearUser } = useUser()
+    const { clearAccessToken } = useAccessToken()
     const { prevPath } = usePrevPath()
     const prefixCls = "site-header"
     const classes = classNames(
@@ -48,6 +50,7 @@ const SiteHeader = (props: defaultProps): JSX.Element => {
             return
         }
         clearUser()
+        clearAccessToken()
     }
 
     return (
@@ -61,10 +64,27 @@ const SiteHeader = (props: defaultProps): JSX.Element => {
             {user !== null && (
                 <>
                     <Button show={user !== null} className={classNames(styles[`${prefixCls}__btn`])} size="small" type="text" icon={<Icon iconName="xi-bell-o" />} />
-                    <Button onClick={handleClickLogout} show={user !== null} className={classNames(styles[`${prefixCls}__btn`])} size="small" type="text">
-                        <Image loader={myLoader} src="me.png" alt="Picture of the user" width={24} height={24} />
-                        {user.name}
-                    </Button>
+                    <Popover
+                        contents={
+                            <>
+                                <Space widthType="wide" padding="5px 12px">
+                                    <Image loader={myLoader} src="me.png" alt="Picture of the user" width={24} height={24} />
+                                    {user.name}
+                                </Space>
+                                <Space direction="vertical" widthType="wide" padding="12px 16px">
+                                    <Text>asdasd</Text>
+                                    <Button onClick={handleClickLogout} widthType="wide">
+                                        로그아웃
+                                    </Button>
+                                </Space>
+                            </>
+                        }
+                    >
+                        <Button show={user !== null} className={classNames(styles[`${prefixCls}__btn`])} size="small" type="text">
+                            <Image loader={myLoader} src="me.png" alt="Picture of the user" width={24} height={24} />
+                            {user.name}
+                        </Button>
+                    </Popover>
                 </>
             )}
             <Button className={classNames(styles[`${prefixCls}__btn`])} size="small" type="text" icon={<Icon iconName="xi-translate" />} />
