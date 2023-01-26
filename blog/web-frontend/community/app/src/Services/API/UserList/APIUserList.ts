@@ -12,7 +12,10 @@ export type APIUserListPOST = {
     PathName: ["/api/userList"]
     ReqType: ReqType.POST
     ReqPayload: {
-        body: Pick<User, "name" | "email" | "password">
+        body: Pick<User, "name" | "email" | "password"> & {
+            verifyCode: string
+            verifyCodeToken: string
+        }
     }
     ResPayload: Pick<User, "id" | "name" | "email">
 }
@@ -47,6 +50,19 @@ export type APIUserDELETE = {
     ResPayload: null
 }
 
+export type APIVerifyCodePOST = {
+    PathName: ["/api/userList/verifyCode"]
+    ReqType: ReqType.POST
+    ReqPayload: {
+        body: {
+            email: User["email"]
+        }
+    }
+    ResPayload: {
+        token: string
+    }
+}
+
 export type APIUserList = {
     [ReqType.GET]: ApiController<ReqType.GET, APIUserListGET>
     [ReqType.POST]: ApiController<ReqType.POST, APIUserListPOST>
@@ -56,4 +72,7 @@ export type APIUserList = {
 export type APIUser = {
     [ReqType.GET]: ApiController<ReqType.GET, APIUserGET>
     [ReqType.DELETE]: ApiController<ReqType.DELETE, APIUserDELETE>
+}
+export type APIVerifyCode = {
+    [ReqType.POST]: ApiController<ReqType.POST, APIVerifyCodePOST>
 }

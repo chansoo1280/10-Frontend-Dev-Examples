@@ -2,7 +2,7 @@ import { ReqType } from "@Server/request"
 import { ResStatus, resMessage, resMessageWithDesc } from "@Server/response"
 import { APIUserList, makeRouter } from "@Services"
 import { generateRefreshToken } from "@Services/Account"
-import { findAllUser, findUserByEmail, createUser, deleteAllUser } from "@Services/User"
+import { findAllUser, findUserByEmail, createUser, deleteAllUser, verifyEmailToken } from "@Services/User"
 import { verifyUser } from "@Services/User/User.entity"
 import { getHash } from "@Utils"
 import { setCookie } from "cookies-next"
@@ -18,9 +18,22 @@ const apiUserList: APIUserList = {
     },
     [ReqType.POST]: async (req, res) => {
         const body = req.body
+
+        const verifyEmailTokenResult = verifyEmailToken(body.verifyCodeToken || "")
+        if (verifyEmailTokenResult === "jwt expired") {
+            resMessageWithDesc(res, ResStatus.BadRequest, "만료된 인증번호입니다.")
+            return
+        }
+        if (!verifyEmailTokenResult || verifyEmailTokenResult[body.email || ""] !== Number(body.verifyCode)) {
+            resMessageWithDesc(res, ResStatus.BadRequest, "인증번호가 올바르지 않습니다.")
+            return
+        }
+
         const verifyResult = verifyUser(
             {
-                ...body,
+                email: body.email,
+                name: body.name,
+                password: body.password,
             },
             ["email", "name", "password"],
         )

@@ -6,15 +6,33 @@ import { ReqType } from "@Server/request"
 import { ResMessageWithDesc, ResStatus } from "@Server/response"
 import { User } from "@Services/User"
 import { Http } from "../Http"
-import { APIUserListPOST } from "./APIUserList"
+import { APIUserListPOST, APIVerifyCodePOST } from "./APIUserList"
 // #endregion Local Imports
 
-const register = async ({ name, email, password }: Pick<User, "name" | "email" | "password">) =>
+const register = async ({
+    name,
+    email,
+    password,
+    verifyCode,
+    verifyCodeToken,
+}: Pick<User, "name" | "email" | "password"> & {
+    verifyCode: string
+    verifyCodeToken: string
+}) =>
     await Http<APIUserListPOST>(ReqType.POST, ["/api/userList"], {
         body: {
-            name: name,
+            name,
+            email,
+            password,
+            verifyCode,
+            verifyCodeToken,
+        },
+    })
+
+const sendVerifyCodeEmail = async ({ email }: Pick<User, "email">) =>
+    await Http<APIVerifyCodePOST>(ReqType.POST, ["/api/userList/verifyCode"], {
+        body: {
             email: email,
-            password: password,
         },
     }).catch((e: ResMessageWithDesc) => {
         console.log(e)
@@ -30,4 +48,5 @@ const register = async ({ name, email, password }: Pick<User, "name" | "email" |
     })
 export const HttpUserList = {
     register,
+    sendVerifyCodeEmail,
 }

@@ -10,6 +10,7 @@ import { PageProps } from "../_app"
 import { useUser } from "@Hooks/useUser"
 import { HttpUserList } from "@Services"
 import { useHistoryBack } from "@Hooks/useHistoryBack"
+import { ResMessageWithDesc, ResStatus } from "@Server/response"
 // #endregion Local Imports
 
 const Login = () => {
@@ -19,8 +20,22 @@ const Login = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [passwordConfirm, setPasswordConfirm] = useState("")
-    const [verificationCode, setVerificationCode] = useState("")
+    const [verifyCode, setVerifyCode] = useState("")
+    const [verifyCodeToken, setVerifyCodeToken] = useState("")
     const { updateUser } = useUser()
+
+    const handleClickSendVerifyCode = async () => {
+        if (email === "") {
+            alert("이메일을 입력해주세요.")
+            return
+        }
+        const result = await HttpUserList.sendVerifyCodeEmail({ email })
+        if (result === null) {
+            alert("전송 실패")
+            return
+        }
+        setVerifyCodeToken(result.token || "")
+    }
 
     const handleClickRegister = async () => {
         if (password !== passwordConfirm) {
@@ -28,7 +43,18 @@ const Login = () => {
             return
         }
 
-        const user = await HttpUserList.register({ name, email, password })
+        const user = await HttpUserList.register({ name, email, password, verifyCode, verifyCodeToken }).catch((e: ResMessageWithDesc) => {
+            console.log(e)
+            switch (e.status) {
+                case ResStatus.BadRequest:
+                    alert(e.description)
+                    return null
+
+                default:
+                    break
+            }
+            return null
+        })
         if (user === null) {
             return
         }
@@ -80,12 +106,12 @@ const Login = () => {
                     <Input
                         size="large"
                         placeholder="Verification code"
-                        value={verificationCode}
+                        value={verifyCode}
                         onChange={(event) => {
-                            setVerificationCode(event.target.value)
+                            setVerifyCode(event.target.value)
                         }}
                     />
-                    <Button size="large" type="secondary">
+                    <Button onClick={handleClickSendVerifyCode} size="large" type="secondary">
                         인증번호 받기
                     </Button>
                 </Row>

@@ -1,4 +1,5 @@
 import excuteQuery, { QueryResult } from "@Server/db"
+import jwt from "jsonwebtoken"
 import { User } from "./User.entity"
 export type { User }
 
@@ -121,5 +122,32 @@ export const modifyUser = async (user: Pick<User, "id"> & Partial<User>): Promis
     } catch (error) {
         console.log(error)
         return null
+    }
+}
+export const generateEmailToken = (email: string) => {
+    const code = (() => {
+        const min = 100000
+        const max = 1000000
+        return Math.floor(Math.random() * (max - min) + min)
+    })()
+    return {
+        token: jwt.sign({ [email]: code }, process.env.SERVER_SECRET || "", {
+            expiresIn: "3m",
+        }),
+        code,
+    }
+}
+export const verifyEmailToken = (token?: string) => {
+    if (token === undefined) {
+        return undefined
+    }
+    try {
+        const result = jwt.verify(token, process.env.SERVER_SECRET || "") as { [key: string]: number } | string
+        if (typeof result === "string") {
+            return null
+        }
+        return result
+    } catch (error) {
+        return "jwt expired"
     }
 }
