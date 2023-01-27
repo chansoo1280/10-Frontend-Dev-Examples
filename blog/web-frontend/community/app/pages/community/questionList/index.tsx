@@ -1,7 +1,7 @@
 // #region Global Imports
 import Head from "next/head"
 import { GetServerSideProps } from "next"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import { dehydrate, QueryClient, useQuery } from "react-query"
 // #endregion Global Imports
@@ -9,7 +9,7 @@ import { dehydrate, QueryClient, useQuery } from "react-query"
 // #region Local Imports
 import { Tabs, Space, Text, Button, Search, Tags, QuestionList, Card, LinedCard } from "@Components"
 import { Tab } from "@Components/Molecules/Tabs"
-import { Tag } from "@Components/Molecules/Tags"
+import { CheckableTag, Tag } from "@Components/Molecules/Tags"
 import { useUser } from "@Hooks/useUser"
 import { useScrollRestoration } from "@Hooks/index"
 import { QuestionWithAuthor } from "@Services/Question/Question.entity"
@@ -23,18 +23,49 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
     const { user } = useUser()
     const { initScrollTop } = useScrollRestoration(props.layoutRef, router.pathname)
     const { prevPath } = usePrevPath()
+    const [checkedTagsStr, setCheckedTagsStr] = useState(String(query.checkedTagsStr) || "")
 
-    const { data } = useQuery("questionList", () => HttpQuestionList.getQuestionList(pageNo), {
+    const { data, refetch } = useQuery("questionList", () => HttpQuestionList.getQuestionList(pageNo, checkedTagsStr), {
         onSuccess: (received) => {
+            console.log(received)
             if (!received) {
             } else {
                 initScrollTop()
+                setTotalPageCnt(received?.totalPageCnt || null)
+                setQuestionList(received?.questionList || [])
+                setPageNo(pageNo >= (received?.totalPageCnt || 1) ? received?.totalPageCnt || 1 : pageNo)
+                setTagList(
+                    getTagList(received?.questionList)
+                        .sort((a, b) => {
+                            const aChecked = received.tagList?.includes(a) ? true : false
+                            const bChecked = received.tagList?.includes(b) ? true : false
+                            return aChecked === bChecked ? 0 : aChecked ? -1 : 1
+                        })
+                        .map((title) => ({
+                            title,
+                            type: "checkable",
+                            checked: received.tagList?.includes(title) ? true : false,
+                        })),
+                )
             }
         },
     })
     const [pageNo, setPageNo] = useState(Number(query.pageNo || "1"))
     const [totalPageCnt, setTotalPageCnt] = useState<number | null>(data?.totalPageCnt || null)
     const [questionList, setQuestionList] = useState<QuestionWithAuthor[]>(data?.questionList || [])
+    const getTagList = (list: QuestionWithAuthor[]) =>
+        list
+            .map((question) => question.tags || [])
+            .flat()
+            .reduce((ac, v) => (ac.includes(v) ? ac : [...ac, v]), [] as string[])
+            .sort((a, b) => (a > b ? 1 : b > a ? -1 : 0))
+    const [tagList, setTagList] = useState<CheckableTag[]>(
+        getTagList(questionList).map((title) => ({
+            title,
+            type: "checkable",
+            checked: false,
+        })),
+    )
 
     const [activeIdx, setActiveIdx] = useState(0)
     const [tabList, _] = useState([{ title: "Question" }, { title: "Articles", disabled: true }])
@@ -50,24 +81,48 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
             return
         }
         const nextPageNo = pageNo + 1
-        const result = await HttpQuestionList.getQuestionListPaging(nextPageNo)
+        const result = await HttpQuestionList.getQuestionListPaging(nextPageNo, checkedTagsStr)
         if (result === null) {
             return
         }
+
+        setTotalPageCnt(result.totalPageCnt)
+        setQuestionList(questionList.concat(result.questionList))
+        setPageNo(nextPageNo)
+    }
+
+    const handleClickTag = (tag: Tag) => {
+        setCheckedTagsStr(
+            tagList
+                .map((tagObj) => ({
+                    ...tagObj,
+                    checked: tagObj.title === tag.title ? !tagObj.checked : tagObj.checked,
+                }))
+                .sort((a, b) => (a.title > b.title ? 1 : b.title > a.title ? -1 : 0))
+                .sort((a, b) => (a.checked === b.checked ? 0 : a.checked ? -1 : 1))
+                .filter((tagObj) => tagObj.checked)
+                .map((tagObj) => tagObj.title)
+                .join(", "),
+        )
+    }
+
+    useEffect(() => {
         router.replace(
             {
                 pathname: "/community/questionList",
                 query: {
-                    pageNo: nextPageNo,
+                    pageNo: pageNo,
+                    checkedTagsStr: checkedTagsStr,
                 },
             },
             undefined,
             { shallow: true },
         )
-        setTotalPageCnt(result.totalPageCnt)
-        setQuestionList(questionList.concat(result.questionList))
-        setPageNo(nextPageNo)
-    }
+    }, [pageNo, checkedTagsStr])
+
+    useEffect(() => {
+        refetch()
+    }, [checkedTagsStr, refetch])
 
     return (
         <>
@@ -104,21 +159,10 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
                         <Space widthType="wide" padding="24px">
                             <Text>Category :</Text>
                             <Space.Box>
-                                <Tags
-                                    boxProps={{ padding: "4px" }}
-                                    tagList={[
-                                        {
-                                            title: "Javascript",
-                                            type: "deletable",
-                                        },
-                                    ]}
-                                    onClick={function (tag: Tag): void {
-                                        throw new Error("Function not implemented.")
-                                    }}
-                                />
+                                <Tags boxProps={{ padding: "4px" }} tagList={tagList} onClick={handleClickTag} />
                             </Space.Box>
                         </Space>
-                        <QuestionList onClickNext={handleClickNext} hideMore={isLastPage} questionList={questionList} />
+                        <QuestionList onClickTag={handleClickTag} onClickNext={handleClickNext} hideMore={isLastPage} questionList={questionList} />
                     </LinedCard>
                 </Card.wrap>
             </div>
@@ -126,9 +170,9 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
     )
 }
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-    const { pageNo } = query
+    const { pageNo, checkedTagsStr } = query
     const queryClient = new QueryClient()
-    await queryClient.prefetchQuery("questionList", () => HttpQuestionList.getQuestionList(Number(pageNo || "1")))
+    await queryClient.prefetchQuery("questionList", () => HttpQuestionList.getQuestionList(Number(pageNo || "1"), String(checkedTagsStr) || ""))
 
     return {
         props: {

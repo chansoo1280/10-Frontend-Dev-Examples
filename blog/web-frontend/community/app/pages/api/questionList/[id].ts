@@ -75,6 +75,7 @@ const apiQuestion: APIQuestion = {
             id,
             title: body?.title || "",
             contents: body?.contents || "",
+            tags: body?.tags || null,
         })
         if (result !== null) {
             resMessageWithDesc(res, ResStatus.Success, "수정 성공")

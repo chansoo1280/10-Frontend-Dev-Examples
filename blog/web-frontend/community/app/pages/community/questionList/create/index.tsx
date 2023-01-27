@@ -24,6 +24,7 @@ const QuestionCreate = () => {
             type: "deletable",
         },
     ])
+    const tags = tagList.map((tag) => tag.title)
     const handleClickSave = async () => {
         if (user === null) {
             return
@@ -32,6 +33,7 @@ const QuestionCreate = () => {
             {
                 title,
                 contents,
+                tags,
             },
             { id: user.id },
         )
@@ -80,6 +82,9 @@ const QuestionCreate = () => {
                             <Row>
                                 <Tags
                                     onAdd={(text) => {
+                                        if (tags.includes(text) === true) {
+                                            return
+                                        }
                                         setTagList(
                                             tagList.concat({
                                                 title: text,

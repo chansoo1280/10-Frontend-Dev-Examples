@@ -1,5 +1,5 @@
 import { User } from "@Services/User"
-import { isNumber, isString } from "@Utils"
+import { isArray, isNumber, isString } from "@Utils"
 
 import { ConditionOfKeys, verifyEntity } from "@Utils/VerifyEntity"
 export interface Question {
@@ -7,13 +7,15 @@ export interface Question {
     title: string
     contents: string
     authorId: User["id"]
+    tags: string[] | null
     created: string
     deleted: string | null
 }
-export interface QuestionWithAuthor extends Pick<Question, "title" | "id" | "created" | "authorId"> {
+export interface QuestionWithAuthor extends Pick<Question, "title" | "id" | "created" | "authorId" | "tags"> {
     author: Pick<User, "id" | "name" | "email">
 }
-export interface QuestionWithAuthorRow extends Question {
+export interface QuestionWithAuthorRow extends Omit<Question, "tags"> {
+    tags: null | string
     author_id: User["id"]
     author_name: User["name"]
     author_email: User["email"]
@@ -27,6 +29,7 @@ const conditionOfKeys: ConditionOfKeys<Question, keyof Question> = {
     title: (target) => isString(target),
     contents: (target) => isString(target),
     authorId: (target) => isNumber(target),
+    tags: (target) => isArray(target),
     created: (target) => isString(target),
     deleted: (target) => isString(target),
 }

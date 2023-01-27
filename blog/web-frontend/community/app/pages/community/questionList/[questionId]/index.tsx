@@ -1,5 +1,5 @@
 // #region Global Imports
-import React from "react"
+import React, { useState } from "react"
 import Head from "next/head"
 import { useRouter } from "next/router"
 // #endregion Global Imports
@@ -24,6 +24,16 @@ const QuestionInfo = () => {
             id: Number(router.query.questionId),
         }),
     )
+
+    const [tagList, setTagList] = useState<Tag[]>(
+        question?.tags
+            ? question.tags.map((title) => ({
+                  title,
+                  href: "/community/questionList?checkedTagsStr=" + title,
+              }))
+            : [],
+    )
+    const tags = tagList.map((tag) => tag.title)
     const handleClickDelete = async () => {
         if (confirm("삭제하시겠습니까?") === false) {
             return
@@ -82,17 +92,7 @@ const QuestionInfo = () => {
                                 </Space>
                             </Row>
                             <Row>
-                                <Tags
-                                    boxProps={{ padding: "4px" }}
-                                    tagList={[
-                                        {
-                                            title: "Javascript",
-                                        },
-                                    ]}
-                                    onClick={function (tag: Tag): void {
-                                        throw new Error("Function not implemented.")
-                                    }}
-                                />
+                                <Tags boxProps={{ padding: "4px" }} tagList={tagList} />
                             </Row>
                         </Rows>
                         <Rows padding="24px">

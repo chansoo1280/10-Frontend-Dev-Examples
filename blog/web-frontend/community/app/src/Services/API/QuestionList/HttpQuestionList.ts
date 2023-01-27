@@ -27,12 +27,13 @@ const getQuestion = async ({ id }: Pick<Question, "id">) => {
         return null
     })
 }
-const getQuestionList = async (pageNo: number) => {
+const getQuestionList = async (pageNo: number, tagList: string) => {
     const cntPerPage = 2
     return await Http<APIQuestionListGET>(ReqType.GET, ["/api/questionList"], {
         query: {
             cnt: pageNo * cntPerPage,
             cntPerPage: String(cntPerPage),
+            tagList,
         },
     }).catch((e: ResMessageWithDesc) => {
         console.log(e)
@@ -50,12 +51,13 @@ const getQuestionList = async (pageNo: number) => {
         return null
     })
 }
-const getQuestionListPaging = async (pageNo: number) => {
+const getQuestionListPaging = async (pageNo: number, tagList: string) => {
     const cntPerPage = 2
     return await Http<APIQuestionListPagingGET>(ReqType.GET, ["/api/questionList/paging"], {
         query: {
             pageNo: String(pageNo),
             cntPerPage: String(cntPerPage),
+            tagList,
         },
     }).catch((e: ResMessageWithDesc) => {
         console.log(e)
@@ -73,7 +75,7 @@ const getQuestionListPaging = async (pageNo: number) => {
         return null
     })
 }
-const createQuestion = async (question: Pick<Question, "title" | "contents">, user: Pick<User, "id">) => {
+const createQuestion = async (question: Pick<Question, "title" | "contents" | "tags">, user: Pick<User, "id">) => {
     if (!user) {
         return null
     }
@@ -82,6 +84,7 @@ const createQuestion = async (question: Pick<Question, "title" | "contents">, us
             title: question.title,
             contents: question.contents,
             authorId: user.id,
+            tags: question.tags,
         },
     }).catch((e: ResMessageWithDesc) => {
         console.log(e)
@@ -96,7 +99,7 @@ const createQuestion = async (question: Pick<Question, "title" | "contents">, us
         return null
     })
 }
-const moodifyQuestion = async (question: Pick<Question, "id" | "title" | "contents">) => {
+const moodifyQuestion = async (question: Pick<Question, "id" | "title" | "contents" | "tags">) => {
     return await Http<APIQuestionPATCH>(
         ReqType.PATCH,
         [
@@ -109,6 +112,7 @@ const moodifyQuestion = async (question: Pick<Question, "id" | "title" | "conten
             body: {
                 title: question.title,
                 contents: question.contents,
+                tags: question.tags,
             },
         },
     ).catch((e: ResMessageWithDesc) => {

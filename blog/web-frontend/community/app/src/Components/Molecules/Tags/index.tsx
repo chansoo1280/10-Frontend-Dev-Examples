@@ -11,22 +11,23 @@ import { SpaceProps } from "@Components/Atoms/Space"
 
 interface BaseTag {
     title: string
+    href?: string
     color?: "magenta" | "green" | "red" | "volcano" | "orange" | "gold" | "lime" | "cyan" | "blue" | "geekblue" | "purple"
 }
 interface defaultTag extends BaseTag {
     type?: "default"
 }
-interface deletableTag extends BaseTag {
+export interface DeletableTag extends BaseTag {
     type: "deletable"
 }
-interface checkableTag extends BaseTag {
+export interface CheckableTag extends BaseTag {
     type: "checkable"
     checked: boolean
 }
-export type Tag = defaultTag | deletableTag | checkableTag
+export type Tag = defaultTag | DeletableTag | CheckableTag
 interface TagsProps extends defaultProps {
     tagList: Tag[]
-    onClick: (tag: Tag) => void
+    onClick?: (tag: Tag) => void
     onAdd?: (text: string) => void
     boxProps?: SpaceProps
 }
@@ -58,9 +59,9 @@ const Tags = (props: TagsProps): JSX.Element => {
                 <Button
                     size="small"
                     type={tag.type === "checkable" && tag.checked === true ? "primary" : "secondary"}
+                    href={tag.href}
                     onClick={(e) => {
-                        e.preventDefault()
-                        onClick(tag)
+                        onClick?.(tag)
                     }}
                     key={tag.title}
                     className={classNames(styles[`${prefixCls}__btn`], {

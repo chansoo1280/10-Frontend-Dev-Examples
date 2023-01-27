@@ -18,18 +18,28 @@ const QuestionCreate = () => {
     const router = useRouter()
     const { historyBack } = useHistoryBack("/community/questionList")
     const { user } = useUser()
-    const { data } = useQuery(["question", router.query.questionId], () =>
+    const { data: question } = useQuery(["question", router.query.questionId], () =>
         HttpQuestionList.getQuestion({
             id: Number(router.query.questionId),
         }),
     )
-    const [title, setTitle] = useState(data?.title || "")
-    const [contents, setContents] = useState(data?.contents || "")
+    const [title, setTitle] = useState(question?.title || "")
+    const [contents, setContents] = useState(question?.contents || "")
+    const [tagList, setTagList] = useState<Tag[]>(
+        question?.tags
+            ? question.tags.map((title) => ({
+                  title,
+                  type: "deletable",
+              }))
+            : [],
+    )
+    const tags = tagList.map((tag) => tag.title)
     const handleClickSave = async () => {
         const result = await HttpQuestionList.moodifyQuestion({
             id: Number(router.query.questionId),
             title,
             contents,
+            tags,
         })
         if (result === null) {
             return
@@ -76,17 +86,20 @@ const QuestionCreate = () => {
                             <Row>
                                 <Tags
                                     onAdd={(text) => {
-                                        console.log(text)
+                                        if (tags.includes(text) === true) {
+                                            return
+                                        }
+                                        setTagList(
+                                            tagList.concat({
+                                                title: text,
+                                                type: "deletable",
+                                            }),
+                                        )
                                     }}
                                     boxProps={{ padding: "4px" }}
-                                    tagList={[
-                                        {
-                                            title: "Javascript",
-                                            type: "deletable",
-                                        },
-                                    ]}
-                                    onClick={function (tag: Tag): void {
-                                        throw new Error("Function not implemented.")
+                                    tagList={tagList}
+                                    onClick={(tag: Tag) => {
+                                        setTagList(tagList.filter((tagObj) => tagObj !== tag))
                                     }}
                                 />
                             </Row>
@@ -99,7 +112,7 @@ const QuestionCreate = () => {
                                 }}
                             ></MDEditor>
                             <Row>
-                                <QuestionAuthorInfo userName={user?.name || ""} created={data?.created} />
+                                <QuestionAuthorInfo userName={user?.name || ""} created={question?.created} />
                             </Row>
                             <Row>
                                 <Space.Box></Space.Box>

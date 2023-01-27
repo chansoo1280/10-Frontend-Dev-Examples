@@ -7,6 +7,7 @@ import queryString from "query-string"
 // #region Interface Imports
 import { BaseApiInfo } from "@Server/request"
 import { ResMessage, ResMessageWithDesc, ResStatus } from "@Server/response"
+import { isArray } from "@Utils"
 // #endregion Interface Imports
 
 const BaseUrl = `http://localhost:3000`
@@ -28,11 +29,13 @@ export const Http = async <T extends BaseApiInfo>(
         },
     }
     // console.log(defaultOptions)
+
     const queryStr = query
         ? `?${queryString.stringify({
               ...query,
           })}`
         : ""
+
     const pathName = url[0]
     const pathObj = url[1] || {}
 

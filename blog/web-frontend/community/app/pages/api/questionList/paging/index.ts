@@ -8,14 +8,16 @@ const apiQuestionList: APIQuestionListPaging = {
         const query = req.query
         const pageNo = Number(query.pageNo || "1")
         const cntPerPage = Number(query.cntPerPage || "1")
+        const tagList = query.tagList !== undefined && query.tagList !== "" ? query.tagList?.split(", ") : null
 
-        const result = await findQuestionByPageNo(pageNo, cntPerPage)
-        const questionCnt = await getQuestionCnt()
+        const result = await findQuestionByPageNo(pageNo, cntPerPage, tagList)
+        const questionCnt = await getQuestionCnt(tagList)
         if (result !== null) {
             res.status(ResStatus.Success).json({
                 questionList: result,
                 totalCnt: questionCnt || 0,
                 totalPageCnt: Math.ceil((questionCnt || 0) / cntPerPage),
+                tagList: tagList,
             })
             return
         }

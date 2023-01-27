@@ -16,11 +16,12 @@ import { usePrevPath } from "@Hooks/useHistoryBack"
 interface QuestionListProps extends defaultProps {
     questionList: QuestionWithAuthor[]
     onClickNext: React.MouseEventHandler<HTMLAnchorElement> & React.MouseEventHandler<HTMLButtonElement>
+    onClickTag?: (tag: Tag) => void
     hideMore?: boolean
 }
 
 const QuestionList = (props: QuestionListProps): JSX.Element => {
-    const { questionList, show, className, onClickNext, hideMore, ...rest } = props
+    const { questionList, show, className, onClickNext, onClickTag, hideMore, ...rest } = props
     const router = useRouter()
     const { prevPath } = usePrevPath()
     const prefixCls = "question-list"
@@ -33,7 +34,7 @@ const QuestionList = (props: QuestionListProps): JSX.Element => {
     )
     return (
         <ul className={classes} {...rest}>
-            {questionList.map(({ id, title, author, created }) => (
+            {questionList.map(({ id, title, author, created, tags }) => (
                 <Link key={id} href={{ pathname: "/community/questionList/" + id, query: { prevPath } }}>
                     <Rows className={classNames(styles[`${prefixCls}__item`])} as="li">
                         <Space direction="vertical" align="flex-start" padding="0" gap="12px">
@@ -42,14 +43,18 @@ const QuestionList = (props: QuestionListProps): JSX.Element => {
                                 boxProps={{
                                     padding: 0,
                                 }}
-                                tagList={[
-                                    {
-                                        title: "Javascript",
-                                        type: "default",
-                                    },
-                                ]}
-                                onClick={function (tag: Tag): void {
-                                    throw new Error("Function not implemented.")
+                                tagList={
+                                    (tags &&
+                                        tags.map((title) => ({
+                                            title,
+                                            type: "default",
+                                        }))) ||
+                                    []
+                                }
+                                onClick={(tag) => {
+                                    window.event?.preventDefault()
+                                    window.event?.stopPropagation()
+                                    onClickTag?.(tag)
                                 }}
                             />
                         </Space>

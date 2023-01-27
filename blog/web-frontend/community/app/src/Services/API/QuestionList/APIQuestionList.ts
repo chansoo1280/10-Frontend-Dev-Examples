@@ -7,19 +7,20 @@ export type APIQuestionListGET = {
     PathName: ["/api/questionList"]
     ReqType: ReqType.GET
     ReqPayload: {
-        query: { cnt: number; cntPerPage: string }
+        query: { cnt: number; cntPerPage: string; tagList: string }
     }
     ResPayload: {
         questionList: QuestionWithAuthor[]
         totalCnt: number
         totalPageCnt: number
+        tagList: Question["tags"]
     }
 }
 export type APIQuestionListPOST = {
     PathName: ["/api/questionList"]
     ReqType: ReqType.POST
     ReqPayload: {
-        body: Pick<Question, "title" | "contents" | "authorId">
+        body: Pick<Question, "title" | "contents" | "authorId" | "tags">
     }
     ResPayload: Question["id"]
 }
@@ -34,12 +35,13 @@ export type APIQuestionListPagingGET = {
     PathName: ["/api/questionList/paging"]
     ReqType: ReqType.GET
     ReqPayload: {
-        query: { pageNo: string; cntPerPage: string }
+        query: { pageNo: string; cntPerPage: string; tagList: string }
     }
     ResPayload: {
         questionList: QuestionWithAuthor[]
         totalCnt: number
         totalPageCnt: number
+        tagList: Question["tags"]
     }
 }
 
@@ -74,7 +76,7 @@ export type APIQuestionPATCH = {
     ]
     ReqType: ReqType.PATCH
     ReqPayload: {
-        body: Pick<Question, "title" | "contents">
+        body: Pick<Question, "title" | "contents" | "tags">
     }
     ResPayload: string
 }
