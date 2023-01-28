@@ -22,10 +22,12 @@ interface InputProps extends defaultProps {
     suffix?: React.ReactNode
     placeholder?: string
     widthType?: "wide"
+    label?: string
+    inputId?: string
 }
 
 const Input = (props: InputProps, ref?: React.Ref<HTMLInputElement>) => {
-    const { value, show, size, className, onChange, onBlur, onEnter, disabled, prefix, suffix, placeholder, widthType, type, ...rest } = props
+    const { value, show, size, className, onChange, onBlur, onEnter, disabled, prefix, suffix, placeholder, widthType, type, label, inputId, ...rest } = props
     const inputRef = useRef<HTMLInputElement>(null)
     const [innerValue, setValue] = useState(value)
     const [focused, setFocused] = useState(false)
@@ -79,6 +81,7 @@ const Input = (props: InputProps, ref?: React.Ref<HTMLInputElement>) => {
     }
     const inputProps = {
         ref: composeRefs(ref, inputRef),
+        id: inputId,
         className: classNames(styles[`${prefixCls}__input`]),
         onChange: handleChange,
         disabled: disabled,
@@ -91,6 +94,13 @@ const Input = (props: InputProps, ref?: React.Ref<HTMLInputElement>) => {
     }
     return (
         <div {...boxProps}>
+            {label !== undefined ? (
+                <label className="ir" htmlFor={inputId}>
+                    {label}
+                </label>
+            ) : (
+                ""
+            )}
             {prefix}
             <input {...inputProps} />
             {suffix}

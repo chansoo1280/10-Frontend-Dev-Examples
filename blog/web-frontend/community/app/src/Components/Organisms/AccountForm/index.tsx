@@ -23,8 +23,10 @@ const AccountForm = (props: AccountFormProps): JSX.Element => {
     )
 
     return (
-        <Rows className={classes} gap="22px" {...rest}>
-            <Text className={styles[`${prefixCls}__title`]}>Example Project</Text>
+        <Rows as="form" className={classes} gap="22px" {...rest}>
+            <Text as="h1" className={styles[`${prefixCls}__title`]}>
+                Example Project
+            </Text>
 
             <Row>
                 <Text className={styles[`${prefixCls}__header`]}>{header}</Text>

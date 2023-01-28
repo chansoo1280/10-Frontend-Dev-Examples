@@ -1,7 +1,7 @@
 // #region Global Imports
 import Head from "next/head"
 import { GetServerSideProps } from "next"
-import { ChangeEvent, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import { dehydrate, QueryClient, useQuery } from "react-query"
 // #endregion Global Imports
@@ -11,10 +11,10 @@ import { Tabs, Space, Text, Button, Search, Tags, QuestionList, Card, LinedCard 
 import { Tab } from "@Components/Molecules/Tabs"
 import { CheckableTag, Tag } from "@Components/Molecules/Tags"
 import { useUser } from "@Hooks/useUser"
-import { useScrollRestoration } from "@Hooks/index"
 import { QuestionWithAuthor } from "@Services/Question/Question.entity"
 import { HttpQuestionList } from "@Services/API/QuestionList"
 import { usePrevPath } from "@Hooks/useHistoryBack"
+import useScrollRestoration from "@Hooks/useScrollRestoration"
 // #endregion Local Imports
 
 const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> }) => {
@@ -26,13 +26,17 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
     const [checkedTagsStr, setCheckedTagsStr] = useState(String(query.checkedTagsStr || ""))
     const [searchText, setSearchText] = useState(String(query.searchStr || ""))
     const [searchStr, setSearchStr] = useState(String(query.searchStr || ""))
-
     const { data, refetch } = useQuery("questionList", () => HttpQuestionList.getQuestionList(pageNo, checkedTagsStr, searchStr), {
         staleTime: 60 * 60 * 1000,
         onSuccess: (received) => {
             console.log(received)
             if (!received) {
             } else {
+                const booleanSort = (a: string, b: string) => {
+                    const aChecked = received.tagList?.includes(a) ? true : false
+                    const bChecked = received.tagList?.includes(b) ? true : false
+                    return aChecked === bChecked ? 0 : aChecked ? -1 : 1
+                }
                 initScrollTop()
                 setTotalPageCnt(received?.totalPageCnt || null)
                 setQuestionList(received?.questionList || [])
@@ -40,17 +44,11 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
                 const tagList = getTagList(received?.questionList)
                 setCheckedTagsStr(received?.tagList?.filter((tag) => tagList.includes(tag)).join(", ") || "")
                 setTagList(
-                    tagList
-                        .sort((a, b) => {
-                            const aChecked = received.tagList?.includes(a) ? true : false
-                            const bChecked = received.tagList?.includes(b) ? true : false
-                            return aChecked === bChecked ? 0 : aChecked ? -1 : 1
-                        })
-                        .map((title) => ({
-                            title,
-                            type: "checkable",
-                            checked: received.tagList?.includes(title) ? true : false,
-                        })),
+                    tagList.sort(booleanSort).map((title) => ({
+                        title,
+                        type: "checkable",
+                        checked: received.tagList?.includes(title) ? true : false,
+                    })),
                 )
             }
         },
@@ -62,7 +60,7 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
         list
             .map((question) => question.tags || [])
             .flat()
-            .reduce((ac, v) => (ac.includes(v) ? ac : [...ac, v]), [] as string[])
+            .reduce((acc, cur) => (acc.includes(cur) ? acc : [...acc, cur]), [] as string[])
             .sort((a, b) => (a > b ? 1 : b > a ? -1 : 0))
     const [tagList, setTagList] = useState<CheckableTag[]>(
         getTagList(questionList).map((title) => ({
@@ -72,11 +70,11 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
         })),
     )
 
-    const [activeIdx, setActiveIdx] = useState(0)
-    const [tabList, _] = useState([{ title: "Question" }, { title: "Articles", disabled: true }])
-    const onClickTab = (tab: Tab, idx: number) => {
-        setActiveIdx(idx)
-    }
+    // const [activeIdx, setActiveIdx] = useState(0)
+    const tabList = [{ title: "Question" }, { title: "Articles", disabled: true }]
+    // const onClickTab = (tab: Tab, idx: number) => {
+    //     setActiveIdx(idx)
+    // }
 
     const isLastPage = totalPageCnt === null || totalPageCnt < pageNo || totalPageCnt === pageNo
 
@@ -109,6 +107,13 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
                 .map((tagObj) => tagObj.title)
                 .join(", "),
         )
+    }
+    const handleSearch = (value: string) => {
+        if (value === searchStr) {
+            refetch()
+            return
+        }
+        setSearchStr(value)
     }
 
     useEffect(() => {
@@ -148,21 +153,8 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
                             글작성
                         </Button>
                     </Space>
-                    <Search
-                        value={searchText}
-                        placeholder="input search text"
-                        onChange={(e) => {
-                            setSearchText(e.target.value)
-                        }}
-                        onSearch={(value) => {
-                            if (value === searchStr) {
-                                refetch()
-                                return
-                            }
-                            setSearchStr(value)
-                        }}
-                    />
-                    <Tabs activeIdx={activeIdx} onClick={onClickTab} tabList={tabList} />
+                    <Search value={searchText} placeholder="input search text" onChange={(e) => setSearchText(e.target.value)} onSearch={handleSearch} />
+                    <Tabs activeIdx={0} tabList={tabList} />
                 </Space>
                 <Card.wrap>
                     <LinedCard>

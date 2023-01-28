@@ -1,5 +1,5 @@
 // #region Global Imports
-import { getStoredAccessToken } from "@Hooks/useAccessToken"
+import { getStoredAccessToken, getStoredSessionId } from "@Hooks/useAccessToken"
 import "isomorphic-unfetch"
 import queryString from "query-string"
 // #endregion Global Imports
@@ -19,13 +19,15 @@ export const Http = async <T extends BaseApiInfo>(
     { query, body }: { query?: T["ReqPayload"]["query"]; body?: T["ReqPayload"]["body"] },
 ): Promise<T["ResPayload"] | null> => {
     const accessToken = getStoredAccessToken()
+    const sessionId = getStoredSessionId()
 
     const defaultOptions = {
         // cache: "no-cache",
         headers: {
             "content-type": "application/json",
-            SECRET: "secret_test",
-            Authorization: `Bearer ${accessToken}`,
+            secret: "secret_test",
+            authorization: `Bearer ${accessToken}`,
+            sessionid: sessionId || "",
         },
     }
     // console.log(defaultOptions)

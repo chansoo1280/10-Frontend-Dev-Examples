@@ -16,7 +16,7 @@ export interface Tab {
 interface TabsProps extends defaultProps {
     activeIdx: number | null
     tabList: Tab[]
-    onClick: (tab: Tab, idx: number) => void
+    onClick?: (tab: Tab, idx: number) => void
 }
 
 const Tabs = (props: TabsProps): JSX.Element => {
@@ -37,7 +37,7 @@ const Tabs = (props: TabsProps): JSX.Element => {
                     size="large"
                     type="text"
                     onClick={() => {
-                        onClick(tab, idx)
+                        onClick?.(tab, idx)
                     }}
                     key={tab.title}
                     href={tab.href}

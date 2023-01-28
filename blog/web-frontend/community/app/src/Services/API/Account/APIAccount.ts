@@ -12,9 +12,9 @@ export type APILoginPOST = {
     PathName: ["/api/account/login"]
     ReqType: ReqType.POST
     ReqPayload: {
-        body: { email: string; password: string }
+        body: Pick<User, "email" | "password"> & { keepLogin: boolean }
     }
-    ResPayload: Pick<User, "id" | "name" | "email">
+    ResPayload: Pick<User, "id" | "name" | "email"> & { sessionId: string | null }
 }
 
 export type APILogoutGET = {

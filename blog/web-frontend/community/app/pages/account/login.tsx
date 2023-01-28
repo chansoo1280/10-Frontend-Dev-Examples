@@ -1,5 +1,5 @@
 // #region Global Imports
-import React, { useState } from "react"
+import React, { FormEvent, useState } from "react"
 import { useRouter } from "next/router"
 // #endregion Global Imports
 
@@ -10,28 +10,39 @@ import { PageProps } from "../_app"
 import { useUser } from "@Hooks/useUser"
 import { HttpAccount } from "@Services/API/Account"
 import { useHistoryBack, usePrevPath } from "@Hooks/useHistoryBack"
+import { setStoredSessionId, useAccessToken } from "@Hooks/useAccessToken"
 // #endregion Local Imports
 
 const Login = () => {
     const router = useRouter()
+    const [keepLogin, setKeepLogin] = useState(false)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const { updateUser } = useUser()
+    const { refetchAccessToken } = useAccessToken()
     const { historyBack } = useHistoryBack("/community/questionList")
     const { prevPath } = usePrevPath()
 
-    const handleClickLogin = async () => {
-        const user = await HttpAccount.login({ email, password })
-        if (user === null) {
-            return
+    const handleSubmitLogin = async (e: FormEvent) => {
+        e.preventDefault()
+        const result = await HttpAccount.login({ email, password, keepLogin })
+        if (result === null) {
+            return false
         }
-        updateUser(user)
+        if (result.sessionId !== null) {
+            setStoredSessionId(result.sessionId)
+        }
+        updateUser({ ...result, keepLogin })
+        refetchAccessToken()
         historyBack()
+        return false
     }
     return (
         <>
-            <AccountForm header="Login">
+            <AccountForm header="Login" onSubmit={handleSubmitLogin}>
                 <Input
+                    inputId="email"
+                    label="email"
                     widthType="wide"
                     size="large"
                     prefix={<Icon iconName="xi-user-o" />}
@@ -43,6 +54,8 @@ const Login = () => {
                     }}
                 />
                 <Input
+                    inputId="password"
+                    label="password"
                     widthType="wide"
                     size="large"
                     prefix={<Icon iconName="xi-lock-o" />}
@@ -56,12 +69,17 @@ const Login = () => {
                 <Row>
                     <Space.Box>
                         <Checkbox
-                            onChange={function (): void {
-                                throw new Error("Function not implemented.")
+                            id="keepLogin"
+                            checked={keepLogin}
+                            onChange={() => {
+                                setKeepLogin(!keepLogin)
                             }}
                             label="로그인 유지하기"
                         />
                     </Space.Box>
+                </Row>
+                <Row>
+                    <Space.Box />
                     <Button
                         href={{
                             pathname: "/account/find-pw",
@@ -77,7 +95,7 @@ const Login = () => {
                 </Row>
                 <Row>
                     <Space.Box>
-                        <Button onClick={handleClickLogin} size="large">
+                        <Button htmlType="submit" size="large">
                             로그인
                         </Button>
                     </Space.Box>

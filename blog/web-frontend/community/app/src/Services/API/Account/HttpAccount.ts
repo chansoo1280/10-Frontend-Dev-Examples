@@ -4,15 +4,16 @@
 // #region Local Imports
 import { ReqType } from "@Server/request"
 import { ResMessageWithDesc, ResStatus } from "@Server/response"
-import { APIFindPwGET, APILoginPOST, APIResetPw, APIResetPwPATCH, Http } from "@Services"
+import { APIFindPwGET, APILoginPOST, APIResetPwPATCH, Http } from "@Services"
 import { User } from "@Services/User/User.entity"
 // #endregion Local Imports
 
-const login = async ({ email, password }: Pick<User, "email" | "password">) =>
+const login = async ({ email, password, keepLogin }: Pick<User, "email" | "password"> & { keepLogin: boolean }) =>
     await Http<APILoginPOST>(ReqType.POST, ["/api/account/login"], {
         body: {
-            email: email,
-            password: password,
+            email,
+            password,
+            keepLogin,
         },
     }).catch((e: ResMessageWithDesc) => {
         console.log(e)

@@ -1,3 +1,4 @@
+import { useUser } from "@Hooks/useUser"
 import { ReqType } from "@Server/request"
 import { ResMessageWithDesc, ResStatus } from "@Server/response"
 import { Http, APILoginGET } from "@Services"
@@ -68,4 +69,20 @@ export const setStoredAccessToken = (accessToken: string): void => {
 }
 export const clearStoredAccessToken = (): void => {
     localStorage.removeItem("ACCESSTOKEN_LOCALSTORAGE_KEY")
+}
+
+export const getStoredSessionId = (): string | null => {
+    if (typeof window === "undefined") {
+        return null
+    }
+    const storedSessionId = sessionStorage.getItem("SESSIONID_SESSIONSTORAGE_KEY")
+    const decryptedId = decrypt(storedSessionId || "")
+    return decryptedId ? decryptedId : null
+}
+export const setStoredSessionId = (sessionId: string): void => {
+    const encryptedId = encrypt(sessionId)
+    sessionStorage.setItem("SESSIONID_SESSIONSTORAGE_KEY", encryptedId)
+}
+export const clearStoredSessionId = (): void => {
+    sessionStorage.removeItem("SESSIONID_SESSIONSTORAGE_KEY")
 }

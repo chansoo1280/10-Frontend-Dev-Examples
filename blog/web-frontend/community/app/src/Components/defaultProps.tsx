@@ -1,4 +1,4 @@
-import { CSSProperties } from "react"
+import { CSSProperties, FormEventHandler } from "react"
 
 export interface defaultProps {
     children?: React.ReactNode
@@ -8,4 +8,6 @@ export interface defaultProps {
     show?: boolean
     "data-testid"?: string
     style?: CSSProperties
+    action?: string
+    onSubmit?: FormEventHandler
 }

@@ -17,7 +17,7 @@ export interface SpaceProps extends defaultProps {
     onClick?: React.MouseEventHandler
     separator?: React.ReactNode
     bgType?: "white"
-    as?: "div" | "li"
+    as?: "div" | "li" | "form"
     widthType?: "wide"
 }
 const Space = (props: SpaceProps): JSX.Element => {

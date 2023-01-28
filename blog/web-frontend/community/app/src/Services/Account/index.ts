@@ -6,16 +6,30 @@ export const validatePassword = (user: User, inputPassword: string): boolean => 
     return checkHash(user.password, inputPassword, user.salt)
 }
 
-export const generateAccessToken = (user: jwt.JwtPayload): string => {
-    return jwt.sign({ id: user.id, email: user.email }, process.env.SERVER_SECRET || "", {
+export const generateAccessToken = (tokenInfo: jwt.JwtPayload): string => {
+    return jwt.sign(tokenInfo, process.env.SERVER_SECRET || "", {
         expiresIn: "3h",
     })
 }
 
-export const generateRefreshToken = (user: jwt.JwtPayload): string => {
-    return jwt.sign({ id: user.id, email: user.email }, process.env.SERVER_SECRET || "", {
+export const generateRefreshToken = (tokenInfo: jwt.JwtPayload): string => {
+    return jwt.sign(tokenInfo, process.env.SERVER_SECRET || "", {
         expiresIn: "180 days",
     })
+}
+export const verifyRefreshToken = (token?: string) => {
+    if (token === undefined) {
+        return undefined
+    }
+    try {
+        const result = jwt.verify(token, process.env.SERVER_SECRET || "", undefined) as (Pick<User, "email" | "name" | "id"> & { sessionId: string }) | string
+        if (typeof result === "string") {
+            return null
+        }
+        return result
+    } catch (error) {
+        return null
+    }
 }
 
 export const verifyAccessToken = (token?: string) => {
@@ -24,7 +38,7 @@ export const verifyAccessToken = (token?: string) => {
     }
     // Authorization: `Bearer ${user.token}`
     try {
-        const result = jwt.verify(token.replace("Bearer ", ""), process.env.SERVER_SECRET || "", undefined) as { id: User["id"]; email: User["email"] } | string
+        const result = jwt.verify(token.replace("Bearer ", ""), process.env.SERVER_SECRET || "", undefined) as (Pick<User, "email" | "name" | "id"> & { sessionId: string }) | string
         if (typeof result === "string") {
             return null
         }
@@ -39,7 +53,12 @@ export const refreshAccessToken = (token: string): string | null => {
     if (typeof result === "string") {
         return null
     }
-    return generateAccessToken(result)
+    return generateAccessToken({
+        id: result.id,
+        name: result.name,
+        email: result.email,
+        sessionId: result.sessionId,
+    })
 }
 
 export const generateResetPwToken = (email: string): string => {
