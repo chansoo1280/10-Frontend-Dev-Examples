@@ -23,9 +23,12 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
     const { user } = useUser()
     const { initScrollTop } = useScrollRestoration(props.layoutRef, router.pathname)
     const { prevPath } = usePrevPath()
-    const [checkedTagsStr, setCheckedTagsStr] = useState(String(query.checkedTagsStr) || "")
+    const [checkedTagsStr, setCheckedTagsStr] = useState(String(query.checkedTagsStr || ""))
+    const [searchText, setSearchText] = useState(String(query.searchStr || ""))
+    const [searchStr, setSearchStr] = useState(String(query.searchStr || ""))
 
-    const { data, refetch } = useQuery("questionList", () => HttpQuestionList.getQuestionList(pageNo, checkedTagsStr), {
+    const { data, refetch } = useQuery("questionList", () => HttpQuestionList.getQuestionList(pageNo, checkedTagsStr, searchStr), {
+        staleTime: 60 * 60 * 1000,
         onSuccess: (received) => {
             console.log(received)
             if (!received) {
@@ -34,8 +37,10 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
                 setTotalPageCnt(received?.totalPageCnt || null)
                 setQuestionList(received?.questionList || [])
                 setPageNo(pageNo >= (received?.totalPageCnt || 1) ? received?.totalPageCnt || 1 : pageNo)
+                const tagList = getTagList(received?.questionList)
+                setCheckedTagsStr(received?.tagList?.filter((tag) => tagList.includes(tag)).join(", ") || "")
                 setTagList(
-                    getTagList(received?.questionList)
+                    tagList
                         .sort((a, b) => {
                             const aChecked = received.tagList?.includes(a) ? true : false
                             const bChecked = received.tagList?.includes(b) ? true : false
@@ -81,7 +86,7 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
             return
         }
         const nextPageNo = pageNo + 1
-        const result = await HttpQuestionList.getQuestionListPaging(nextPageNo, checkedTagsStr)
+        const result = await HttpQuestionList.getQuestionListPaging(nextPageNo, checkedTagsStr, searchStr)
         if (result === null) {
             return
         }
@@ -113,16 +118,17 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
                 query: {
                     pageNo: pageNo,
                     checkedTagsStr: checkedTagsStr,
+                    searchStr: searchStr,
                 },
             },
             undefined,
             { shallow: true },
         )
-    }, [pageNo, checkedTagsStr])
+    }, [pageNo, checkedTagsStr, searchStr])
 
     useEffect(() => {
         refetch()
-    }, [checkedTagsStr, refetch])
+    }, [checkedTagsStr, searchStr, refetch])
 
     return (
         <>
@@ -143,15 +149,19 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
                         </Button>
                     </Space>
                     <Search
-                        value={""}
+                        value={searchText}
                         placeholder="input search text"
-                        onChange={function (e: ChangeEvent<HTMLInputElement>): void {
-                            console.log(e)
+                        onChange={(e) => {
+                            setSearchText(e.target.value)
                         }}
-                        onSearch={function (value: string): void {
-                            console.log(value)
+                        onSearch={(value) => {
+                            if (value === searchStr) {
+                                refetch()
+                                return
+                            }
+                            setSearchStr(value)
                         }}
-                    ></Search>
+                    />
                     <Tabs activeIdx={activeIdx} onClick={onClickTab} tabList={tabList} />
                 </Space>
                 <Card.wrap>
@@ -170,9 +180,9 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
     )
 }
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-    const { pageNo, checkedTagsStr } = query
+    const { pageNo, checkedTagsStr, searchStr } = query
     const queryClient = new QueryClient()
-    await queryClient.prefetchQuery("questionList", () => HttpQuestionList.getQuestionList(Number(pageNo || "1"), String(checkedTagsStr) || ""))
+    await queryClient.prefetchQuery("questionList", () => HttpQuestionList.getQuestionList(Number(pageNo || "1"), String(checkedTagsStr || ""), String(searchStr || "")))
 
     return {
         props: {

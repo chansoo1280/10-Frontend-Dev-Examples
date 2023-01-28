@@ -39,7 +39,15 @@ const Search = (props: SearchProps): JSX.Element => {
     }
     return (
         <Space onClick={handleClick} gap="0" padding={0} className={classes} {...rest} data-click-animating={isClick === true}>
-            <Input size={size} placeholder={placeholder} disabled={disabled} value={innerValue} onChange={handleChange} className={classNames(styles[`${prefixCls}__input`])} />
+            <Input
+                size={size}
+                placeholder={placeholder}
+                disabled={disabled}
+                value={innerValue}
+                onEnter={() => onSearch(innerValue)}
+                onChange={handleChange}
+                className={classNames(styles[`${prefixCls}__input`])}
+            />
             <Button size={size} disabled={disabled} onClick={() => onSearch(innerValue)} className={classNames(styles[`${prefixCls}__btn`])}>
                 Search
             </Button>

@@ -9,19 +9,25 @@ const apiQuestionList: APIQuestionList = {
     [ReqType.GET]: async (req, res) => {
         const query = req.query
         const cntPerPage = Number(query.cntPerPage || "1")
-        const tagList = query.tagList !== undefined && query.tagList !== "" ? query.tagList?.split(", ") : null
+        const tagList = query.tags !== undefined && query.tags !== "" ? query.tags?.split(", ") : null
         const cnt = Number(query.cnt) || null
+        const searchStr = query?.searchStr || ""
         const result = await findAllQuestion({
             cnt,
             likeTagList: tagList,
+            searchStr: query?.searchStr || "",
         })
-        const questionCnt = await getQuestionCnt(tagList)
+        const questionCnt = await getQuestionCnt({
+            likeTagList: tagList,
+            searchStr: searchStr,
+        })
         if (result !== null) {
             res.status(ResStatus.Success).json({
                 questionList: result,
                 totalCnt: questionCnt || 0,
                 totalPageCnt: Math.ceil((questionCnt || 0) / cntPerPage),
                 tagList,
+                searchStr,
             })
             return
         }

@@ -2,7 +2,7 @@ import excuteQuery, { QueryResult } from "@Server/db"
 import { Question, QuestionInfoWithAuthor, QuestionWithAuthor, QuestionWithAuthorRow } from "./Question.entity"
 export type { Question }
 
-export const findAllQuestion = async ({ cnt, likeTagList }: { cnt: number | null; likeTagList: Question["tags"] }): Promise<QuestionWithAuthor[] | null> => {
+export const findAllQuestion = async ({ cnt, likeTagList, searchStr }: { cnt: number | null; likeTagList: Question["tags"]; searchStr: string }): Promise<QuestionWithAuthor[] | null> => {
     const queryString = `
         SELECT question.id, question.title, question.authorId, question.tags, question.created, 
             user.id as author_id, user.name as author_name, user.email as author_email 
@@ -23,11 +23,13 @@ export const findAllQuestion = async ({ cnt, likeTagList }: { cnt: number | null
                 `
                 : ""
         }
+        AND question.title LIKE ?
         ORDER BY question.id DESC
         ${cnt !== null ? `LIMIT ?` : ``}
     `
     const queryValues = (() => {
         const values: (number | string)[] = [...(likeTagList?.map((str) => `%${str}%`) || [])]
+        values.push(`%${searchStr}%`)
         if (cnt !== null) {
             values.push(cnt)
         }
@@ -159,13 +161,14 @@ export const modifyQuestion = async (question: Pick<Question, "id" | "title" | "
     }
 }
 
-export const findQuestionByPageNo = async (pageNo: number, cntPerPage: number, likeTagList: Question["tags"]): Promise<QuestionInfoWithAuthor[] | null> => {
+export const findQuestionByPageNo = async (pageNo: number, cntPerPage: number, likeTagList: Question["tags"], searchStr: string): Promise<QuestionInfoWithAuthor[] | null> => {
     const startIdxOfPage = (pageNo - 1) * cntPerPage
     const queryString = `
         SELECT question.id, question.title, question.authorId, question.tags, question.created, 
             user.id as author_id, user.name as author_name, user.email as author_email 
             FROM question LEFT JOIN user ON question.authorId = user.id
         WHERE question.deleted IS NULL
+        AND question.title LIKE ?
         ${
             likeTagList !== null
                 ? `
@@ -183,7 +186,8 @@ export const findQuestionByPageNo = async (pageNo: number, cntPerPage: number, l
         }
         ORDER BY question.id DESC
         LIMIT ?, ?;`
-    const queryValues = [...(likeTagList?.map((str) => `%${str}%`) || []), startIdxOfPage, cntPerPage]
+    const queryValues = [`%${searchStr}%`, ...(likeTagList?.map((str) => `%${str}%`) || []), startIdxOfPage, cntPerPage]
+    console.log(queryString, queryValues)
     try {
         const result = await excuteQuery<QuestionWithAuthorRow[]>({
             query: queryString,
@@ -211,11 +215,12 @@ export const findQuestionByPageNo = async (pageNo: number, cntPerPage: number, l
         return null
     }
 }
-export const getQuestionCnt = async (likeTagList: Question["tags"]): Promise<number | null> => {
+export const getQuestionCnt = async ({ likeTagList, searchStr }: { likeTagList: Question["tags"]; searchStr: string }): Promise<number | null> => {
     const queryString = `
     SELECT COUNT(*) AS total 
     FROM app.question 
     WHERE question.deleted IS NULL
+        AND question.title LIKE ?
         ${
             likeTagList !== null
                 ? `
@@ -233,7 +238,7 @@ export const getQuestionCnt = async (likeTagList: Question["tags"]): Promise<num
         }
     ;
     `
-    const queryValues = [...(likeTagList?.map((str) => `%${str}%`) || [])]
+    const queryValues = [`%${searchStr}%`, ...(likeTagList?.map((str) => `%${str}%`) || [])]
     try {
         const result = await excuteQuery<[{ total: number }]>({
             query: queryString,

@@ -27,13 +27,14 @@ const getQuestion = async ({ id }: Pick<Question, "id">) => {
         return null
     })
 }
-const getQuestionList = async (pageNo: number, tagList: string) => {
+const getQuestionList = async (pageNo: number, tags: string, searchStr: string) => {
     const cntPerPage = 2
     return await Http<APIQuestionListGET>(ReqType.GET, ["/api/questionList"], {
         query: {
             cnt: pageNo * cntPerPage,
             cntPerPage: String(cntPerPage),
-            tagList,
+            tags,
+            searchStr,
         },
     }).catch((e: ResMessageWithDesc) => {
         console.log(e)
@@ -51,13 +52,14 @@ const getQuestionList = async (pageNo: number, tagList: string) => {
         return null
     })
 }
-const getQuestionListPaging = async (pageNo: number, tagList: string) => {
+const getQuestionListPaging = async (pageNo: number, tags: string, searchStr: string) => {
     const cntPerPage = 2
     return await Http<APIQuestionListPagingGET>(ReqType.GET, ["/api/questionList/paging"], {
         query: {
             pageNo: String(pageNo),
             cntPerPage: String(cntPerPage),
-            tagList,
+            tags,
+            searchStr,
         },
     }).catch((e: ResMessageWithDesc) => {
         console.log(e)
