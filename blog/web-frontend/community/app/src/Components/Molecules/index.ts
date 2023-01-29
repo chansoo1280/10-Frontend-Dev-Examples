@@ -1,4 +1,5 @@
 export { default as Search } from "./Search"
+export { default as FormInput } from "./FormInput"
 export { default as Popover } from "./Popover"
 export { default as LinedCard } from "./LinedCard"
 export { default as Tags } from "./Tags"

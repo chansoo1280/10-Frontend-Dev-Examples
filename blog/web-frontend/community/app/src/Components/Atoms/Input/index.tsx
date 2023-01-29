@@ -11,7 +11,7 @@ import { useClickAnimating } from "@Hooks"
 import styles from "./Input.module.scss"
 // #endregion Local Imports
 
-interface InputProps extends defaultProps {
+export interface InputProps extends defaultProps {
     type?: "text" | "email" | "password"
     size?: "small" | "medium" | "large"
     status?: "normal" | "error" | "warning"
