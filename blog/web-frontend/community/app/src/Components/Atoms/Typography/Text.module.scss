@@ -18,4 +18,16 @@
         font-size: 20px;
         line-height: 28px;
     }
+
+    &--wide {
+        width: 100%;
+    }
+
+    &--error {
+        color: $danger-5;
+    }
+
+    &--warning {
+        color: $gold-6;
+    }
 }

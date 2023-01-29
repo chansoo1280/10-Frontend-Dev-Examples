@@ -14,6 +14,7 @@ import styles from "./Input.module.scss"
 interface InputProps extends defaultProps {
     type?: "text" | "email" | "password"
     size?: "small" | "medium" | "large"
+    status?: "normal" | "error" | "warning"
     value: string
     onChange: React.ChangeEventHandler<HTMLInputElement>
     onBlur?: React.FocusEventHandler<HTMLInputElement>
@@ -27,7 +28,7 @@ interface InputProps extends defaultProps {
 }
 
 const Input = (props: InputProps, ref?: React.Ref<HTMLInputElement>) => {
-    const { value, show, size, className, onChange, onBlur, onEnter, disabled, prefix, suffix, placeholder, widthType, type, label, inputId, ...rest } = props
+    const { value, show, size, className, onChange, onBlur, onEnter, disabled, prefix, suffix, placeholder, widthType, type, label, inputId, status, ...rest } = props
     const inputRef = useRef<HTMLInputElement>(null)
     const [innerValue, setValue] = useState(value)
     const [focused, setFocused] = useState(false)
@@ -38,6 +39,7 @@ const Input = (props: InputProps, ref?: React.Ref<HTMLInputElement>) => {
         {
             [styles[`${prefixCls}--hide`]]: show === false,
             [styles[`${prefixCls}--${size}`]]: size,
+            [styles[`${prefixCls}--${status}`]]: status,
             [styles[`${prefixCls}--disabled`]]: disabled,
             [styles[`${prefixCls}--focus`]]: focused,
             [styles[`${prefixCls}--have-prefix`]]: prefix,

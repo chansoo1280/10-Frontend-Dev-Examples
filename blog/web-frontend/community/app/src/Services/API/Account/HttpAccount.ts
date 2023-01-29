@@ -15,20 +15,6 @@ const login = async ({ email, password, keepLogin }: Pick<User, "email" | "passw
             password,
             keepLogin,
         },
-    }).catch((e: ResMessageWithDesc) => {
-        console.log(e)
-        switch (e.status) {
-            case ResStatus.NoContent:
-                console.log(e.description)
-                return null
-            case ResStatus.BadRequest:
-                console.log(e.description)
-                return null
-
-            default:
-                break
-        }
-        return null
     })
 
 const sendEmailResetPwPath = async ({ email }: Pick<User, "email">) =>

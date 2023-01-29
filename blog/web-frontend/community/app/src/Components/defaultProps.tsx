@@ -10,4 +10,5 @@ export interface defaultProps {
     style?: CSSProperties
     action?: string
     onSubmit?: FormEventHandler
+    tabIndex?: number
 }

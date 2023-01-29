@@ -31,6 +31,8 @@ export const getUser = async (user: StoredUserInfo | null | undefined) => {
 
 export const useUser = () => {
     const queryclient = useQueryClient()
+    const { refetchAccessToken } = useAccessToken()
+
     const [user, setUser] = useState<StoredUserInfo | null>(null)
     const queryResult: UseQueryResult<StoredUserInfo | null> = useQuery("user", () => getUser(queryResult.data), {
         initialData: getStoredUserInfo,
@@ -54,6 +56,7 @@ export const useUser = () => {
     const updateUser = (newUser: StoredUserInfo): void => {
         queryclient.setQueryData("user", newUser)
         setStoredUserInfo(newUser)
+        refetchAccessToken()
     }
 
     const clearUser = () => {
