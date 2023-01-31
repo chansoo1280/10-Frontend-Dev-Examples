@@ -3,7 +3,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/chansoo1280/example">
+  <a href="https://github.com/chansoo1280/10-Frontend-Dev-Examples">
     <img src="https://user-images.githubusercontent.com/62010067/206155282-f955e40f-03b2-49a2-adff-939d6eba6e30.PNG" alt="Logo" width="80" height="80">
   </a>
 
@@ -13,11 +13,11 @@
     개발에 관련된 예시 프로젝트입니다.
     <br />
     <br />
-    <a href="https://github.com/chansoo1280/example">View Demo</a>
+    <a href="https://github.com/chansoo1280/10-Frontend-Dev-Examples">View Demo</a>
     ·
-    <a href="https://github.com/chansoo1280/example/issues">Report Bug</a>
+    <a href="https://github.com/chansoo1280/10-Frontend-Dev-Examples/issues">Report Bug</a>
     ·
-    <a href="https://github.com/chansoo1280/example/issues">Request Feature</a>
+    <a href="https://github.com/chansoo1280/10-Frontend-Dev-Examples/issues">Request Feature</a>
   </p>
 </div>
 
@@ -84,7 +84,16 @@ Here's why:
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] 새로운 프로젝트 구상중...
+- [ ] 1. Profile Card
+- [ ] 2. Login
+- [ ] 3. Board&Paging
+- [ ] 4. Print Document&Chart
+- [ ] 5. Infinite Scrolling List
+- [ ] 6. Todo List
+- [ ] 7. Live Score Board
+- [ ] 8. Main Page
+- [ ] 9. Community Site
+- [ ] 10. Community Admin Site
 
 [open issues](https://github.com/chansoo1280/example/issues)에서 다양한 사이트를 추천해주세요!
 
