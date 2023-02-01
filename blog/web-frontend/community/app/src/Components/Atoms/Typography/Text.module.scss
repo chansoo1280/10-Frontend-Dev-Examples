@@ -30,4 +30,8 @@
     &--warning {
         color: $gold-6;
     }
+
+    &--hide {
+        display: none;
+    }
 }
