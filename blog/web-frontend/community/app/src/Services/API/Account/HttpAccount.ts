@@ -22,17 +22,6 @@ const sendEmailResetPwPath = async ({ email }: Pick<User, "email">) =>
         query: {
             email: email,
         },
-    }).catch((e: ResMessageWithDesc) => {
-        console.log(e)
-        switch (e.status) {
-            case ResStatus.BadRequest:
-                console.log(e.description)
-                return null
-
-            default:
-                break
-        }
-        return null
     })
 
 const resetPw = async ({ email, password, token }: { token: string } & Pick<User, "email" | "password">) =>
