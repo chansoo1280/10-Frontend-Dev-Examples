@@ -1,5 +1,5 @@
 // #region Global Imports
-import React, { createRef, useEffect, useState } from "react"
+import React, { createRef, FormEvent, useEffect, useState } from "react"
 import { useQuery } from "react-query"
 // #endregion Global Imports
 
@@ -15,29 +15,30 @@ import { ResMessageWithDesc, ResStatus } from "@Server/response"
 import { User } from "@Services/User"
 // #endregion Local Imports
 
-enum FormState {
+enum LoginState {
     "NONE" = "NONE",
     "PENDING" = "PENDING",
-    "EMPTY_EMAIL" = "EMPTY_EMAIL",
-    "EMPTY_PW" = "EMPTY_PW",
     "NONE_USER" = "NONE_USER",
-    "FAIL" = "FAIL",
-}
-const FormMessage: { [key in FormState]: string } = {
-    [FormState.NONE]: "",
-    [FormState.PENDING]: "",
-    [FormState.EMPTY_EMAIL]: "이메일을 입력해주세요.",
-    [FormState.EMPTY_PW]: "비밀번호를 입력해주세요.",
-    [FormState.NONE_USER]: "회원정보가 존재하지 않습니다.",
-    [FormState.FAIL]: "이메일 or 비밀번호가 올바르지 않습니다.",
+    "NONE_EMAIL" = "NONE_EMAIL",
+    "NONE_PW" = "NONE_PW",
+    "ERROR" = "ERROR",
 }
 
 const Login = () => {
     const { historyBack } = useHistoryBack("/community/questionList")
     const { prevPath } = usePrevPath()
 
-    const [formState, setFormState] = useState(FormState.NONE)
-    const stateNotice = FormMessage[formState]
+    const [loginState, setLoginState] = useState(LoginState.NONE)
+    const stateNotice =
+        loginState === LoginState.NONE_USER
+            ? "회원정보가 존재하지 않습니다."
+            : loginState === LoginState.NONE_EMAIL
+            ? "이메일을 입력해주세요."
+            : loginState === LoginState.NONE_PW
+            ? "비밀번호를 입력해주세요."
+            : loginState === LoginState.ERROR
+            ? "이메일 or 비밀번호가 올바르지 않습니다."
+            : ""
     const noticeRef = createRef<HTMLHeadingElement>()
 
     const [loginInfo, setLoginInfo] = useState<Pick<User, "email" | "password"> & { keepLogin: boolean }>({
@@ -53,10 +54,10 @@ const Login = () => {
             console.log(e)
             switch (e.status) {
                 case ResStatus.BadRequest:
-                    setFormState(FormState.NONE_USER)
+                    setLoginState(LoginState.NONE_USER)
                     return null
                 case ResStatus.Forbidden:
-                    setFormState(FormState.FAIL)
+                    setLoginState(LoginState.ERROR)
                     return null
 
                 default:
@@ -69,14 +70,14 @@ const Login = () => {
         enabled: false,
     })
 
-    const handleSubmitLogin = async (e: React.FormEvent) => {
+    const handleSubmitLogin = async (e: FormEvent) => {
         e.preventDefault()
         if (loginInfo.email === "") {
-            setFormState(FormState.EMPTY_EMAIL)
+            setLoginState(LoginState.NONE_EMAIL)
             return
         }
         if (loginInfo.password === "") {
-            setFormState(FormState.EMPTY_PW)
+            setLoginState(LoginState.NONE_PW)
             return
         }
         const { data } = await refetch()
@@ -92,25 +93,19 @@ const Login = () => {
     }
 
     useEffect(() => {
-        if (formState !== FormState.NONE) {
+        if (loginState !== LoginState.NONE) {
             noticeRef.current?.focus()
         }
-    }, [formState])
-    useEffect(() => {
-        if (isLoading === true) {
-            setFormState(FormState.PENDING)
-        }
-    }, [isLoading])
-
+    }, [loginState])
     return (
         <>
             <AccountForm header="Login" onSubmit={handleSubmitLogin}>
-                <Text show={!!stateNotice} ref={noticeRef} tabIndex={0} widthType="wide" size="small" status="error">
+                <Text ref={noticeRef} tabIndex={0} widthType="wide" size="small" status="error">
                     {stateNotice}
                 </Text>
                 <Row direction="vertical">
                     <FormInput
-                        status={formState === FormState.NONE_USER || formState === FormState.EMPTY_EMAIL ? "error" : "normal"}
+                        status={loginState === LoginState.NONE_USER || loginState === LoginState.NONE_EMAIL ? "error" : "normal"}
                         inputId="email"
                         label="email"
                         prefix={<Icon iconName="xi-user-o" />}
@@ -119,15 +114,15 @@ const Login = () => {
                         value={loginInfo.email}
                         onChange={(event) => {
                             setLoginInfo({ ...loginInfo, email: event.target.value })
-                            if (formState === FormState.NONE_USER || formState === FormState.EMPTY_EMAIL) {
-                                setFormState(FormState.NONE)
+                            if (loginState === LoginState.NONE_USER || loginState === LoginState.NONE_EMAIL) {
+                                setLoginState(LoginState.NONE)
                             }
                         }}
                     />
                 </Row>
                 <Row direction="vertical" align="flex-end">
                     <FormInput
-                        status={formState === FormState.EMPTY_PW ? "error" : "normal"}
+                        status={loginState === LoginState.NONE_PW ? "error" : "normal"}
                         inputId="password"
                         label="password"
                         prefix={<Icon iconName="xi-lock-o" />}
@@ -136,8 +131,8 @@ const Login = () => {
                         value={loginInfo.password}
                         onChange={(event) => {
                             setLoginInfo({ ...loginInfo, password: event.target.value })
-                            if (formState === FormState.EMPTY_PW) {
-                                setFormState(FormState.NONE)
+                            if (loginState === LoginState.NONE_PW) {
+                                setLoginState(LoginState.NONE)
                             }
                         }}
                     />
@@ -164,7 +159,7 @@ const Login = () => {
                 />
                 <Row>
                     <Space.Box>
-                        <Button loading={formState === FormState.PENDING} htmlType="submit" size="large">
+                        <Button loading={isLoading} htmlType="submit" size="large">
                             로그인
                         </Button>
                     </Space.Box>
