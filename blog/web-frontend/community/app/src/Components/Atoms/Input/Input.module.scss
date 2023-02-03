@@ -33,6 +33,7 @@ $input:"input";
     &--disabled,
     &--disabled:hover {
         @include disabled-color();
+        cursor: not-allowed;
     }
 
 
@@ -114,6 +115,7 @@ $input:"input";
     }
 
     &__input {
+        cursor: inherit;
         padding: 5px 12px;
 
         width: 100%;
