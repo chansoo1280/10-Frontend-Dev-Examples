@@ -11,7 +11,7 @@ import { useClickAnimating } from "@Hooks"
 import styles from "./Input.module.scss"
 // #endregion Local Imports
 
-export interface InputProps extends defaultProps {
+export interface BaseInputProps extends defaultProps {
     type?: "text" | "email" | "password"
     size?: "small" | "medium" | "large"
     status?: "normal" | "error" | "warning"
@@ -26,6 +26,7 @@ export interface InputProps extends defaultProps {
     label?: string
     inputId?: string
 }
+export interface InputProps extends BaseInputProps, Pick<React.InputHTMLAttributes<any>, "minLength" | "maxLength"> {}
 
 const Input = (props: InputProps, ref?: React.Ref<HTMLInputElement>) => {
     const { value, show, size, className, onChange, onBlur, onEnter, disabled, prefix, suffix, placeholder, widthType, type, label, inputId, status, ...rest } = props
