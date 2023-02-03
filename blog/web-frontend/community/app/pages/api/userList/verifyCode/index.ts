@@ -1,8 +1,8 @@
 import { ReqType } from "@Server/request"
-import { ResStatus, resMessage } from "@Server/response"
+import { ResStatus, resMessage, resMessageWithDesc } from "@Server/response"
 import { APIVerifyCode, makeRouter } from "@Services"
 import { sendEmail } from "@Services/Email"
-import { generateEmailToken } from "@Services/User"
+import { findUserByEmail, generateEmailToken } from "@Services/User"
 
 const apiVerificationCode: APIVerifyCode = {
     [ReqType.POST]: async (req, res) => {
@@ -10,6 +10,12 @@ const apiVerificationCode: APIVerifyCode = {
 
         if (!body.email) {
             resMessage(res, ResStatus.BadRequest)
+            return
+        }
+
+        const user = await findUserByEmail(body.email || "")
+        if (user !== null) {
+            resMessageWithDesc(res, ResStatus.BadRequest, "중복된 이메일")
             return
         }
 
