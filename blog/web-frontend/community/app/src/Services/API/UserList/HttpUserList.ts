@@ -34,17 +34,6 @@ const sendVerifyCodeEmail = async ({ email }: Pick<User, "email">) =>
         body: {
             email: email,
         },
-    }).catch((e: ResMessageWithDesc) => {
-        console.log(e)
-        switch (e.status) {
-            case ResStatus.BadRequest:
-                console.log(e.description)
-                return null
-
-            default:
-                break
-        }
-        return null
     })
 export const HttpUserList = {
     register,
