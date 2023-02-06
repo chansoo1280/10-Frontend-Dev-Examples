@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="./styles/fonts.css">
+    <link rel="stylesheet" href="./styles/reset.css">
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+<body>
+    <div class="l_wrap">
+        <main>
+            <form class="login" action="/api/login" accept-charset="UTF-8" method="post">
+                <h1 class="login__title">Sign in</h1>
+                <div class="login__input">
+                    <h2><label for="email" class="login__label">Username or email address</label></h2>
+                    <div class="input-box">
+                        <input autofocus type="email" name="email" id="email" class="input-box__input">
+                    </div>
+                </div>
+                <div class="login__input">
+                    <h2><label for="password" class="login__label">Password</label></h2>
+                    <div class="input-box">
+                        <input type="password" name="password" id="password" class="input-box__input">
+                    </div>
+                    <a href="#a" class="login__link login__link--right">비밀번호를 잊어버리셨나요?</a>
+                </div>
+                <button type="submit" class="login__btn-login">Sign in</button>
+                <a href="#a" class="login__link">create an account</a>
+            </form>
+        </main>
+    </div>
+</body>
+</html>

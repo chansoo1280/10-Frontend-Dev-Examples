@@ -187,7 +187,6 @@ export const findQuestionByPageNo = async (pageNo: number, cntPerPage: number, l
         ORDER BY question.id DESC
         LIMIT ?, ?;`
     const queryValues = [`%${searchStr}%`, ...(likeTagList?.map((str) => `%${str}%`) || []), startIdxOfPage, cntPerPage]
-    console.log(queryString, queryValues)
     try {
         const result = await excuteQuery<QuestionWithAuthorRow[]>({
             query: queryString,
