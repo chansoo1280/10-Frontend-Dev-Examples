@@ -35,7 +35,7 @@ const QuestionAuthorInfo = (props: QuestionAuthorInfoProps): JSX.Element => {
             </Button>
             published at{" "}
             <Text type="link" size="small">
-                https://ant.design
+                https://community.co.kr
             </Text>
             <Text show={created !== undefined} size="small" className={classNames(styles[`${prefixCls}__date`])}>
                 {/* 2021-02-05 13:51 */}

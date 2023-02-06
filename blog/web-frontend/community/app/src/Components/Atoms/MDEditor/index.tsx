@@ -18,16 +18,18 @@ interface MDEditorProps extends defaultProps {
     value: string
     onChange?: ChangeEventHandler<HTMLTextAreaElement>
     type?: "preview"
+    status?: "normal" | "error" | "warning"
 }
 
 const MDEditor = (props: MDEditorProps): JSX.Element => {
-    const { type, value, show, className, onChange, ...rest } = props
+    const { type, value, show, className, onChange, status, ...rest } = props
     const [innerValue, setValue] = useState(value)
     const prefixCls = "MD-editor"
     const classes = classNames(
         styles[`${prefixCls}`],
         {
             [styles[`${prefixCls}--hide`]]: show === false,
+            [styles[`${prefixCls}--${status}`]]: status,
         },
         className,
     )

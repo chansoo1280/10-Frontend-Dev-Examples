@@ -16,12 +16,11 @@ import { usePrevPath } from "@Hooks/useHistoryBack"
 interface QuestionListProps extends defaultProps {
     questionList: QuestionWithAuthor[]
     onClickNext: React.MouseEventHandler<HTMLAnchorElement> & React.MouseEventHandler<HTMLButtonElement>
-    onClickTag?: (tag: Tag) => void
     hideMore?: boolean
 }
 
 const QuestionList = (props: QuestionListProps): JSX.Element => {
-    const { questionList, show, className, onClickNext, onClickTag, hideMore, ...rest } = props
+    const { questionList, show, className, onClickNext, hideMore, ...rest } = props
     const router = useRouter()
     const { prevPath } = usePrevPath()
     const prefixCls = "question-list"
@@ -51,11 +50,6 @@ const QuestionList = (props: QuestionListProps): JSX.Element => {
                                         }))) ||
                                     []
                                 }
-                                onClick={(tag) => {
-                                    window.event?.preventDefault()
-                                    window.event?.stopPropagation()
-                                    onClickTag?.(tag)
-                                }}
                             />
                         </Space>
                         <Row>
