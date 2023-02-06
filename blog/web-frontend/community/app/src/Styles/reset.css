@@ -94,6 +94,9 @@ textarea {
    text-align: left;
    direction: ltr;
 }
+.ir:focus{
+   outline:0;
+}
 
 .img-cover{
    width:100%;
