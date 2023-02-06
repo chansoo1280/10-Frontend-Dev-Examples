@@ -41,13 +41,11 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
                 setTotalPageCnt(received?.totalPageCnt || null)
                 setQuestionList(received?.questionList || [])
                 setPageNo(pageNo >= (received?.totalPageCnt || 1) ? received?.totalPageCnt || 1 : pageNo)
-                const tagList = getTagList(received?.questionList)
-                setCheckedTagsStr(received?.tagList?.filter((tag) => tagList.includes(tag)).join(", ") || "")
                 setTagList(
-                    tagList.sort(booleanSort).map((title) => ({
+                    (received?.ableTagList || []).sort(booleanSort).map((title) => ({
                         title,
                         type: "checkable",
-                        checked: received.tagList?.includes(title) ? true : false,
+                        checked: !!tagList.find((tag) => tag.checked === true && tag.title === title),
                     })),
                 )
             }
@@ -56,17 +54,11 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
     const [pageNo, setPageNo] = useState(Number(query.pageNo || "1"))
     const [totalPageCnt, setTotalPageCnt] = useState<number | null>(data?.totalPageCnt || null)
     const [questionList, setQuestionList] = useState<QuestionWithAuthor[]>(data?.questionList || [])
-    const getTagList = (list: QuestionWithAuthor[]) =>
-        list
-            .map((question) => question.tags || [])
-            .flat()
-            .reduce((acc, cur) => (acc.includes(cur) ? acc : [...acc, cur]), [] as string[])
-            .sort((a, b) => (a > b ? 1 : b > a ? -1 : 0))
     const [tagList, setTagList] = useState<CheckableTag[]>(
-        getTagList(questionList).map((title) => ({
+        (data?.ableTagList || []).map((title) => ({
             title,
             type: "checkable",
-            checked: false,
+            checked: !!data?.tagList?.includes(title),
         })),
     )
 
@@ -95,18 +87,13 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
     }
 
     const handleClickTag = (tag: Tag) => {
-        setCheckedTagsStr(
-            tagList
-                .map((tagObj) => ({
-                    ...tagObj,
-                    checked: tagObj.title === tag.title ? !tagObj.checked : tagObj.checked,
-                }))
-                .sort((a, b) => (a.title > b.title ? 1 : b.title > a.title ? -1 : 0))
-                .sort((a, b) => (a.checked === b.checked ? 0 : a.checked ? -1 : 1))
-                .filter((tagObj) => tagObj.checked)
-                .map((tagObj) => tagObj.title)
-                .join(", "),
+        setTagList(
+            tagList.map((tagObj) => ({
+                ...tagObj,
+                checked: tagObj.title === tag.title ? !tagObj.checked : tagObj.checked,
+            })),
         )
+        setPageNo(1)
     }
     const handleSearch = (value: string) => {
         if (value === searchStr) {
@@ -115,6 +102,17 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
         }
         setSearchStr(value)
     }
+
+    useEffect(() => {
+        setCheckedTagsStr(
+            tagList
+                .sort((a, b) => (a.title > b.title ? 1 : b.title > a.title ? -1 : 0))
+                .sort((a, b) => (a.checked === b.checked ? 0 : a.checked ? -1 : 1))
+                .filter((tagObj) => tagObj.checked)
+                .map((tagObj) => tagObj.title)
+                .join(", "),
+        )
+    }, [tagList])
 
     useEffect(() => {
         router.replace(
@@ -164,7 +162,7 @@ const QuestionListPage = (props: { layoutRef: React.RefObject<HTMLDivElement> })
                                 <Tags boxProps={{ padding: "4px" }} tagList={tagList} onClick={handleClickTag} />
                             </Space.Box>
                         </Space>
-                        <QuestionList onClickTag={handleClickTag} onClickNext={handleClickNext} hideMore={isLastPage} questionList={questionList} />
+                        <QuestionList onClickNext={handleClickNext} hideMore={isLastPage} questionList={questionList} />
                     </LinedCard>
                 </Card.wrap>
             </div>

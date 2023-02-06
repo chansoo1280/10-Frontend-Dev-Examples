@@ -204,6 +204,9 @@ const Login = () => {
                         value={name}
                         onChange={(event) => {
                             setName(event.target.value)
+                            if (formState === FormState.EMPTY_NAME) {
+                                setFormState(FormState.NONE)
+                            }
                         }}
                     />
                     <Text size="small">7~14 길이의 영문자, 숫자</Text>
@@ -216,6 +219,9 @@ const Login = () => {
                     value={email}
                     onChange={(event) => {
                         setEmail(event.target.value)
+                        if (formState === FormState.EXIT_USER || formState === FormState.EMPTY_EMAIL) {
+                            setFormState(FormState.NONE)
+                        }
                     }}
                 />
                 <Row>
@@ -229,6 +235,9 @@ const Login = () => {
                         value={verifyCode}
                         onChange={(event) => {
                             setVerifyCode(event.target.value)
+                            if (formState === FormState.EMPTY_VERIFYCODE || formState === FormState.EXPIRED_VERIFYCODE || formState === FormState.WRONG_VERIFYCODE) {
+                                setFormState(FormState.NONE)
+                            }
                         }}
                     />
                     <Button disabled={email === ""} onClick={handleClickSendVerifyCode} size="large" type="secondary">
@@ -247,6 +256,9 @@ const Login = () => {
                         value={password}
                         onChange={(event) => {
                             setPassword(event.target.value)
+                            if (formState === FormState.EMPTY_PW) {
+                                setFormState(FormState.NONE)
+                            }
                         }}
                     />
                     <Text size="small">8~20 길이의 영문자, 숫자</Text>
@@ -262,6 +274,9 @@ const Login = () => {
                     value={passwordConfirm}
                     onChange={(event) => {
                         setPasswordConfirm(event.target.value)
+                        if (formState === FormState.EMPTY_PWCOMFIRM) {
+                            setFormState(FormState.NONE)
+                        }
                     }}
                 />
                 <Row>

@@ -3,7 +3,7 @@ import { ResStatus, resMessage, resMessageWithDesc } from "@Server/response"
 import { APIQuestionList, makeRouter } from "@Services"
 import { verifyAccessToken } from "@Services/Account"
 import { findAllQuestion, getQuestionCnt, createQuestion, deleteAllQuestion } from "@Services/Question"
-import { verifyQuestion } from "@Services/Question/Question.entity"
+import { QuestionWithAuthor, verifyQuestion } from "@Services/Question/Question.entity"
 
 const apiQuestionList: APIQuestionList = {
     [ReqType.GET]: async (req, res) => {
@@ -21,6 +21,17 @@ const apiQuestionList: APIQuestionList = {
             likeTagList: tagList,
             searchStr: searchStr,
         })
+        const resultAll = await findAllQuestion({
+            cnt: questionCnt,
+            likeTagList: tagList,
+            searchStr: query?.searchStr || "",
+        })
+        const getTagList = (list: QuestionWithAuthor[]) =>
+            list
+                .map((question) => question.tags || [])
+                .flat()
+                .reduce((acc, cur) => (acc.includes(cur) ? acc : [...acc, cur]), [] as string[])
+                .sort((a, b) => (a > b ? 1 : b > a ? -1 : 0))
         if (result !== null) {
             res.status(ResStatus.Success).json({
                 questionList: result,
@@ -28,6 +39,7 @@ const apiQuestionList: APIQuestionList = {
                 totalPageCnt: Math.ceil((questionCnt || 0) / cntPerPage),
                 tagList,
                 searchStr,
+                ableTagList: getTagList(resultAll || []),
             })
             return
         }

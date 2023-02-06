@@ -108,6 +108,9 @@ const FindPw = () => {
                             value={email}
                             onChange={(event) => {
                                 setEmail(event.target.value)
+                                if (formState === FormState.EMPTY_EMAIL) {
+                                    setFormState(FormState.NONE)
+                                }
                             }}
                         />
                         <Row>

@@ -15,6 +15,7 @@ export type APIQuestionListGET = {
         totalPageCnt: number
         tagList: Question["tags"]
         searchStr: string
+        ableTagList: string[]
     }
 }
 export type APIQuestionListPOST = {
